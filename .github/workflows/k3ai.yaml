@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.issue.opened && github.event.issue.title.includes == '[run]' }}
+    if: ${{ github.event.issues.opened && github.event.issues.title.includes == '[run]' }}
     steps:
     - name: Get PR SHA
       id: sha
@@ -16,11 +16,11 @@ jobs:
       with:
         result-encoding: string
         script: |
-          const { owner, repo, number } = context.issue;
-          const pr = await github.issue.get({
+          const { owner, repo, number } = context.issues;
+          const pr = await github.issues.get({
             owner,
             repo,
-            issue_number: number,
+            issues_number: number,
           });
           return pr.data.head.sha
     - uses: actions/checkout@v2
