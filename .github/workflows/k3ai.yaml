@@ -1,0 +1,65 @@
+name: Deploy on Issue
+
+on:
+  issue:
+    types:
+      - opened
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.opened && github.event.issue.title.includes == '[run]' }}
+    steps:
+    - name: Get PR SHA
+      id: sha
+      uses: actions/github-script@v4
+      with:
+        result-encoding: string
+        script: |
+          const { owner, repo, number } = context.issue;
+          const pr = await github.issue.get({
+            owner,
+            repo,
+            issue_number: number,
+          });
+          return pr.data.head.sha
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ steps.sha.outputs.result }}
+    - name: React to comment
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const {owner, repo} = context.issue;
+          github.reactions.createForIssueComment({
+            owner,
+            repo,
+            comment_id: context.payload.comment.id,
+            content: "rocket",
+          });
+    - name: Fail randomly
+      run: |
+        cat README.md
+        exit $((RANDOM % 2))
+    - name: Message success
+      if: ${{ success() }}
+      uses: actions/github-script@v4
+      with:
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Deployment succeeded! ✅',
+          });
+    - name: Message failure
+      if: ${{ failure() }}
+      uses: actions/github-script@v4
+      with:
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Deployment failed! ❌',
+          });
