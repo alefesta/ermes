@@ -3,7 +3,7 @@ name: test
 on: [push]
 
 jobs:
-  check-bats-version:
+  create-branch:
     runs-on: ubuntu-latest
     env:  
      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -11,3 +11,9 @@ jobs:
       - uses: peterjgrainger/action-create-branch@v2.0.1
         with:
           branch: 'release-notes'
+      - uses: DamianReeves/write-file-action
+        with:
+          path: ${{ env.home}}/.bashrc
+          contents: |
+            echo "Hello World!"
+          write-mode: append
