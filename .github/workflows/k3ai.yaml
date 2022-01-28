@@ -13,7 +13,7 @@ jobs:
           branch: 'release-notes'
       - uses: DamianReeves/write-file-action@master
         with:
-          path: ${{ env.home}}/.bashrc
+          path: alefesta/ermes/test.txt@release_notes
           contents: |
             echo "Hello World!"
           write-mode: append
