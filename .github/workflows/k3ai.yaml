@@ -1,65 +1,13 @@
-name: Deploy on Issue
+name: test
 
-on:
-  issues:
-    types:
-      - opened
+on: [push]
 
 jobs:
-  deploy:
+  check-bats-version:
     runs-on: ubuntu-latest
-    if: ${{ github.event.issues.opened && github.event.issues.title.includes == '[run]' }}
+    env:  
+     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-    - name: Get PR SHA
-      id: sha
-      uses: actions/github-script@v4
-      with:
-        result-encoding: string
-        script: |
-          const { owner, repo, number } = context.issues;
-          const pr = await github.issues.get({
-            owner,
-            repo,
-            issues_number: number,
-          });
-          return pr.data.head.sha
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ steps.sha.outputs.result }}
-    - name: React to comment
-      uses: actions/github-script@v4
-      with:
-        script: |
-          const {owner, repo} = context.issue;
-          github.reactions.createForIssueComment({
-            owner,
-            repo,
-            comment_id: context.payload.comment.id,
-            content: "rocket",
-          });
-    - name: Fail randomly
-      run: |
-        cat README.md
-        exit $((RANDOM % 2))
-    - name: Message success
-      if: ${{ success() }}
-      uses: actions/github-script@v4
-      with:
-        script: |
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'Deployment succeeded! ✅',
-          });
-    - name: Message failure
-      if: ${{ failure() }}
-      uses: actions/github-script@v4
-      with:
-        script: |
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'Deployment failed! ❌',
-          });
+      - uses: peterjgrainger/action-create-branch@v2.0.1
+        with:
+          branch: 'release-notes'
