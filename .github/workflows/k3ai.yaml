@@ -13,7 +13,7 @@ jobs:
           branch: 'release-notes'
       - uses: DamianReeves/write-file-action@master
         with:
-          path: ${{github.workspace}}/test
+          path: ${{github.ref == 'refs/heads/release-notes'}}/test
           contents: |
             echo "Hello World!"
           write-mode: append
