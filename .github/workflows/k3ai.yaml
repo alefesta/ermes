@@ -8,12 +8,14 @@ jobs:
     container: docker.io/hello-world
     steps:
       - name: Setup Infrastructure
+        uses: actions/checkout@v2
       - run: ls 
   Run-Up-Infrastructure:
     runs-on: ubuntu-latest
     container: docker.io/hello-world
     steps:
       - name: Setup Infrastructure
+        uses: actions/checkout@v2
       - run: ls 
     # env:  
     #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
