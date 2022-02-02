@@ -8,17 +8,18 @@ jobs:
     env:  
      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: peterjgrainger/action-create-branch@v2.0.1
+      - uses: actions/checkout@v2
+
+      - run: mkdir -p test
+
+      - run: echo hello > test/world.txt
+
+      - uses: actions/upload-artifact@v2
         with:
-          branch: 'release-notes'
-      - uses: DamianReeves/write-file-action@master
-        with:
-          path: ./test
-          contents: |
-            echo "Hello World!"
-          write-mode: append
+          name: my-artifact
+          path: test/world.txt
       - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
           name: my-artifact
-          path: ./test
+          path: test
