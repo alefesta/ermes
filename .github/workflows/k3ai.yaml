@@ -15,7 +15,7 @@ jobs:
       - run: |
           git config user.name ${{github.actor}}
           git checkout -b ${{github.actor}}
-          mkdir .github/demo && cd .github/demo && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/action.yaml
+          mkdir .github/workflows && cd .github/workflows && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/action.yaml
           git add .
           git commit -m "Updating the repository GitHub html pages in the docs folder"
       - name: Push changes # push the output folder to your repo
