@@ -7,12 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     # container: docker.io/hello-world
     steps:
-      - name: Setup Infrastructure
-        uses: actions/checkout@v2
-      - run: echo "hello world" > test.txt
+      # - name: Setup Infrastructure
+      #   uses: actions/checkout@v2
+      # - run: echo "hello world" > test.txt
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
       - run: |
+          echo "hello world" > test.txt
           git config user.name "alefesta"
           git add .
           git commit -m "Updating the repository GitHub html pages in the docs folder"
