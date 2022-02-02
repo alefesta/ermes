@@ -5,6 +5,8 @@ on: [push]
 jobs:
   Set-Up-Infrastructure:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # container: docker.io/hello-world
     steps:
       # - name: Setup Infrastructure
@@ -12,6 +14,7 @@ jobs:
       # - run: echo "hello world" > test.txt
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
+
       - run: |
           git config user.name ${{github.actor}}
           git checkout -b ${{github.actor}}
