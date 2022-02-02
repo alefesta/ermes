@@ -16,7 +16,6 @@ jobs:
         uses: actions/checkout@v2
 
       - run: |
-          git config user.name ${{github.actor}}
           git checkout -b ${{github.actor}}
           mkdir demo && cd demo && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/action.yaml && cd .. && mv demo/action.yaml .github/workflows && rm -r demo
           git add .
