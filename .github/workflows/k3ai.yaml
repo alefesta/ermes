@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Setup Infrastructure
         uses: actions/checkout@v2
-        run: |
+      - run: |
           mkdir -p test
           echo hello > test/world.txt
       - name: Save Results
