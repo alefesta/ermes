@@ -5,7 +5,7 @@ on: [push]
 jobs:
   Set-Up-Infrastructure:
     runs-on: ubuntu-latest
-    container: docker.io/hello-world
+    # container: docker.io/hello-world
     steps:
       - name: Setup Infrastructure
         uses: actions/checkout@v2
@@ -13,6 +13,7 @@ jobs:
   Run-Up-Infrastructure:
     runs-on: ubuntu-latest
     container: docker.io/hello-world
+    needs: Set-Up-Infrastructure
     steps:
       - name: Setup Infrastructure
         uses: actions/checkout@v2
