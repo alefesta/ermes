@@ -8,18 +8,21 @@ jobs:
     env:  
      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Setup Infrastructure
       - uses: actions/checkout@v2
 
       - run: mkdir -p test
 
       - run: echo hello > test/world.txt
 
+      - name: Save Results
       - uses: actions/upload-artifact@v2
         with:
-          name: my-artifact
+          name: results
           path: test/world.txt
+
       - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
-          name: my-artifact
+          name: results
           path: test
