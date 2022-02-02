@@ -9,11 +9,12 @@ jobs:
      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Setup Infrastructure
-      - uses: actions/checkout@v2
-      - run: mkdir -p test
-      - run: echo hello > test/world.txt
+        uses: actions/checkout@v2
+        run: |
+          mkdir -p test
+          echo hello > test/world.txt
       - name: Save Results
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: results
           path: test/world.txt
