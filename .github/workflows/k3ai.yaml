@@ -13,8 +13,9 @@ jobs:
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
       - run: |
-          echo "hello world" > test.txt
-          git config user.name "alefesta"
+          git config user.name ${{github.actor}}
+          git branch ${{github.actor}}
+          echo "hello world" > test.txt          
           git add .
           git commit -m "Updating the repository GitHub html pages in the docs folder"
       - name: Push changes # push the output folder to your repo
