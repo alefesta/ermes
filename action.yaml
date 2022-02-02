@@ -1,9 +1,10 @@
           name: GitHub Actions Demo
           on:
             workflow_run:
-              workflows: ["test"]
+              workflows: [test]
               types:
                 - completed
+              branches: [main]
           jobs:
             Explore-GitHub-Actions:
               runs-on: ubuntu-latest
