@@ -26,12 +26,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
           branch: ${{ github.actor }}
-  Call-Action-Workflow:
-      runs-on: ubuntu-latest
-      steps:
-      - uses: alefesta/ermes/demo/action.yaml@${{github.actor}}
-      - name: executor
-        working-directory: ./app
 
   # Run-Up-Infrastructure:
   #   runs-on: ubuntu-latest
