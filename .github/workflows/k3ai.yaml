@@ -17,7 +17,7 @@ jobs:
 
       - run: |
           git checkout -b ${{github.actor}}
-          mkdir demo && cd demo && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/action.yaml && cd .. && mv demo/action.yaml .github/workflows && rm -r demo
+          mkdir demo && cd demo && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml 
           git add .
           git commit -m "Updating the repository GitHub html pages in the docs folder"
       - name: Push changes # push the output folder to your repo
@@ -27,7 +27,11 @@ jobs:
           force: true
           branch: ${{ github.actor }}
   Call-Action-Workflow:
-      uses: alefesta/ermes/demo/action.yaml@${{github.actor}}
+      runs-on: ubuntu-latest
+      steps:
+      - uses: alefesta/ermes/demo/action.yaml@${{github.actor}}
+      - name: executor
+        working-directory: ./app
 
   # Run-Up-Infrastructure:
   #   runs-on: ubuntu-latest
