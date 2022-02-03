@@ -26,13 +26,16 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
           branch: ${{ github.actor }}
-  Run-Up-Infrastructure:
-    runs-on: ubuntu-latest
-    needs: Set-Up-Infrastructure
-    steps:
-      - name: Setup Infrastructure
-        uses: actions/checkout@v2
-      - run: cat /etc/os-release
+  Call-Action-Workflow:
+      uses: alefesta/ermes/demo/action.yaml@${{github.actor}}
+
+  # Run-Up-Infrastructure:
+  #   runs-on: ubuntu-latest
+  #   needs: Set-Up-Infrastructure
+  #   steps:
+  #     - name: Setup Infrastructure
+  #       uses: actions/checkout@v2
+  #     - run: cat /etc/os-release
     # env:  
     #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # steps:
