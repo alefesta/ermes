@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "file:///toc.schema.json": "/toc\\.yml/i",
+        "https://json.schemastore.org/github-workflow.json": "file:///c%3A/Users/AlessandroFesta/.github/ermes/.github/workflows/action.yaml"
+    }
+}
