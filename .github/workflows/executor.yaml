@@ -17,7 +17,7 @@ jobs:
           git fetch
           git checkout $BRANCH
       - name: executor
-        uses: ./.github/actions/action.yaml
+        uses: alefesta/ermes/.github/actions/action.yaml@alefesta
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
