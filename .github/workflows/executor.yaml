@@ -10,6 +10,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - run: echo 'The triggering workflow passed at $BRANCH'
+      - uses: alefesta/ermes/.github/actions/action.yaml@alefesta
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
