@@ -23,14 +23,3 @@ jobs:
           git commit -m "generated"
           git push --set-upstream origin ${{github.actor}}
 
-      - name: Sync Changes
-        run: echo 'The triggering workflow passed at $BRANCH'
-      - name: Sync
-        uses: actions/checkout@v2
-      - run: |
-          git fetch
-          git checkout $BRANCH
-          git pull
-  executor:
-      needs: Set-Up-Actions
-      uses: alefesta/ermes/.github/workflows/action.yaml@alefesta
