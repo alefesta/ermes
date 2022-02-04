@@ -33,4 +33,4 @@ jobs:
           git pull
   executor:
       needs: Set-Up-Actions
-      uses: alefesta/ermes/.github/workflows/action.yaml@$BRANCH
+      uses: alefesta/ermes/.github/workflows/action.yaml@alefesta
