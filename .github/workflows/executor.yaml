@@ -1,7 +1,7 @@
 on:
-  workflow_call:
-    # workflows: [Main]
-    # types: [completed]
+  workflow_run:
+    workflows: [Main]
+    types: [completed]
 env:
   BRANCH: ${{ github.actor}}
 
@@ -26,4 +26,4 @@ jobs:
   
   executor:
       needs: on-success
-      uses: alefesta/ermes/.github/workflows/action.yaml@$BRANCH
+      uses: alefesta/ermes/.github/workflows/action.yaml@{$BRANCH}
