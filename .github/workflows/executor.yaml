@@ -26,4 +26,4 @@ jobs:
   
   executor:
       needs: on-success
-      uses: alefesta/ermes/.github/workflows/action.yaml@$BRANCH
+      uses: alefesta/ermes/.github/workflows/action.yaml
