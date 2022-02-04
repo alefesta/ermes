@@ -27,4 +27,4 @@ jobs:
   
   executor:
       needs: on-success
-      uses: alefesta/ermes/.github/workflows/action.yaml@$github.actor
+      uses: alefesta/executor/.github/workflows/executor.yaml@main
