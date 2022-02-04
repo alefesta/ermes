@@ -9,9 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - run: echo 'The triggering workflow passed at $BRANCH'
-      - uses: actions/checkout@v2
-        run: git checkout $BRANCH
+      - name: Init
+        run: echo 'The triggering workflow passed at $BRANCH'
+      - name: Sync
+        uses: actions/checkout@v2
+      - run: git checkout $BRANCH
       - name: executor
         uses: alefesta/ermes/.github/actions/action.yaml@alefesta
   on-failure:
