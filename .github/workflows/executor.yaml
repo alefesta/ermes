@@ -17,10 +17,11 @@ jobs:
           git fetch
           git checkout $BRANCH
           git pull
-      - name: executor
-        uses: alefesta/ermes/.github/actions/action.yaml@alefesta
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - run: echo 'The triggering workflow failed'
+  executor:
+      needs: on-success
+      uses: alefesta/ermes/.github/workflows/action.yaml@alefesta
