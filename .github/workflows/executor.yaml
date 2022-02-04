@@ -13,7 +13,9 @@ jobs:
         run: echo 'The triggering workflow passed at $BRANCH'
       - name: Sync
         uses: actions/checkout@v2
-      - run: git checkout $BRANCH
+      - run: |
+          git fetch
+          git checkout $BRANCH
       - name: executor
         uses: ./.github/actions/action.yaml@$BRANCH
   on-failure:
