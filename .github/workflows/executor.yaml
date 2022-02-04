@@ -4,6 +4,7 @@ on:
     types: [completed]
 env:
   BRANCH: ${{ github.actor}}
+  GHB: alefesta/ermes/.github/workflows/action.yaml@${{ github.actor}}
 
 jobs:
   on-success:
@@ -26,4 +27,4 @@ jobs:
   
   executor:
       needs: on-success
-      uses: alefesta/ermes/.github/workflows/action.yaml@{$BRANCH}
+      uses: alefesta/ermes/.github/workflows/action.yaml@${{ github.actor}}
