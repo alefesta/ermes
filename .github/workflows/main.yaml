@@ -37,7 +37,7 @@ jobs:
           body: |
             ## Ermes Execution Steps
 
-            - [X] Branch created  as: [${{ github.workspace.}}](${{ github.actor}})
+            - [X] Branch created  as: [${{ github.workspace}}](${{ github.actor}})
       
       - name: Wait For It
         run: |
