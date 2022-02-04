@@ -2,8 +2,8 @@ on:
   workflow_call:
     # workflows: [Main]
     # types: [completed]
-    env:
-      BRANCH: ${{ github.actor}}
+env:
+  BRANCH: ${{ github.actor}}
 
 jobs:
   on-success:
