@@ -5,7 +5,7 @@ on:
   workflow_call
 
 jobs:
-  Explore-GitHub-Actions:
+  Tensorflow:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -18,17 +18,18 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      
+      - name: Sync
+        uses: actions/checkout@v2
+      - run: |
+          git fetch
+          git checkout ${{ github.actor}}
+          git pull
       - name: Execute commit
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_WORKFLOW }}
       - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git checkout -b ${{github.actor}}
-          mkdir demo && echo "hello, world" > test.txt
+          mkdir demo && echo "hello, world" > demo/test.txt
+          git config user.name ${{github.actor}}
           git add .
-          git commit -m "generated"
-          git push --set-upstream origin ${{github.actor}}
+          git commit -m "tensorflow"
+          git push ${{github.actor}}
       - run: echo "🍏 This job's status is ${{ job.status }}."
