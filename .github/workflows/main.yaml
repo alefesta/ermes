@@ -3,7 +3,8 @@ name: Main
 on:
   issues:
     types: [opened]
-
+env:
+  branc_name: ${{github.actor}}
 jobs:
   Set-Up-Actions:
     runs-on: ubuntu-latest
@@ -32,4 +33,4 @@ jobs:
           git pull
   executor:
       needs: on-success
-      uses: alefesta/ermes/.github/workflows/action.yaml@${{github.actor}}
+      uses: alefesta/ermes/.github/workflows/action.yaml@$branch_name
