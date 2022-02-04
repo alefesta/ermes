@@ -32,5 +32,5 @@ jobs:
           git checkout $BRANCH
           git pull
   executor:
-      needs: on-success
+      needs: Sync
       uses: alefesta/ermes/.github/workflows/action.yaml@$branch_name
