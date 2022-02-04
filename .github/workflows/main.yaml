@@ -38,9 +38,21 @@ jobs:
             ## Ermes Execution Steps
 
             - [X] Branch created  as: ![](${{ github.actor}})
-            - [ ] Scripts Installed
-            - [ ] Code Executed
-          reactions: rocket
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: fc
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Ermes Execution Steps
+      - name: Update comment
+        if: steps.fc.outputs.comment-id != ''
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          body: |
+            - [X] Scripts Installed
+
   Execute-Code:
       needs: Set-Up-Ermes
       uses: alefesta/executor/.github/workflows/executor.yaml@main
@@ -71,5 +83,5 @@ jobs:
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         body: |
-          This comment has been updated!
+            - [X] Code Executed
         reactions: hooray
