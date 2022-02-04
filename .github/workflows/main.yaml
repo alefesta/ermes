@@ -10,82 +10,86 @@ jobs:
     runs-on: ubuntu-latest
     # container: docker.io/hello-world
     steps:
-      - name: Commit files # transfer the new html files back into the repository
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_WORKFLOW }}
-      - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git checkout -b ${{github.actor}}
-          cd .github/workflows && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml && mv test.yaml action.yaml
-          git add .
-          git commit -m "generated"
-          git push --set-upstream origin ${{github.actor}}
-      - name: Init
-        run: echo 'The triggering workflow passed at $BRANCH'
-      - name: Sync
-        uses: actions/checkout@v2
-      - run: |
-          git fetch
-          git checkout $BRANCH
-          git pull
-      - name: Create Initial Comment
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            ## Ermes Execution Steps
+      - name: Print Body
+        env:
+          BODY: ${{ github.event.comment.body }}
+        run: echo "$BODY"
+  #     - name: Commit files # transfer the new html files back into the repository
+  #       uses: actions/checkout@v2
+  #       with:
+  #         token: ${{ secrets.GH_WORKFLOW }}
+  #     - run: |
+  #         git config user.name github-actions
+  #         git config user.email github-actions@github.com
+  #         git checkout -b ${{github.actor}}
+  #         cd .github/workflows && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml && mv test.yaml action.yaml
+  #         git add .
+  #         git commit -m "generated"
+  #         git push --set-upstream origin ${{github.actor}}
+  #     - name: Init
+  #       run: echo 'The triggering workflow passed at $BRANCH'
+  #     - name: Sync
+  #       uses: actions/checkout@v2
+  #     - run: |
+  #         git fetch
+  #         git checkout $BRANCH
+  #         git pull
+  #     - name: Create Initial Comment
+  #       uses: peter-evans/create-or-update-comment@v1
+  #       with:
+  #         issue-number: ${{ github.event.issue.number }}
+  #         body: |
+  #           ## Ermes Execution Steps
 
-            - [X] Branch created  as: [${{ github.workspace}}](${{ github.actor}})
+  #           - [X] Branch created  as: [${{ github.workspace}}](${{ github.actor}})
       
-      - name: Wait For It
-        run: |
-          sleep 3
-      - name: Find Comment
-        uses: peter-evans/find-comment@v1
-        id: fc
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: Ermes Execution Steps
-      - name: Update comment
-        if: steps.fc.outputs.comment-id != ''
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          body: |
-            - [X] Scripts Installed
+  #     - name: Wait For It
+  #       run: |
+  #         sleep 3
+  #     - name: Find Comment
+  #       uses: peter-evans/find-comment@v1
+  #       id: fc
+  #       with:
+  #         issue-number: ${{ github.event.issue.number }}
+  #         comment-author: 'github-actions[bot]'
+  #         body-includes: Ermes Execution Steps
+  #     - name: Update comment
+  #       if: steps.fc.outputs.comment-id != ''
+  #       uses: peter-evans/create-or-update-comment@v1
+  #       with:
+  #         comment-id: ${{ steps.fc.outputs.comment-id }}
+  #         body: |
+  #           - [X] Scripts Installed
 
-  Execute-Code:
-      needs: Set-Up-Ermes
-      uses: alefesta/executor/.github/workflows/executor.yaml@main
-  Comment-Created:
-    needs: Execute-Code
-    runs-on: ubuntu-latest
-    steps:
-    - name: Find Comment
-      uses: peter-evans/find-comment@v1
-      id: fc
-      with:
-        issue-number: ${{ github.event.issue.number }}
-        comment-author: 'github-actions[bot]'
-        body-includes: Ermes Execution Steps
+  # Execute-Code:
+  #     needs: Set-Up-Ermes
+  #     uses: alefesta/executor/.github/workflows/executor.yaml@main
+  # Comment-Created:
+  #   needs: Execute-Code
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Find Comment
+  #     uses: peter-evans/find-comment@v1
+  #     id: fc
+  #     with:
+  #       issue-number: ${{ github.event.issue.number }}
+  #       comment-author: 'github-actions[bot]'
+  #       body-includes: Ermes Execution Steps
 
-    - name: Create comment
-      if: steps.fc.outputs.comment-id == ''
-      uses: peter-evans/create-or-update-comment@v1
-      with:
-        issue-number: ${{ github.event.issue.number }}
-        body: |
-          This comment was written by a bot!
-        reactions: rocket
+  #   - name: Create comment
+  #     if: steps.fc.outputs.comment-id == ''
+  #     uses: peter-evans/create-or-update-comment@v1
+  #     with:
+  #       issue-number: ${{ github.event.issue.number }}
+  #       body: |
+  #         This comment was written by a bot!
+  #       reactions: rocket
 
-    - name: Update comment
-      if: steps.fc.outputs.comment-id != ''
-      uses: peter-evans/create-or-update-comment@v1
-      with:
-        comment-id: ${{ steps.fc.outputs.comment-id }}
-        body: |
-            - [X] Code Executed
-        reactions: hooray
+  #   - name: Update comment
+  #     if: steps.fc.outputs.comment-id != ''
+  #     uses: peter-evans/create-or-update-comment@v1
+  #     with:
+  #       comment-id: ${{ steps.fc.outputs.comment-id }}
+  #       body: |
+  #           - [X] Code Executed
+  #       reactions: hooray
