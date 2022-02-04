@@ -38,12 +38,12 @@ jobs:
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
 
-      - run: |
-          
+      - run: |          
           echo "Completed" > test.log
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout -b ${{github.actor}}
+          git pull
           git add .
           git commit -m "Starting execution..."
           git push --set-upstream origin ${{github.actor}}
