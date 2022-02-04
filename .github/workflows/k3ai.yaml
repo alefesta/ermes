@@ -1,6 +1,8 @@
-name: test
+name: Ermes
 
-on: [push]
+on:
+  issues:
+    types: [opened]
 
 jobs:
   Set-Up-Actions:
