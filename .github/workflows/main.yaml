@@ -31,9 +31,10 @@ jobs:
           git checkout $BRANCH
           git pull
   Execute-Code:
-      needs: Set-Up-Actions
+      needs: Set-Up-Ermes
       uses: alefesta/executor/.github/workflows/executor.yaml@main
   Comment-Created:
+    needs: Execute-Code
     runs-on: ubuntu-latest
     steps:
     - name: Find Comment
