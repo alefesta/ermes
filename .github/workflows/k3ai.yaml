@@ -23,7 +23,7 @@ jobs:
           cd .github/workflows && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml
           git add .
           git commit -m "generated"
-          git push
+          git push --set-upstream origin ${{github.actor}}
 
   Execute-Up-Actions:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
           git checkout -b ${{github.actor}}
           git add .
           git commit -m ""
-          git push
+          git push --set-upstream origin ${{github.actor}}
 
   # Run-Up-Infrastructure:
   #   runs-on: ubuntu-latest
