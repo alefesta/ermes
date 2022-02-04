@@ -1,3 +1,4 @@
+name: Ermes Executor
 on:
   workflow_run:
     workflows: [Main]
