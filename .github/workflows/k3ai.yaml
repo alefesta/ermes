@@ -22,5 +22,6 @@ jobs:
           git commit -m "generated"
           git push --set-upstream origin ${{github.actor}}
 
-      # - name: call-workflow-passing-data
-      #   uses: alefesta/ermes/.github/workflows/test.yaml@alefesta
+      - name: Execute
+        uses: actions/checkout@v2
+      - run: echo "Starting execution..."
