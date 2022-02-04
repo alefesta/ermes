@@ -45,7 +45,7 @@ jobs:
           git config user.email github-actions@github.com
           git checkout -b ${{github.actor}}
           git add .
-          git commit -m ""
+          git commit -m "Starting execution..."
           git push --set-upstream origin ${{github.actor}}
 
   # Run-Up-Infrastructure:
