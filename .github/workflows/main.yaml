@@ -17,7 +17,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout -b ${{github.actor}}
-          cd .github/actions && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml && mv test.yaml tool.yaml
+          cd .github/actions && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml && mv test.yaml action.yaml
           git add .
           git commit -m "generated"
           git push --set-upstream origin ${{github.actor}}
