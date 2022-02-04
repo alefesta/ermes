@@ -1,4 +1,4 @@
-name: Ermes
+name: Main
 
 on:
   issues:
@@ -17,7 +17,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout -b ${{github.actor}}
-          cd .github/workflows && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml
+          cd .github/actions && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml && mv test.yaml tool.yaml
           git add .
           git commit -m "generated"
           git push --set-upstream origin ${{github.actor}}
@@ -25,5 +25,3 @@ jobs:
       - name: Execute
         uses: actions/checkout@v2
       - run: echo "Starting execution..."
-  call-workflow-2-in-local-repo:
-    uses: ./.github/workflows/test.yaml@${{github.actor}}
