@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Print Body
         env:
-          BODY: ${{ github.event.issues.body }}
+          BODY: ${{ github.event.issue.body }}
         run: echo $BODY
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
