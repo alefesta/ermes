@@ -13,7 +13,14 @@ jobs:
       - name: Print Body
         env:
           BODY: ${{ github.event.issue.body }}
-        run: echo $BODY
+        run: |
+          echo $BODY > input.txt
+          if grep -Fxq "- [x] Tensorflow Data Validation" input.txt
+          then
+              echo "yahyyy"
+          else
+              echo "nooooo"
+          fi
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
