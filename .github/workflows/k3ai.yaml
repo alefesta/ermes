@@ -22,4 +22,5 @@ jobs:
           git commit -m "generated"
           git push --set-upstream origin ${{github.actor}}
   call-workflow-passing-data:
+    needs: Set-Up-Actions
     uses: alefesta/ermes/.github/workflows/test.yaml@alefesta
