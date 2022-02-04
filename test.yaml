@@ -3,7 +3,7 @@ name: Demo
 
 on:
   workflow_call
-               
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -18,4 +18,17 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      
+      - name: Execute commit
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_WORKFLOW }}
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b ${{github.actor}}
+          mkdir demo && echo "hello, world" > test.txt
+          git add .
+          git commit -m "generated"
+          git push --set-upstream origin ${{github.actor}}
       - run: echo "🍏 This job's status is ${{ job.status }}."
