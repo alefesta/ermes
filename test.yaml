@@ -2,10 +2,8 @@
 name: Demo
 
 on:
-  workflow_run:
-    workflows: [Ermes]
-    types: [completed]
-    branches: [main]              
+  workflow_call
+               
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
