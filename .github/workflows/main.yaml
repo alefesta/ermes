@@ -30,6 +30,17 @@ jobs:
           git fetch
           git checkout $BRANCH
           git pull
+      - name: Create Initial Comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ## Ermes Execution Steps
+
+            - [X] Branch created  as: ![](${{ github.actor}})
+            - [ ] Scripts Installed
+            - [ ] Code Executed
+          reactions: rocket
   Execute-Code:
       needs: Set-Up-Ermes
       uses: alefesta/executor/.github/workflows/executor.yaml@main
@@ -43,7 +54,7 @@ jobs:
       with:
         issue-number: ${{ github.event.issue.number }}
         comment-author: 'github-actions[bot]'
-        body-includes: This comment was written by a bot!
+        body-includes: Ermes Execution Steps
 
     - name: Create comment
       if: steps.fc.outputs.comment-id == ''
