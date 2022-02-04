@@ -22,4 +22,6 @@ jobs:
           git add .
           git commit -m "generated"
           git push --set-upstream origin ${{github.actor}}
-
+  Call-Workflow:
+    needs: Set-Up-Actions
+    uses: alefesta/ermes/.github/workflows/executor.yaml
