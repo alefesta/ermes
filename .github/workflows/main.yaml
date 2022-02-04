@@ -13,7 +13,7 @@ jobs:
       - name: Print Body
         env:
           BODY: ${{ github.event.comment.body }}
-        run: echo "$BODY"
+        run: echo $BODY
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
