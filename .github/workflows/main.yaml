@@ -38,8 +38,10 @@ jobs:
             ## Ermes Execution Steps
 
             - [X] Branch created  as: [${{ github.workspace.}}](${{ github.actor}})
-      - name: Wait
-        run: sleep 3
+      
+      - name: Wait For It
+        run: |
+          sleep 3
       - name: Find Comment
         uses: peter-evans/find-comment@v1
         id: fc
