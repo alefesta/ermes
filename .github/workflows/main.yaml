@@ -37,7 +37,10 @@ jobs:
           body: |
             ## Ermes Execution Steps
 
-            - [X] Branch created  as: [${{ github.actor}}](${{ github.actor}})
+            - [X] Branch created  as: [${{ github.workspace.}}](${{ github.actor}})
+      - name: Wait
+        run:
+          sleep 3
       - name: Find Comment
         uses: peter-evans/find-comment@v1
         id: fc
