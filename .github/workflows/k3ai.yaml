@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     # container: docker.io/hello-world
     steps:
-      # - name: Setup Infrastructure
-      #   uses: actions/checkout@v2
-      # - run: echo "hello world" > test.txt
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
         with:
@@ -24,60 +21,5 @@ jobs:
           git add .
           git commit -m "generated"
           git push --set-upstream origin ${{github.actor}}
-
-  Execute-Up-Actions:
-    runs-on: ubuntu-latest
-    needs: Set-Up-Actions
-    env:
-      GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
-    # container: docker.io/hello-world
-    steps:
-      # - name: Setup Infrastructure
-      #   uses: actions/checkout@v2
-      # - run: echo "hello world" > test.txt
-      - name: Commit files # transfer the new html files back into the repository
-        uses: actions/checkout@v2
-
-      - run: |          
-          echo "Completed" > test.log
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git checkout -b ${{github.actor}}
-          git pull ${{github.actor}} origin/main
-          git add .
-          git commit -m "Starting execution..."
-          git push --set-upstream origin ${{github.actor}}
-
-  # Run-Up-Infrastructure:
-  #   runs-on: ubuntu-latest
-  #   needs: Set-Up-Infrastructure
-  #   steps:
-  #     - name: Setup Infrastructure
-  #       uses: actions/checkout@v2
-  #     - run: cat /etc/os-release
-    # env:  
-    #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # steps:
-    #   - name: Setup Infrastructure
-    #     uses: actions/checkout@v2
-    #   - run: |
-    #       mkdir -p test
-    #       echo hello > test/world.txt
-  # Execute-Tools:
-  #     runs-on: ubuntu-latest
-  #     needs: Set-Up-Infrastructure
-  #     steps:
-  #     - name: Save Results
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: results
-  #         path: test/world.txt
-  # Save-Outcome:
-  #     runs-on: ubuntu-latest
-  #     needs: Execute-Tools
-  #     steps:
-  #     - name: Download a single artifact
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: results
-  #         path: test
+  call-workflow-passing-data:
+    uses: alefesta/ermes/.github/workflows/test.yaml@alefesta

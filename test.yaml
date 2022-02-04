@@ -2,9 +2,7 @@
 name: Demo
 
 on:
-  push:
-    branches:
-      - ${{ github.actor }}                 
+  workflow_call                 
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
