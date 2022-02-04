@@ -39,9 +39,7 @@ jobs:
 
             - [X] Branch created  as: [${{ github.workspace.}}](${{ github.actor}})
       - name: Wait
-        uses: actions/checkout@v2
-        run:
-          sleep 3
+        run: sleep 3
       - name: Find Comment
         uses: peter-evans/find-comment@v1
         id: fc
