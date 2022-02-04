@@ -16,6 +16,7 @@ jobs:
       - run: |
           git fetch
           git checkout $BRANCH
+          git pull
       - name: executor
         uses: alefesta/ermes/.github/actions/action.yaml@alefesta
   on-failure:
