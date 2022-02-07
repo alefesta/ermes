@@ -13,6 +13,7 @@ jobs:
       - name: Print Body
         env:
           BODY: ${{ github.event.issue.body }}
+          TITLE: ${{ github.event.issue.title }}
         run: |
           echo $BODY > input.txt
           if grep -i "[x] Tensorflow Data Validation" input.txt
@@ -21,6 +22,7 @@ jobs:
           else
               echo "nooooo"
           fi
+          echo $TITLE
       - name: View the github context
         run: echo "$GITHUB_CONTEXT"
         env:
