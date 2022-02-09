@@ -68,17 +68,17 @@ jobs:
         id: download
         with:
           name: 'images'
-          path: shared
+          path: shared/images.zip
 
       - id: echo_download
         run: |
-          echo "::set-output name=body::${{steps.download.outputs.download-path}}"
+          echo "::set-output name=body::${{github.event.workflow_run.artifacts_url}}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-              ![](${{ steps.echo_download.outputs.body }})
+              [images](${{ steps.echo_download.outputs.body }})
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
