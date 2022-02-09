@@ -37,6 +37,8 @@ jobs:
       - run: pip install -r requirements.txt
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
       - uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
       - id: get-comment-body
         run: |
           body="$(python tfx_demo.py 2>&1)"
