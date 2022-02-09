@@ -27,7 +27,6 @@ with suppress_stdout():
 
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
-print ("Class Names going to be used: " + class_names)
 
 print ("Size of image shapes: " + train_images.shape)
 
