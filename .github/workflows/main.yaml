@@ -32,7 +32,7 @@ jobs:
         with:
           python-version: '3.8'
           cache: 'pip'
-        run: |
+      - run: |
           pip install pandas numpy && python tfx_demo.py
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
