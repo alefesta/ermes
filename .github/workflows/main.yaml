@@ -39,7 +39,7 @@ jobs:
       - uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-      - id: get-comment-body
+        id: get-comment-body
         run: |
           body="$(python tfx_demo.py 2>&1)"
           echo "::set-output name=body::$body"
