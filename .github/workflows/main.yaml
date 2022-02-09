@@ -16,7 +16,7 @@ jobs:
           TITLE: ${{ github.event.issue.title }}
         run: |
           echo $BODY > input.txt
-          if grep -i "[x] Tensorflow Data Validation" input.txt
+          if grep -i "- [x] Tensorflow Data Validation" input.txt
           then
               echo "yahyyy"
           else
