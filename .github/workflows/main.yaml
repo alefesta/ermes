@@ -1,9 +1,8 @@
 name: Ermes Main
 
 on:
-  # issues:
-  push
-  #   types: [opened]
+  issues:
+    types: [opened]
 env:
   BRANCH: ${{github.actor}}
 jobs:
