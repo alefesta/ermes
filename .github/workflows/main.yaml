@@ -38,10 +38,6 @@ jobs:
       - name: Prepare Images Artifacts
         run: |
           mkdir -p shared/.base.md
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git push
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
       - id: get-comment-body
         run: |
@@ -50,6 +46,9 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
+          git config user.name ${{github.actor}}
+          git add .
+          git push
 
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
@@ -69,21 +68,16 @@ jobs:
         with:
           name: 'images'
           path: shared/images.zip
-      - run: |
-          
+      - run: |       
           cd shared
           ls
-          unzip shared/images.zip
-          git add .
-          git commit -m "imges generated"
-          git push
       - run: |
           git fetch
           git checkout 
           git pull
       - id: echo_download
         run: |
-          echo "::set-output name=body::${{ github.workspace}}/shared/image1.png}"
+          echo "::set-output name=body::${{github.workspace}}/shared/image1.png}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
