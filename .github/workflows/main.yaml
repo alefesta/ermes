@@ -56,11 +56,19 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
+
+      - name: Upload images
+        uses: actions/upload-artifact@v2
+        with:
+          name: images
+          path: |
+            shared
+
       - uses: actions/download-artifact@v2
         id: download
         with:
-          name: 'image1'
-          path: shared/image1.png
+          name: 'Images'
+          path: shared
 
       - id: echo_download
         run: |
@@ -71,12 +79,6 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
               ![](${{ steps.echo_download.outputs.body }})
-      - name: Upload images
-        uses: actions/upload-artifact@v2
-        with:
-          name: images
-          path: |
-            shared
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
