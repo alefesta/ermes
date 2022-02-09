@@ -1,8 +1,9 @@
 name: Ermes Main
 
 on:
-  issues:
-    types: [opened]
+  # issues:
+  push
+  #   types: [opened]
 env:
   BRANCH: ${{github.actor}}
 jobs:
@@ -10,32 +11,30 @@ jobs:
     runs-on: ubuntu-latest
     # container: docker.io/hello-world
     steps:
-      - name: Print Body
-        env:
-          BODY: ${{ github.event.issue.body }}
-          TITLE: ${{ github.event.issue.title }}
-        run: |
-          echo $BODY > input.txt
-          if grep -i "- [x] Tensorflow Data Validation" input.txt
-          then
-              echo "yahyyy"
-          else
-              echo "nooooo"
-          fi
-          echo $TITLE
-      - name: View the github context
-        run: echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+      # - name: Print Body
+      #   env:
+      #     BODY: ${{ github.event.issue.body }}
+      #     TITLE: ${{ github.event.issue.title }}
+      #   run: |
+      #     echo $BODY > input.txt
+      #     if grep -i "- [x] Tensorflow Data Validation" input.txt
+      #     then
+      #         echo "yahyyy"
+      #     else
+      #         echo "nooooo"
+      #     fi
+      #     echo $TITLE
+      # - name: View the github context
+      #   run: echo "$GITHUB_CONTEXT"
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: Execute Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
           cache: pip
       - run: |
-          git fetch
-          git pull
-          pip install -r requirements.txt && python tfx_demo.py
+          git fetch && git pull && pip install -r requirements.txt && python tfx_demo.py
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
