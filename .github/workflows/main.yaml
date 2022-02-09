@@ -38,7 +38,7 @@ jobs:
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
       - id: get-comment-body
         run: |
-          body="$(python tfx_demo.py)"
+          body="$(python demo.py)"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
