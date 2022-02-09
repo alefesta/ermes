@@ -28,7 +28,7 @@ with suppress_stdout():
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-print ("Size of image shapes: " + train_images.shape)
+print (train_images.shape)
 
 plt.figure()
 plt.imshow(train_images[0])
