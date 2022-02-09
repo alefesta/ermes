@@ -52,12 +52,17 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git push
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-              ![](image1.png)
+              ![](${{github.workspace}}/images/image1.png)
       - name: Upload images
         uses: actions/upload-artifact@v2
         with:
