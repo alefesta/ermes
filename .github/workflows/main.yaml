@@ -39,6 +39,9 @@ jobs:
       - id: get-comment-body
         run: |
           body="$(python tfx_demo.py)"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
 
       - name: Create comment
