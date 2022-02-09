@@ -37,7 +37,11 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Prepare Images Artifacts
         run: |
-          mkdir -p shared
+          mkdir -p shared/.base.md
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git push
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
       - id: get-comment-body
         run: |
@@ -52,11 +56,6 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
-      - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git push
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
