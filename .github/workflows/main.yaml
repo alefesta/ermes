@@ -32,6 +32,7 @@ jobs:
         with:
           python-version: '3.8'
       - run: |
+          ls
           python tfx_demo.py
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
