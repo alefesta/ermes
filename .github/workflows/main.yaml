@@ -56,12 +56,21 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
+      - uses: actions/download-artifact@v2
+        id: download
+        with:
+          name: 'image1'
+          path: /images/image1.png
+
+      - id: echo_download
+        run: |
+          echo "::set-output name=body: ${{steps.download.outputs.download-path}}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-              ![](${{github.workspace}}/images/image1.png)
+              ![](${{ steps.echo_download.outputs.body }})
       - name: Upload images
         uses: actions/upload-artifact@v2
         with:
