@@ -1,20 +1,35 @@
 # TensorFlow and tf.keras
 import tensorflow as tf
 
+# Suppress output
+from contextlib import contextmanager
+import sys, os
+
 # Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:  
+            yield
+        finally:
+            sys.stdout = old_stdout
 
 print("Tensorflow version used: " + tf.__version__)
 
-fashion_mnist = tf.keras.datasets.fashion_mnist
-
-(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+with suppress_stdout(): 
+    fashion_mnist = tf.keras.datasets.fashion_mnist
+with suppress_stdout():
+    (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+print ("Class Names going to be used: " + class_names)
 
-print (train_images.shape)
+print ("Size of image shapes: " + train_images.shape)
 
 plt.figure()
 plt.imshow(train_images[0])
@@ -45,9 +60,9 @@ model = tf.keras.Sequential([
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
-
-model.fit(train_images, train_labels, epochs=10)
-
-test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+with suppress_stdout():
+    model.fit(train_images, train_labels, epochs=10)
+with suppress_stdout():
+    test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
 print('\nTest accuracy:', test_acc)

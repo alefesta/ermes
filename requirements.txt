@@ -4,3 +4,4 @@ tabulate
 keras
 tensorflow
 matplotlib
+termplotlib
