@@ -5,7 +5,7 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
-print(tf.__version__)
+print("Tensorflow version used: " + tf.__version__)
 
 fashion_mnist = tf.keras.datasets.fashion_mnist
 
@@ -14,13 +14,13 @@ fashion_mnist = tf.keras.datasets.fashion_mnist
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-train_images.shape
+print (train_images.shape)
 
 plt.figure()
 plt.imshow(train_images[0])
 plt.colorbar()
 plt.grid(False)
-plt.show()
+print (plt.show())
 
 train_images = train_images / 255.0
 
@@ -34,7 +34,7 @@ for i in range(25):
     plt.grid(False)
     plt.imshow(train_images[i], cmap=plt.cm.binary)
     plt.xlabel(class_names[train_labels[i]])
-plt.show()
+print(plt.show())
 
 model = tf.keras.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
