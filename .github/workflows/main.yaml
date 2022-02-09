@@ -65,7 +65,7 @@ jobs:
           git pull
       - id: echo_download
         run: |
-          echo "::set-output name=body::${{github.server.url}/{github.repository}/shared/image1.png}"
+          echo "::set-output name=body::${{github.server.url}}/${{github.repository}}/shared/image1.png}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
