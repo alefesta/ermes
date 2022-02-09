@@ -38,6 +38,7 @@ jobs:
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
       - uses: peter-evans/create-or-update-comment@v1
       - id: get-comment-body
+        uses: peter-evans/create-or-update-comment@v1
         with:
           issue_number: ${{ github.event.issue.number }}
         run: |
