@@ -72,7 +72,7 @@ jobs:
 
       - id: echo_download
         run: |
-          echo "::set-output name=body: ${{steps.download.outputs.download-path}}"
+          echo "::set-output name=body::${{steps.download.outputs.download-path}}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
