@@ -70,11 +70,8 @@ jobs:
           name: 'images'
           path: shared/images.zip
       - run: |
-          ls
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git checkout
-          git pull
+          
+          cd shared
           ls
           unzip shared/images.zip
           git add .
