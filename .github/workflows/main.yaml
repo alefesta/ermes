@@ -49,6 +49,13 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
+      - name: Upload images
+        uses: actions/upload-artifact@v2
+        with:
+          name: images
+          path: |
+            image
+            !image*.png
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
