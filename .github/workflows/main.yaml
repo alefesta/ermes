@@ -67,7 +67,7 @@ jobs:
       - uses: actions/download-artifact@v2
         id: download
         with:
-          name: 'Images'
+          name: 'images'
           path: shared
 
       - id: echo_download
