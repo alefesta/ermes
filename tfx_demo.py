@@ -7,4 +7,4 @@ df = pd.DataFrame(
   columns=[f'column{i}' for i in range(0, 4)]
 )
 
-print(df)
+print(df.to_markdown())
