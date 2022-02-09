@@ -60,7 +60,7 @@ jobs:
         id: download
         with:
           name: 'image1'
-          path: /images/image1.png
+          path: shared/image1.png
 
       - id: echo_download
         run: |
