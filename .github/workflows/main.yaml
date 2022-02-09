@@ -34,7 +34,7 @@ jobs:
         with:
           python-version: '3.8'
           cache: 'pip'
-      - run: pip install -r requirements.txt && $OUT=${python tfx_demo.py}
+      - run: pip install -r requirements.txt && $OUT=$(python tfx_demo.py)
       - name: Output
         uses: peter-evans/create-or-update-comment@v1
         with:
