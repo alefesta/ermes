@@ -69,10 +69,18 @@ jobs:
         with:
           name: 'images'
           path: shared/images.zip
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout
+          unzip shared/images.zip
+          git add .
+          git commit -m "imges generated"
+          git push
 
       - id: echo_download
         run: |
-          echo "::set-output name=body::${{github.event.workflow_run.artifacts_url}}"
+          echo "::set-output name=body::${{ github.workspace}}/shared/image1.png}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
