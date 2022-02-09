@@ -48,6 +48,7 @@ jobs:
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
           git add .
+          git commit -m "upload images"
           git push
 
       - name: Create comment
@@ -77,7 +78,7 @@ jobs:
           git pull
       - id: echo_download
         run: |
-          echo "::set-output name=body::${{github.workspace}}/shared/image1.png}"
+          echo "::set-output name=body::${{$GITHUB_URL}}/${{GITHUB_REPOSITORY/shared/image1.png}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
