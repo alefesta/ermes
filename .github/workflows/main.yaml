@@ -33,7 +33,7 @@ jobs:
           python-version: '3.8'
           cache: 'pip'
       - run: |
-          pip install -r requirements.txt && python tfx_demo.py
+          pip install -r ./requirements.txt && python ./tfx_demo.py
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
