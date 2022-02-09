@@ -35,6 +35,9 @@ jobs:
           python-version: '3.8'
           cache: 'pip'
       - run: pip install -r requirements.txt
+      - name: Prepare Images Artifacts
+        run: |
+          mkdir -p shared
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
       - id: get-comment-body
         run: |
@@ -54,7 +57,7 @@ jobs:
         with:
           name: images
           path: |
-            !*.png
+            shared
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
