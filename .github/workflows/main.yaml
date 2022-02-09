@@ -52,6 +52,12 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
+      - name: Create Second comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+              ![](image1.png)
       - name: Upload images
         uses: actions/upload-artifact@v2
         with:
