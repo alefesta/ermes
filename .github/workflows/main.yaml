@@ -30,13 +30,14 @@ jobs:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - uses: peter-evans/create-or-update-comment@v1
+
         with:
           python-version: '3.8'
           cache: 'pip'
       - run: pip install -r requirements.txt
       - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
       - name: Output
+        uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: cat out.txt
