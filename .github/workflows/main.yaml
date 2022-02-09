@@ -35,12 +35,18 @@ jobs:
           python-version: '3.8'
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
-      - name: Output
+      # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
+      - uses: peter-evans/create-or-update-comment@v1
+      - id: get-comment-body
+        run: |
+          body="$(python tfx_demo.py 2>&1)"
+          echo "::set-output name=body::$body"
+
+      - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: cat out.txt
+          body: ${{ steps.get-comment-body.outputs.body }}
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
