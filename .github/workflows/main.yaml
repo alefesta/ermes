@@ -27,6 +27,13 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: Execute Python
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+      - run: pip install pandas numpy
+      - run: python tfx_demo.py
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
