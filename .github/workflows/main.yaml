@@ -34,7 +34,13 @@ jobs:
           python-version: '3.8'
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - run: python tfx_demo.py
+      - name: Output
+        uses: peter-evans/create-or-update-comment@v1
+        env:
+          OUT: python tfx_demo.py
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: $OUT
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
