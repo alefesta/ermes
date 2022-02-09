@@ -35,11 +35,9 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Output
         uses: peter-evans/create-or-update-comment@v1
-        env:
-          OUT: python tfx_demo.py
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: $OUT
+          body: echo ${python tfx_demo.py}
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
