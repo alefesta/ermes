@@ -5,6 +5,7 @@ on:
     types: [opened]
 env:
   BRANCH: ${{github.actor}}
+  OUT: ""
 jobs:
   Set-Up-Ermes:
     runs-on: ubuntu-latest
@@ -29,15 +30,16 @@ jobs:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
+
         with:
           python-version: '3.8'
           cache: 'pip'
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt && $OUT=${python tfx_demo.py}
       - name: Output
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: echo ${python tfx_demo.py}
+          body: ${{$OUT}}
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
