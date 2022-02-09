@@ -54,8 +54,7 @@ jobs:
         with:
           name: images
           path: |
-            image
-            !image*.png
+            !*.png
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
