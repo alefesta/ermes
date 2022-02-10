@@ -68,10 +68,11 @@ jobs:
       
       
   Create-Comment:
+      needs: Set-Up-Ermes
       runs-on: ubuntu-latest
       strategy:
         matrix:
-            body: ['https://github.com/alefesta/ermes/blob/main/image1.png','https://github.com/alefesta/ermes/blob/main/image2.png']
+            body: ['https://github.com/alefesta/ermes/blob/main/image1.png?raw=true','https://github.com/alefesta/ermes/blob/main/image2.png?raw=true']
       steps:
       - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
