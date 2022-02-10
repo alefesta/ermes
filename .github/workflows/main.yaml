@@ -75,11 +75,9 @@ jobs:
   Retrieving-Results:
       needs: Executing-Code
       runs-on: ubuntu-latest
-      env:
-        ARGS: ""
       strategy:
         matrix:
-            body: [env.ARGS]
+            body: [$ARGS]
       steps:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
@@ -91,7 +89,7 @@ jobs:
           git fetch
           git checkout 
           git pull
-          for f in shared/*.png; do printf -v env.ARGS '%s','https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
+          for f in shared/*.png; do printf -v $ARGS '%s','https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
       - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
         with:
