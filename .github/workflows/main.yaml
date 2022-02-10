@@ -65,13 +65,14 @@ jobs:
           git pull
       - id: echo_download
         run: |
-          echo "::set-output name=body::${{github.server.url}}/${{github.repository}}/shared/image1.png}"
+         for f in *.png; do echo "Processing $f file.."; done
+         echo "::set-output name=body::${{$GITHUB_SERVER_URL}}/${{$GITHUB_REPOSITORY}}/blob/main/shared/${{f}}.png}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-              [images](${{ steps.echo_download.outputs.body }})
+              ![](${{ steps.echo_download.outputs.body }})
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
