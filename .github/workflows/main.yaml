@@ -45,7 +45,6 @@ jobs:
       
       
   Executing-Code:
-      environment: execution
       needs: Set-Up-Ermes
       runs-on: ubuntu-latest
       steps:
@@ -70,6 +69,7 @@ jobs:
           git add .
           git commit -m "upload images"
           git push -f origin main
+
   
   Retrieving-Results:
       needs: Executing-Code
@@ -82,7 +82,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: ${{ execution.steps.get-comment-body.outputs.body }}
+          body: ${{ needs.Executing-Code.steps.get-comment-body.outputs.body }}
       - run: |       
           cd shared
           ls
