@@ -82,7 +82,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: ${{ needs.Executing-Code.steps.get-comment-body.outputs.body }}
+          body: ${{ needs.Executing-Code.get-comment-body.outputs.body }}
       - run: |       
           cd shared
           ls
