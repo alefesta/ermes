@@ -5,6 +5,7 @@ on:
     types: [opened]
 env:
   BRANCH: ${{github.actor}}
+  ARGS: ()
 jobs:
   Set-Up-Ermes:
     runs-on: ubuntu-latest
@@ -62,9 +63,10 @@ jobs:
           git fetch
           git checkout 
           git pull
-      # - id: echo_download
-      #   run: |
+      # - run: |
       #     for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
+      - run: |
+          for f in shared/*.png; do env.ARGS="https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
       
       
   Create-Comment:
@@ -72,7 +74,7 @@ jobs:
       runs-on: ubuntu-latest
       strategy:
         matrix:
-            body: ['https://github.com/alefesta/ermes/blob/main/image1.png?raw=true','https://github.com/alefesta/ermes/blob/main/image2.png?raw=true']
+            body: [env.ARGS]
       steps:
       - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
