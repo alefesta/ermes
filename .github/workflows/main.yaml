@@ -85,14 +85,10 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: ${{ needs.Executing-Code.outputs.body }}
-      - run: |       
-          cd shared
-          ls
       - run: |
           git fetch
           git checkout 
           git pull
-      - run: |
           for f in shared/*.png; do printf -v env.ARGS '%s,'https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
       - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
