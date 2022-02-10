@@ -62,15 +62,23 @@ jobs:
           git fetch
           git checkout 
           git pull
-      - id: echo_download
-        run: |
-          for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
-      - name: Create Second comment
+      # - id: echo_download
+      #   run: |
+      #     for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
+      
+      
+  Create-Comment:
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+            body: ['https://github.com/alefesta/ermes/blob/main/image1.png','https://github.com/alefesta/ermes/blob/main/image2.png']
+      steps:
+      - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-              ![](${{ steps.echo_download.outputs.body }})
+              ![](${{ matrix.body }})
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
