@@ -60,8 +60,9 @@ jobs:
           git add .
           git commit -m "upload images"
           git push -f origin main
+  
   Retrieving-Results:
-      needs: Execute-Code
+      needs: Executing-Code
       runs-on: ubuntu-latest
       strategy:
         matrix:
