@@ -65,8 +65,7 @@ jobs:
           git pull
       # - run: |
       #     for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
-      - run: |
-          for f in shared/*.png; do env.ARGS+="https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
+
       
       
   Create-Comment:
@@ -76,6 +75,8 @@ jobs:
         matrix:
             body: [env.ARGS]
       steps:
+      - run: |
+          for f in shared/*.png; do env.ARGS+="https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
       - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
         with:
