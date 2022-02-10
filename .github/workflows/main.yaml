@@ -47,6 +47,8 @@ jobs:
   Executing-Code:
       needs: Set-Up-Ermes
       runs-on: ubuntu-latest
+      outputs:
+        body: ${{ steps.get-comment-body.outputs.body }}
       steps:
       - uses: actions/setup-python@v2
       - uses: actions/checkout@v2
@@ -82,7 +84,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: ${{ needs.Executing-Code.get-comment-body.outputs.body }}
+          body: ${{ needs.Executing-Code.outputs.body }}
       - run: |       
           cd shared
           ls
