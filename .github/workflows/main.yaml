@@ -49,15 +49,15 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/setup-python@v2
-      - run: |
-          git fetch
-          git checkout 
-          git pull
       - uses: actions/checkout@v2
         with:
           python-version: '3.8'
           cache: 'pip'
       - run: pip install -r requirements.txt
+      - run: |
+          git fetch
+          git checkout 
+          git pull
       - id: get-comment-body
         run: |
           body="$(python demo.py)"
