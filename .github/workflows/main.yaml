@@ -85,6 +85,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: ${{ needs.Executing-Code.outputs.body }}
+      - uses: actions/checkout@v2
       - run: |
           git fetch
           git checkout 
