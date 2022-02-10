@@ -51,7 +51,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
-          git push - f origin main
+          git push -f origin main
 
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
