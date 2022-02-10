@@ -45,6 +45,7 @@ jobs:
       
       
   Executing-Code:
+      environment: execution
       needs: Set-Up-Ermes
       runs-on: ubuntu-latest
       steps:
@@ -81,7 +82,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: ${{ steps.get-comment-body.outputs.body }}
+          body: ${{ execution.steps.get-comment-body.outputs.body }}
       - run: |       
           cd shared
           ls
