@@ -75,11 +75,10 @@ jobs:
   Retrieving-Results:
       needs: Executing-Code
       runs-on: ubuntu-latest
-      env:
-        ARGS: ""
       strategy:
         matrix:
-            body: [$ARGS]
+            body: [$arr]
+
       steps:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
@@ -91,9 +90,10 @@ jobs:
           git fetch
           git checkout 
           git pull
-          for f in shared/*.png; do ARGS+='https://github.com/${{ github.repository }}/blob/main/$f?raw=true,'; done
+          arr=()
+          for f in shared/*.png; do arr+='https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
           IFS=,
-          echo "${ARGS[*]}"
+          echo "$arr" | xargs | sed -e 's/ /, /g'
       - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
         with:
