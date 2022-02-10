@@ -29,15 +29,13 @@ jobs:
       #   env:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-
-        with:
-          python-version: '3.8'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
       - name: Prepare Images Artifacts
         run: |
           mkdir -p shared/.base.md
+          git config user.name ${{github.actor}}
+          git add .
+          git commit -m "upload images"
+          git push -f origin main
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
 
       # - run: |
@@ -49,6 +47,16 @@ jobs:
       needs: Set-Up-Ermes
       runs-on: ubuntu-latest
       steps:
+      - uses: actions/setup-python@v2
+      - run: |
+          git fetch
+          git checkout 
+          git pull
+      - uses: actions/checkout@v2
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
       - id: get-comment-body
         run: |
           body="$(python demo.py)"
