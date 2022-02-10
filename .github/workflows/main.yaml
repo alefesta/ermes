@@ -66,7 +66,7 @@ jobs:
       # - run: |
       #     for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
       - run: |
-          for f in shared/*.png; do env.ARGS="https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
+          for f in shared/*.png; do env.ARGS+="https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
       
       
   Create-Comment:
