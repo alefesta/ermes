@@ -7,7 +7,7 @@ env:
   BRANCH: ${{github.actor}}
   GITHUB_SERVER_URL: GITHUB_SERVER_URL
   GITHUB_REPOSITORY: GITHUB_REPOSITORY
-  F: ""
+  F: string
 jobs:
   Set-Up-Ermes:
     runs-on: ubuntu-latest
@@ -67,9 +67,9 @@ jobs:
           git pull
       - id: echo_download
         run: |
-          find shared -iname '*.png' -exec echo "::set-output name=body::${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}/blob/main/shared/${{}}.png}" \;
-         
-         
+          for f in shared/*.png; do
+            echo "::set-output name=body::${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}/blob/main/shared/${{f}}.png}"
+          done
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
