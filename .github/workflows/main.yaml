@@ -29,9 +29,10 @@ jobs:
       #   env:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       - uses: actions/checkout@v2
-      - name: Prepare Images Artifacts
+      - name: Prepare Output Environment
         run: |
-          mkdir -p shared/.base.md
+          mkdir -p shared
+          touch shared/.images
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
