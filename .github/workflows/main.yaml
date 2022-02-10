@@ -79,7 +79,7 @@ jobs:
         ARGS: ""
       strategy:
         matrix:
-            body: [$ARGS]
+            body: [env.ARGS]
       steps:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
