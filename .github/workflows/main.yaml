@@ -35,7 +35,7 @@ jobs:
           touch shared/.images
           git config user.name ${{github.actor}}
           git add .
-          git commit -m "upload images"
+          git commit -m "Environment created"
           git push -f origin main
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
 
