@@ -64,7 +64,7 @@ jobs:
           git pull
       - id: echo_download
         run: |
-          for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f"; done
+          for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
