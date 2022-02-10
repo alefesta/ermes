@@ -97,7 +97,6 @@ jobs:
       - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
         with:
-          ARGS:
           issue-number: ${{ github.event.issue.number }}
           body: |
               ![](${{ matrix.body }})
