@@ -5,7 +5,8 @@ on:
     types: [opened]
 env:
   BRANCH: ${{github.actor}}
-  OUT : ""
+  GITHUB_SERVER_URL: GITHUB_SERVER_URL
+  GITHUB_REPOSITORY: GITHUB_REPOSITORY
 jobs:
   Set-Up-Ermes:
     runs-on: ubuntu-latest
@@ -66,7 +67,7 @@ jobs:
       - id: echo_download
         run: |
          for f in *.png; do echo "Processing $f file.."; done
-         echo "::set-output name=body::${{GITHUB_SERVER_URL}}/${{GITHUB_REPOSITORY}}/blob/main/shared/${{f}}.png}"
+         echo "::set-output name=body::${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}/blob/main/shared/${{f}}.png}"
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
         with:
