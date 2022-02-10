@@ -39,6 +39,16 @@ jobs:
         run: |
           mkdir -p shared/.base.md
       # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
+
+      # - run: |
+      #     for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
+
+      
+      
+  Executing-Code:
+      needs: Set-Up-Ermes
+      runs-on: ubuntu-latest
+      steps:
       - id: get-comment-body
         run: |
           body="$(python demo.py)"
@@ -50,7 +60,13 @@ jobs:
           git add .
           git commit -m "upload images"
           git push -f origin main
-
+  Retrieving-Results:
+      needs: Execute-Code
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+            body: [env.ARGS]
+      steps:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -63,20 +79,8 @@ jobs:
           git fetch
           git checkout 
           git pull
-      # - run: |
-      #     for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
-
-      
-      
-  Create-Comment:
-      needs: Set-Up-Ermes
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-            body: [env.ARGS]
-      steps:
       - run: |
-          for f in shared/*.png; do env.ARGS+="https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
+          for f in shared/*.png; do printf -v env.ARGS '%s,'https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
       - name: Publish Images
         uses: peter-evans/create-or-update-comment@v1
         with:
