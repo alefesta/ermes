@@ -67,7 +67,8 @@ jobs:
           git pull
       - id: echo_download
         run: |
-         for env.F in *.png; do echo "::set-output name=body::${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}/blob/main/shared/${{F}}.png}"; done
+          find shared -iname '*.png' -exec echo "::set-output name=body::${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}/blob/main/shared/${{}}.png}" \;
+         
          
       - name: Create Second comment
         uses: peter-evans/create-or-update-comment@v1
