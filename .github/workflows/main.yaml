@@ -105,7 +105,12 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           echo "::set-output name=matrix::$( echo "$JSON" )"
           echo "::set-output name=body::$( echo "$body")"
-
+      - name: Create Initial Comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ${{needs.Retrieving-Results.outputs.body}}
 
   Publishing-Results:
       needs: Retrieving-Results
@@ -114,13 +119,6 @@ jobs:
         matrix: ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
       steps:
       - uses: actions/checkout@v2
-      - name: Create Initial Comment
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            ${{needs.Retrieving-Results.outputs.body}}
-
       - name: Create Results Comments
         uses: peter-evans/create-or-update-comment@v1
         with:

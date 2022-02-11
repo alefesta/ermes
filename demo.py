@@ -34,6 +34,7 @@ plt.figure()
 plt.imshow(train_images[0])
 plt.colorbar()
 plt.grid(False)
+plt.title("Image Sample")
 plt.savefig('shared/image1.png', bbox_inches='tight')
 
 train_images = train_images / 255.0
@@ -48,6 +49,7 @@ for i in range(25):
     plt.grid(False)
     plt.imshow(train_images[i], cmap=plt.cm.binary)
     plt.xlabel(class_names[train_labels[i]])
+    plt.title("DataSet Images")
 plt.savefig('shared/image2.png', bbox_inches='tight')
 
 model = tf.keras.Sequential([
