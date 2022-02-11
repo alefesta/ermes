@@ -1,10 +1,9 @@
 ---
-name: ermes runner
-about: Describe this issue template's purpose here.
-title: '[run] - @date.now() - ${{ github.actor }}'
-labels: ' ermes'
-assignees: ' ${{ github.actor }}'
-
+name: Tracking issue
+about: Use this template for tracking new features.
+title: "[DATE]: [FEATURE NAME]"
+labels: tracking issue, needs triage
+assignees: octocat
 ---
 
 ## Ermes Pipeline
