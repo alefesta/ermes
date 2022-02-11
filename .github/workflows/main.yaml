@@ -102,7 +102,7 @@ jobs:
           # set output
           echo body=${{ needs.Executing-Code.outputs.body }}
           echo "::set-output name=matrix::$( echo "$JSON" )"
-          echo "::set-output name=body::$body"
+          echo "::set-output name=body::$( echo "$body")"
 
 
   Publishing-Results:
