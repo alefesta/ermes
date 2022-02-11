@@ -76,6 +76,7 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         matrix: ${{ steps.create-matrix.outputs.matrix }}
+        body: ${{ steps.create-matrix.outputs.body }}
       steps:
       - uses: actions/checkout@v2
       - id: create-matrix
@@ -99,7 +100,9 @@ jobs:
           JSON="$JSON]}"
           echo $JSON
           # set output
+          echo body=${{ needs.Executing-Code.outputs.body }}
           echo "::set-output name=matrix::$( echo "$JSON" )"
+          echo "::set-output name=body::$body"
 
 
   Publishing-Results:
@@ -116,14 +119,14 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ${{needs.Executing-Code.outputs.body}}
+            ${{needs.Retrieving-Results.outputs.body}}
 
       - name: Create Results Comments
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-              ![](${{ matrix.images }})
+            ![](${{ matrix.images }})
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
