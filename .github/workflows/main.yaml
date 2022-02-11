@@ -15,24 +15,9 @@ jobs:
         with:
           script: |
             const capitalize = (name) => name.charAt(0).toUpperCase() + name.slice(1);
-            const emoji = context.payload.ref.startsWith("refs/heads/main")
-              ? "✨ "
+            const emoji = "✨ ";
               : context.payload.ref.startsWith("refs/heads/hotfix")
-              ? "🚑 "
-              : "";
-            return `${emoji}${capitalize(
-              context.payload.ref
-                .replace("refs/heads/", "")
-                .replace(/-/g, " ")
-                .replace("feature ", "")
-                .replace("hotfix ", "")
-            )}`;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '👋 Thanks for using Ermes!'
-            })
+            return `${emoji} - Title `;
 
       - name: Set issue name
         run: echo "ISSUE_TITLE=${{steps.set-branch-name.outputs.result}}" >> $GITHUB_ENV
