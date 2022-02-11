@@ -87,20 +87,18 @@ jobs:
           arr=()
           for f in shared/*.png; do arr+='https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
           for i in "${arr[@]}"; do  str="${str}${c}${i}"  c=',' ; done
-          # echo "::set-output name=str::$str"
-          # echo "::set-output name=body::${{ needs.Executing-Code.outputs.body }}"
-          echo "strOut=${{str}}" >> GITHUB_ENV
-          echo "body=${{ needs.Executing-Code.outputs.body }}" >> GITHUB_ENV
+          echo "::set-output name=str::$str"
+          echo "::set-output name=body::${{ needs.Executing-Code.outputs.body }}"
+
 
   Publishing-Results:
       needs: Retrieving-Results
       runs-on: ubuntu-latest
-      # env:
-      #   ARGS: ${{needs.Retrieving-Results.outputs.str}}
-      #   BODY: ${{needs.Retrieving-Results.outputs.body}}
+      env:
+        BODY: ${{needs.Retrieving-Results.outputs.body}}
       strategy:
         matrix:
-          body: [env.strOut]
+          body: ${{needs.Retrieving-Results.outputs.str[@]}}
       steps:
       - uses: actions/checkout@v2
       - name: Create Initial Comment
@@ -108,7 +106,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            env.body
+            ${{BODY}}
 
       - name: Create Results Comments
         uses: peter-evans/create-or-update-comment@v1
