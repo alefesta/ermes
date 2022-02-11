@@ -76,6 +76,7 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         str: ${{ steps.create-matrix.outputs.str }}
+        body: ${{ steps.create-matrix.outputs.body }}
       steps:
       - uses: actions/checkout@v2
       - id: create-matrix
@@ -84,16 +85,17 @@ jobs:
           git checkout 
           git pull
           arr=()
-          for f in shared/*.png; do arr+='https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
+          for f in shared/*.png; do arr+='https://github.com/${{ github.repository }}/blob/main/$f?raw=true, '; done
           for i in "${arr[@]}"; do  str="${str}${c}${i}"  c=',' ; done
           echo "::set-output name=str::$str"
+          echo "::set-output name=body::${{ needs.Executing-Code.outputs.body }}"
 
   Publishing-Results:
       needs: Retrieving-Results
       runs-on: ubuntu-latest
       env:
         ARGS: ${{needs.Retrieving-Results.outputs.str}}
-        BODY: ${{ needs.Executing-Code.outputs.body }}
+        BODY: ${{needs.Retrieving-Results.outputs.body}}
       strategy:
         matrix:
           body: [env.ARGS]
