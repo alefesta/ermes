@@ -19,6 +19,7 @@ jobs:
               repo: context.repo.repo,
               body: '👋 Thanks for using Ermes!'
             })
+            github.rest.issues.title("This")
       # - name: Print Body
       #   env:
       #     BODY: ${{ github.event.issue.body }}
