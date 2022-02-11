@@ -87,7 +87,7 @@ jobs:
           JSON="{\"include\":["
           for f in shared/*.png
           do 
-            JSONline="{\"body\": $f,},"
+            JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/main/$f?raw=true,\"},"
               if [[ "$JSON" != *"$JSONline"* ]]
               then
                 JSON="$JSON$JSONline"
