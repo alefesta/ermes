@@ -75,7 +75,7 @@ jobs:
       needs: Executing-Code
       runs-on: ubuntu-latest
       outputs:
-        body: ${{ steps.create-matrix.outputs.str }}
+        str: ${{ steps.create-matrix.outputs.str }}
       steps:
       - uses: actions/checkout@v2
       - id: create-matrix
