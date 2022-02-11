@@ -71,32 +71,39 @@ jobs:
           git commit -m "upload images"
           git push -f origin main
 
-  
   Retrieving-Results:
       needs: Executing-Code
       runs-on: ubuntu-latest
-      env:
-        STR: $str
-      strategy:
-        matrix:
-            body: [env.STR]
-
+      outputs:
+        body: ${{ steps.create-matrix.outputs.str }}
       steps:
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: ${{ needs.Executing-Code.outputs.body }}
       - uses: actions/checkout@v2
-      - run: |
+      - id: create-matrix
+        run: |
           git fetch
           git checkout 
           git pull
           arr=()
           for f in shared/*.png; do arr+='https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
           for i in "${arr[@]}"; do  str="${str}${c}${i}"  c=',' ; done
-          env.STR=$str
-      - name: Publish Images
+          echo "::set-output name=str::$str"
+
+  Publishing-Results:
+      needs: Retrieving-Results
+      runs-on: ubuntu-latest
+      env:
+        args: ${{needs.Retrieving-Results.outputs.str}}
+      strategy:
+        matrix:
+            body: [env.args]
+      steps:
+      - name: Create Initial Comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: ${{ needs.Executing-Code.outputs.body }}
+
+      - name: Create Results Comments
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
