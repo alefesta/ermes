@@ -75,7 +75,7 @@ jobs:
       needs: Executing-Code
       runs-on: ubuntu-latest
       outputs:
-        str: ${{ steps.create-matrix.outputs.str }}
+        matrix: ${{ steps.create-matrix.outputs.matrix }}
         body: ${{ steps.create-matrix.outputs.body }}
       steps:
       - uses: actions/checkout@v2
@@ -84,10 +84,23 @@ jobs:
           git fetch
           git checkout 
           git pull
-          arr=()
-          for f in shared/*.png; do arr+='https://github.com/${{ github.repository }}/blob/main/$f?raw=true, '; done
-          for i in "${arr[@]}"; do  str="${arr}${c}${i}"  c=',' ; done
-          echo "::set-output name=str::$str"
+          JSON="{\"include\":["
+          for f in shared/*.png
+          do 
+            JSONline="{\"body\": $f,},"
+              if [[ "$JSON" != *"$JSONline"* ]]
+              then
+                JSON="$JSON$JSONline"
+              fi
+          done
+          # Remove last "," and add closing brackets
+          if [[ $JSON == *, ]]; then
+            JSON="${JSON%?}"
+          fi
+          JSON="$JSON]}"
+          echo $JSON
+          # set output
+          echo "::set-output name=matrix::$( echo "$JSON" )"
           echo "::set-output name=body::${{ needs.Executing-Code.outputs.body }}"
 
 
@@ -96,7 +109,8 @@ jobs:
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          body: ${{needs.Retrieving-Results.outputs.str}}
+          body: 
+            - ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
       steps:
       - uses: actions/checkout@v2
       - name: Create Initial Comment
