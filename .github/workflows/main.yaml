@@ -74,9 +74,9 @@ jobs:
   Retrieving-Results:
       needs: Executing-Code
       runs-on: ubuntu-latest
-      # outputs:
-      #   str: ${{ steps.create-matrix.outputs.str }}
-      #   body: ${{ steps.create-matrix.outputs.body }}
+      outputs:
+        str: ${{ steps.create-matrix.outputs.str }}
+        body: ${{ steps.create-matrix.outputs.body }}
       steps:
       - uses: actions/checkout@v2
       - id: create-matrix
@@ -94,8 +94,6 @@ jobs:
   Publishing-Results:
       needs: Retrieving-Results
       runs-on: ubuntu-latest
-      env:
-        BODY: ${{needs.Retrieving-Results.outputs.body}}
       strategy:
         matrix:
           body: ${{needs.Retrieving-Results.outputs.str}}
@@ -106,7 +104,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ${{BODY}}
+            ${{needs.Retrieving-Results.outputs.body}}
 
       - name: Create Results Comments
         uses: peter-evans/create-or-update-comment@v1
