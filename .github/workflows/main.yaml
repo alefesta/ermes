@@ -86,7 +86,7 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         matrix: ${{ steps.create-matrix.outputs.matrix }}
-        # body: ${{ steps.create-matrix.outputs.body }}
+        body: ${{ steps.create-matrix.outputs.body }}
       steps:
       - uses: actions/checkout@v2
       - id: create-matrix
@@ -120,7 +120,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ${{body}}
+            ${{steps.create-matrix.outputs.body}}
 
   Publishing-Results:
       needs: Retrieving-Results
