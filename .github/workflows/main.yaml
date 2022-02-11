@@ -89,7 +89,7 @@ jobs:
           for i in "${arr[@]}"; do  str="${str}${c}${i}"  c=',' ; done
           # echo "::set-output name=str::$str"
           # echo "::set-output name=body::${{ needs.Executing-Code.outputs.body }}"
-          echo "str=$str" >> GITHUB_ENV
+          echo "strOut=${{str}}" >> GITHUB_ENV
           echo "body=${{ needs.Executing-Code.outputs.body }}" >> GITHUB_ENV
 
   Publishing-Results:
@@ -100,7 +100,7 @@ jobs:
       #   BODY: ${{needs.Retrieving-Results.outputs.body}}
       strategy:
         matrix:
-          body: [env.str]
+          body: [env.strOut]
       steps:
       - uses: actions/checkout@v2
       - name: Create Initial Comment
