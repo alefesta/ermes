@@ -128,7 +128,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ![](${{ matrix.images }})
+            ![](${{ matrix.images.body }})
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
