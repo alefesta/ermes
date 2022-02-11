@@ -111,9 +111,7 @@ jobs:
       needs: Retrieving-Results
       runs-on: ubuntu-latest
       strategy:
-        matrix:
-          images: 
-            - ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
+        matrix: ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
       steps:
       - uses: actions/checkout@v2
       - name: Create Initial Comment
@@ -128,7 +126,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ![](${{ matrix.images.body }})
+            ![](${{ matrix.body }})
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
