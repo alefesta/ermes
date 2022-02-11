@@ -33,8 +33,7 @@ jobs:
               repo: context.repo.repo,
               body: '👋 Thanks for using Ermes!'
             })
-            github.rest.issues.editIssue({
-            )
+
       - name: Set issue name
         run: echo "ISSUE_TITLE=${{steps.set-branch-name.outputs.result}}" >> $GITHUB_ENV
       # - name: Print Body
