@@ -10,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     # container: docker.io/hello-world
     steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for using Ermes!'
+            })
       # - name: Print Body
       #   env:
       #     BODY: ${{ github.event.issue.body }}
@@ -76,7 +85,7 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         matrix: ${{ steps.create-matrix.outputs.matrix }}
-        body: ${{ steps.create-matrix.outputs.body }}
+        # body: ${{ steps.create-matrix.outputs.body }}
       steps:
       - uses: actions/checkout@v2
       - id: create-matrix
@@ -110,7 +119,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ${{needs.Retrieving-Results.outputs.body}}
+            ${{body}}
 
   Publishing-Results:
       needs: Retrieving-Results
