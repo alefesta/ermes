@@ -93,15 +93,16 @@ jobs:
       runs-on: ubuntu-latest
       env:
         ARGS: ${{needs.Retrieving-Results.outputs.str}}
+        BODY: ${{ needs.Executing-Code.outputs.body }}
       strategy:
         matrix:
-          body: [$ARGS]
+          body: [env.ARGS]
       steps:
       - name: Create Initial Comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: ${{ needs.Executing-Code.outputs.body }}
+          body: env.BODY
 
       - name: Create Results Comments
         uses: peter-evans/create-or-update-comment@v1
