@@ -20,6 +20,11 @@ jobs:
               issue_number: context.issue.number,
               title: '[EXECUTING] - ' + Date() + ' - ' + context.repo.owner
             });
+      - name: Label issues
+        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+        with:
+          add-labels: "in Progress"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       # - name: Print Body
       #   env:
       #     BODY: ${{ github.event.issue.body }}
@@ -135,6 +140,22 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
             ![](${{ matrix.body }})
+      - uses: actions/github-script@v6
+        id: set-branch-name
+        with:
+          script: |
+            github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              title: '[DONE] - ' + Date() + ' - ' + context.repo.owner
+            });
+      - name: Label issues
+        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+        with:
+          add-labels: "done"
+          remove-labels: "in Progress"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
   #       with:
