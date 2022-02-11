@@ -86,7 +86,7 @@ jobs:
           git pull
           arr=()
           for f in shared/*.png; do arr+='https://github.com/${{ github.repository }}/blob/main/$f?raw=true'; done
-          for i in "${arr[@]}"; do  str="${str}${c}${i}"  c=',' ; done
+          for i in "${arr[@]}"; do  str="${arr}${c}${i}"  c=',' ; done
           echo "::set-output name=str::$str"
           echo "::set-output name=body::${{ needs.Executing-Code.outputs.body }}"
 
@@ -98,7 +98,7 @@ jobs:
         BODY: ${{needs.Retrieving-Results.outputs.body}}
       strategy:
         matrix:
-          body: ${{needs.Retrieving-Results.outputs.str[@]}}
+          body: ${{needs.Retrieving-Results.outputs.str}}
       steps:
       - uses: actions/checkout@v2
       - name: Create Initial Comment
