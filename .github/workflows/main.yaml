@@ -92,10 +92,10 @@ jobs:
       needs: Retrieving-Results
       runs-on: ubuntu-latest
       env:
-        args: ${{needs.Retrieving-Results.outputs.str}}
+        ARGS: ${{needs.Retrieving-Results.outputs.str}}
       strategy:
         matrix:
-            body: [env.args]
+          body: [$ARGS]
       steps:
       - name: Create Initial Comment
         uses: peter-evans/create-or-update-comment@v1
