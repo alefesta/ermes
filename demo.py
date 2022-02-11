@@ -49,7 +49,6 @@ for i in range(25):
     plt.grid(False)
     plt.imshow(train_images[i], cmap=plt.cm.binary)
     plt.xlabel(class_names[train_labels[i]])
-    plt.title("DataSet Images")
 plt.savefig('shared/image2.png', bbox_inches='tight')
 
 model = tf.keras.Sequential([
