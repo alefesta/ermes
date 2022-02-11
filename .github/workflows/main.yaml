@@ -100,7 +100,9 @@ jobs:
           JSON="$JSON]}"
           echo $JSON
           # set output
-          echo body=${{ needs.Executing-Code.outputs.body }}
+          body="${{needs.Executing-Code.outputs.body}}"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
           echo "::set-output name=matrix::$( echo "$JSON" )"
           echo "::set-output name=body::$( echo "$body")"
 
