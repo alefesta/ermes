@@ -96,6 +96,7 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
+          rm shared/.images
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
