@@ -162,31 +162,29 @@ jobs:
           script: |
             let end= Date.now();
             var start= '${{needs.Executing-Code.outputs.start}}';
-            console.log(start)
-            console.log(end)
-
-            function msToHMS( ms ) {
-                // 1- Convert to seconds:
-                let seconds = ms / 1000;
-                // 2- Extract hours:
-                const hours = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
-                seconds = seconds % 3600; // seconds remaining after extracting hours
-                // 3- Extract minutes:
-                const minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
-                // 4- Keep only seconds not extracted to minutes:
-                seconds = seconds % 60;
-                result = hours+":"+minutes+":"+seconds;
-                return result
-            }
-
+            console.log(start);
+            console.log(end);
             const date = new Date();
             let elapsed = end - start ;
+            console.log(elapsed)
+            function msToTime(duration) {
+              var milliseconds = parseInt((duration % 1000) / 100),
+                seconds = Math.floor((duration / 1000) % 60),
+                minutes = Math.floor((duration / (1000 * 60)) % 60),
+                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+              hours = (hours < 10) ? "0" + hours : hours;
+              minutes = (minutes < 10) ? "0" + minutes : minutes;
+              seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+              return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+            }
             var author = '${{github.event.issue.user.login}}';
             github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + msToHMS( elapsed ) + ' - Author:' + author
+              title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + msToTime( elapsed ) + ' - Author:' + author
             });
 
       - name: Label issues
