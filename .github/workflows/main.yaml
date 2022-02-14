@@ -155,7 +155,7 @@ jobs:
         with:
           script: |
             const date = new Date();
-            var author = ${{github.event.issue.user.login}};
+            var author = '${{github.event.issue.user.login}}';
             github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
