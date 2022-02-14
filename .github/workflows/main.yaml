@@ -148,7 +148,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              title: '[DONE] - ' + Date() + ' - ' + ${{context.issue.user.login}}
+              title: '[DONE] - ' + Date() + ' - ' + context.issue.user.login
             });
       - name: Label issues
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
