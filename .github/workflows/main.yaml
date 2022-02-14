@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Prepare Output Environment
         run: |
-          rm -r .output
+          if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/models/.tmp
           mkdir -p .output/images/.images
           mkdir -p .output/logs/.tmp
