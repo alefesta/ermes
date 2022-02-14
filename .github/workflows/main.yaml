@@ -17,8 +17,7 @@ jobs:
         id: set-branch-name
         with:
           script: |
-            const core = require('@actions/core');
-
+  
             let start = Date.now();
             const date = new Date();
 
