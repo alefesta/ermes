@@ -170,7 +170,7 @@ jobs:
                 const minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
                 // 4- Keep only seconds not extracted to minutes:
                 seconds = seconds % 60;
-                alert( hours+":"+minutes+":"+seconds);
+                console.log( hours+":"+minutes+":"+seconds);
             }
             let end= Date.now();
             var start= '${{needs.Executing-Code.outputs.start}}';
