@@ -12,7 +12,8 @@ jobs:
     outputs:
       start: ${{steps.set-branch-name.outputs.start}}
     steps:
-      - run: echo ${{ github.event.issue.body }}
+      - run: |
+          echo ${{ github.event.issue.body }}
       - uses: actions/github-script@v6
         id: set-branch-name
         with:
