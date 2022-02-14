@@ -61,7 +61,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Prepare Output Environment
         run: |
-          mkdir -p shared
+          rm -r .output
+          mkdir -p .output/models/.tmp
+          mkdir -p .output/images/.images
+          mkdir -p .output/logs/.tmp
           touch shared/.images
           git config user.name ${{github.actor}}
           git add .
@@ -98,7 +101,7 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
-          rm shared/.images
+          rm .output/images/.images
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
@@ -120,7 +123,7 @@ jobs:
           git checkout 
           git pull
           JSON="{\"include\":["
-          for f in shared/*.png
+          for f in .output/images/*.png
           do 
             JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/main/$f?raw=true,\"},"
               if [[ "$JSON" != *"$JSONline"* ]]
