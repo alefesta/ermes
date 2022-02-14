@@ -161,7 +161,7 @@ jobs:
         with:
           script: |
             let end= Date.now();
-            var start= '${{needs.Executing-Code.outputs.start}}';
+            var start= '${{needs.Retrieving-Results.outputs.start}}';
             console.log(start);
             console.log(end);
             const date = new Date();
