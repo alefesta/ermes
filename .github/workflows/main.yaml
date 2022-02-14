@@ -91,7 +91,7 @@ jobs:
           git pull
       - id: get-comment-body
         run: |
-          body="$(python demo.py)"
+          body="$(python demo-pytorch.py)"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
