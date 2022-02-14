@@ -18,7 +18,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              title: '[EXECUTING] - ' + Date() + ' - ' + context.repo.owner
+              title: '[DONE] - ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ${{github.event.issue.user.login}}
             });
       - name: Label issues
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
@@ -144,11 +144,12 @@ jobs:
         id: set-branch-name
         with:
           script: |
+            const date = new Date();
             github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              title: '[DONE] - ' + Date() + ' - ' + context.issue.user.login
+              title: '[DONE] - ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds()
             });
       - name: Label issues
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
