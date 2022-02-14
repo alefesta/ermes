@@ -21,6 +21,7 @@ jobs:
 
             let start = Date.now();
             const date = new Date();
+
             var author = '${{github.event.issue.user.login}}';
             
             Object.defineProperty(String.prototype, 'capitalize', {
@@ -162,6 +163,18 @@ jobs:
         id: set-branch-name
         with:
           script: |
+            function msToHMS( ms ) {
+                // 1- Convert to seconds:
+                let seconds = ms / 1000;
+                // 2- Extract hours:
+                const hours = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
+                seconds = seconds % 3600; // seconds remaining after extracting hours
+                // 3- Extract minutes:
+                const minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
+                // 4- Keep only seconds not extracted to minutes:
+                seconds = seconds % 60;
+                alert( hours+":"+minutes+":"+seconds);
+            }
             let end= Date.now();
             var start= ${{needs.Set-Up-Ermes.outputs.start}}
             const date = new Date();
@@ -171,7 +184,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + elapsed + ' - Author:' + author
+              title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + msToHMS( elapsed ) + ' - Author:' + author
             });
 
       - name: Label issues
