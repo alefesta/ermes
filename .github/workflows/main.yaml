@@ -175,7 +175,7 @@ jobs:
                 alert( hours+":"+minutes+":"+seconds);
             }
             let end= Date.now();
-            var start= ${{needs.Set-Up-Ermes.outputs.start}}
+            var start= ${{needs.Set-Up-Ermes.outputs.start}} ;
             const date = new Date();
             let elapsed = end - start ;
             var author = '${{github.event.issue.user.login}}';
