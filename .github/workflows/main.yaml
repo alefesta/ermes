@@ -16,20 +16,16 @@ jobs:
       - uses: actions/github-script@v6
         id: set-branch-name
         with:
-          script: |
-  
+          script: |  
             let start = Date.now();
             const date = new Date();
-
-            var author = '${{github.event.issue.user.login}}';
-            
+            var author = '${{github.event.issue.user.login}}';            
             Object.defineProperty(String.prototype, 'capitalize', {
               value: function() {
                 return this.charAt(0).toUpperCase() + this.slice(1);
               },
               enumerable: false
             });
-
             github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -110,6 +106,7 @@ jobs:
       outputs:
         matrix: ${{ steps.create-matrix.outputs.matrix }}
         body: ${{ steps.create-matrix.outputs.body }}
+        start: ${{steps.create-matrix.outputs.start}}
       steps:
       - uses: actions/checkout@v2
       - id: create-matrix
@@ -138,6 +135,7 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           echo "::set-output name=matrix::$( echo "$JSON" )"
           echo "::set-output name=body::$( echo "$body")"
+          echo "::set-output name=start::${{needs.Set-Up-Ermes.outputs.start}}"
       - name: Create Initial Comment
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -175,7 +173,7 @@ jobs:
                 alert( hours+":"+minutes+":"+seconds);
             }
             let end= Date.now();
-            var start= ${{needs.Set-Up-Ermes.outputs.start}} ;
+            var start= '${{needs.Executing-Code.outputs.start}}';
             const date = new Date();
             let elapsed = end - start ;
             var author = '${{github.event.issue.user.login}}';
