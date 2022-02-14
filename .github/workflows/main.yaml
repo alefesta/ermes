@@ -5,15 +5,21 @@ on:
     types: [opened]
 env:
   BRANCH: ${{github.actor}}
+  START: 
 jobs:
   Set-Up-Ermes:
     runs-on: ubuntu-latest
     # container: docker.io/hello-world
+    outputs:
+      start: ${{steps.set-branch-name.outputs.start}}
     steps:
       - uses: actions/github-script@v6
         id: set-branch-name
         with:
           script: |
+            const core = require('@actions/core');
+
+            let start = Date.now();
             const date = new Date();
             var author = '${{github.event.issue.user.login}}';
             
@@ -30,6 +36,8 @@ jobs:
               issue_number: context.issue.number,
               title: '🚦 Run Started on: ' + date.getMonth() + '/' + date.getDate() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' - Author: ' + author.capitalize()
             });
+            core.setOutput("start", start);
+
       - name: Label issues
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
         with:
@@ -154,14 +162,18 @@ jobs:
         id: set-branch-name
         with:
           script: |
+            let end= Date.now();
+            var start= ${{needs.Set-Up-Ermes.outputs.start}}
             const date = new Date();
+            let elapsed = end - start ;
             var author = '${{github.event.issue.user.login}}';
             github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' - Author:' + author
+              title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + elapsed + ' - Author:' + author
             });
+
       - name: Label issues
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
         with:
