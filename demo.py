@@ -35,7 +35,7 @@ plt.imshow(train_images[0])
 plt.colorbar()
 plt.grid(False)
 plt.title("Image Sample")
-plt.savefig('.outputs/images/image1.png', bbox_inches='tight')
+plt.savefig('.output/images/image1.png', bbox_inches='tight')
 
 train_images = train_images / 255.0
 

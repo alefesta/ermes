@@ -38,7 +38,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Initial Comment to JSON
         run: |
-          echo  ${{ toJson(github.event.issue.body) }}
+          console.log(${{ github.event.issue.body }})
       # - name: Print Body
       #   env:
       #     BODY: ${{ github.event.issue.body }}
