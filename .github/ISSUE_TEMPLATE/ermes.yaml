@@ -1,6 +1,6 @@
 name: Ermes Run
 description: Run your code with Ermes
-title: "[RUN]: "
+title: "[STATUS]: [DATE] - [ELAPSED] - [AUTHOR]"
 labels: ["ermes"]
 # assignees:
 #   - ${{github.issue.user.login}}
@@ -13,21 +13,26 @@ body:
   - type: markdown
     attributes:
       value: |
-        Do you have any requirement?
-        It's simple as to know where is your requirements.txt file (By Default on the root of your branch)?
+        ## Basics
+  - type: markdown
+    attributes:
+      value: |
+        Let's setup the basics to run your code. We assume that:
+        - requirements are in the form of ``` requirements.txt` are the root of the repo
+        - your code is matching one of the possible option (see below). By default we look for a `main.py` file at root.
   - type: input
     id: requirements
     attributes:
-      label: Requirements Path (OPTIONAL)
-      description: Where is your requirements list (if any)?
+      label: Requirements Path
+      description: Where is your requirements list (if any) **(OPTIONAL)**?
       placeholder: ex. requirements.txt
     validations:
       required: false
   - type: markdown
     attributes:
       value: |
-        Do you have any requirement?
-        It's simple as to know where is your requirements.txt file (By Default on the root of your branch)?
+        What are we going to run?
+        It's simple as to know what we are going to execute (your code) and where it is in your repo?
   - type: input
     id: entrypoint
     attributes:
@@ -40,7 +45,7 @@ body:
     id: what-happened
     attributes:
       label: What your code does?
-      description: Also tell us, what did you expect to happen?
+      description: Also tell us, what did you expect to happen? This is super useful for others to understand what you where doing here...
       placeholder: Tell us what you see!
       value: "Some magic is going happened!"
     validations:
