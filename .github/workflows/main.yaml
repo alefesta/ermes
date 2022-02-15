@@ -198,6 +198,7 @@ jobs:
         id: set-branch-name
         with:
           script: |
+            const date = new Date();
             var elapsed = '${{needs.Retrieving-Results.outputs.elapsed}}';
             var author = '${{github.event.issue.user.login}}';
             github.rest.issues.update({
