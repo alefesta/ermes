@@ -105,7 +105,7 @@ jobs:
       - id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          body="$(python demo-pytorch.py)"
+          body="$(python demo.py)"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
