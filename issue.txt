@@ -5,4 +5,4 @@
 {Models:_Noresponse_},
 {Images:_Noresponse_},
 {Logs:_Noresponse_},
-{CodeofConduct:-[X]Iagreetofollowthisproject'sCodeofConduct
+"{CodeofConduct:-[X]Iagreetofollowthisproject'sCodeofConduct
