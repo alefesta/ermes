@@ -18,7 +18,7 @@ body:
     attributes:
       value: |
         Let's setup the basics to run your code. We assume that:
-        - requirements are in the form of ``` requirements.txt` are the root of the repo
+        - requirements are in the form of `requirements.txt` are the root of the repo
         - your code is matching one of the possible option (see below). By default we look for a `main.py` file at root.
   - type: input
     id: requirements
@@ -65,11 +65,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        From now on everything is **OPTIONAL**!
-        Let's setup where to store your results. Remeber the below paths are  **OPTIONAL**
-        so you don't really need to change them. But for maximum flexibility we offer you the
-        choice to do so. **NOTE** use variables in your code to point to these 
-        (i.e: myscript.py --model $MODELPATH --images $IMAGESPATH --logs $LOGSPATH)
+        ## OPTIONALS
+  - type: markdown
+    attributes:
+      value: |
+        Let's setup where to store your results. Remember the below paths are  **OPTIONAL**so you don't really need to change them.
+        But for maximum flexibility we offer you the choice to do so.
+        > **NOTE**: use variables in your code to point to these (i.e: `myscript.py --model $MODELPATH --images $IMAGESPATH --logs $LOGSPATH`)
   - type: input
     id: model
     attributes:
