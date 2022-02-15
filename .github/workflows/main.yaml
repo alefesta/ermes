@@ -43,17 +43,14 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}"
           body="$(echo $body | sed 's/ //g')"
-          body="$(echo $body | sed 's/%0A%0A###/},{/g')"
-          body="$(echo $body | sed 's/%0A%0A/:/g;s/###/{/g')"
-          body="$(echo $body | sed 's/%0A%0A/:/g;s/###/{/g')"
-          body="$(echo $body | sed 's/Conduct/Conduct}/g')"
+          body="$(echo $body | sed 's/%0A%0A###/"},{"/g')"
+          body="$(echo $body | sed 's/%0A%0A/":"/g')"
+          body="$(echo $body | sed 's/###/{"/g')"
+          body="$(echo $body | sed 's/Conduct/Conduct"}/g')"
           JSON="{\"include\":["
           JSON=$JSON$body
           JSON="$JSON]}"
           echo $JSON
-
-
-          echo $body
       - uses: actions/checkout@v2
       - name: Prepare Output Environment
         run: |
