@@ -23,7 +23,7 @@ body:
   - type: input
     id: requirements
     attributes:
-      label: Requirements Path
+      label: Requirements
       description: Where is your requirements list (if any) **(OPTIONAL)**?
       placeholder: ex. requirements.txt
     validations:
@@ -36,7 +36,7 @@ body:
   - type: input
     id: entrypoint
     attributes:
-      label: Entrypoint Path
+      label: Entrypoint
       description: What we need to run?
       placeholder: ex. mycode.py
     validations:
@@ -44,7 +44,7 @@ body:
   - type: dropdown
     id: type
     attributes:
-      label: Code Type
+      label: Type
       description: What are we going to execute?
       options:
         - Python Script (Default)
@@ -75,7 +75,7 @@ body:
   - type: input
     id: model
     attributes:
-      label: Model Path (OPTIONAL)
+      label: Models
       description: Where do you want use to save your models (if any)?
       placeholder: ex. .output/models
     validations:
@@ -83,7 +83,7 @@ body:
   - type: input
     id: images
     attributes:
-      label: Images Path (OPTIONAL)
+      label: Images
       description: Where do you want use to save your images (if any)?
       placeholder: ex. .output/images
     validations:
@@ -91,7 +91,7 @@ body:
   - type: input
     id: logs
     attributes:
-      label: Logs Path (OPTIONAL)
+      label: Logs
       description: Where do you want use to save your logs (if any)?
       placeholder: ex. .output/logs
     validations:

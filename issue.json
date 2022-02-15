@@ -1,0 +1,10 @@
+{
+    "include":[
+        {"requirements": "",
+            "entrypoint": "",
+            "type": "",
+            "modelpath":"",
+            "imagespath":"","logspath":""
+        }
+    ]
+}
