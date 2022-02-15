@@ -69,7 +69,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Let's setup where to store your results. Remember the below paths are  **OPTIONAL**so you don't really need to change them.
+        Let's setup where to store your results. Remember the below paths are  **OPTIONAL** so you don't really need to change them.
         But for maximum flexibility we offer you the choice to do so.
         > **NOTE**: use variables in your code to point to these (i.e: `myscript.py --model $MODELPATH --images $IMAGESPATH --logs $LOGSPATH`)
   - type: input
