@@ -41,15 +41,6 @@ body:
       placeholder: ex. mycode.py
     validations:
       required: true
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What your code does?
-      description: Also tell us, what did you expect to happen? This is super useful for others to understand what you where doing here...
-      placeholder: Tell us what you see!
-      value: "Some magic is going happened!"
-    validations:
-      required: false
   - type: dropdown
     id: type
     attributes:
@@ -66,6 +57,15 @@ body:
     attributes:
       value: |
         ## OPTIONALS
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What your code does? (OPTIONAL)
+      description: Also tell us, what did you expect to happen? This is super useful for others to understand what you where doing here...
+      placeholder: Tell us what you see!
+      value: "Some magic is going happened!"
+    validations:
+      required: false
   - type: markdown
     attributes:
       value: |
