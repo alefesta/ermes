@@ -47,6 +47,12 @@ jobs:
           body="$(echo $body | sed 's/%0A%0A/:/g;s/###/{/g')"
           body="$(echo $body | sed 's/%0A%0A/:/g;s/###/{/g')"
           body="$(echo $body | sed 's/Conduct/Conduct}/g')"
+          JSON="{\"include\":["
+          JSON=$JSON$body
+          JSON="$JSON]}"
+          echo $JSON
+
+
           echo $body
       - uses: actions/checkout@v2
       - name: Prepare Output Environment
