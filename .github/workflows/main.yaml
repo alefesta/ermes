@@ -38,20 +38,11 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Initial Comment to JSON
         run: |
-          console.log(${{ github.event.issue.body }})
-      # - name: Print Body
-      #   env:
-      #     BODY: ${{ github.event.issue.body }}
-      #     TITLE: ${{ github.event.issue.title }}
-      #   run: |
-      #     echo $BODY > input.txt
-      #     if grep -i "- [x] Tensorflow Data Validation" input.txt
-      #     then
-      #         echo "yahyyy"
-      #     else
-      #         echo "nooooo"
-      #     fi
-      #     echo $TITLE
+          body="${{ toJson(github.event.issue.body) }}"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo $body
       # - name: View the github context
       #   run: echo "$GITHUB_CONTEXT"
       #   env:
@@ -69,13 +60,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Environment created"
-          git push -f origin main
-      # - run: OUT=$(python tfx_demo.py 2>&1) && echo $OUT > out.txt
-
-      # - run: |
-      #     for f in shared/*.png; do echo "::set-output name=body::https://github.com/${{ github.repository }}/blob/main/$f?raw=true"; done
-
-      
+          git push -f origin main      
       
   Executing-Code:
       needs: Set-Up-Ermes
