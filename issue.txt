@@ -1,1 +1,8 @@
-### Requirements Path%0A%0A_No response_%0A%0A### Entrypoint Path%0A%0Ademo.py%0A%0A### Code Type%0A%0APython Script (Default)%0A%0A### What your code does? (OPTIONAL)%0A%0ASome magic is going happened!%0A%0A### Model Path (OPTIONAL)%0A%0A_No response_%0A%0A### Images Path (OPTIONAL)%0A%0A_No response_%0A%0A### Logs Path (OPTIONAL)%0A%0A_No response_%0A%0A### Code of Conduct%0A%0A- [X] I agree to follow this project's Code of Conduct
+{Requirements:_Noresponse_},
+{Entrypoint:demo.py},
+{Type:PythonScript(Default)},
+{Whatyourcodedoes?(OPTIONAL):Somemagicisgoinghappened!},
+{Models:_Noresponse_},
+{Images:_Noresponse_},
+{Logs:_Noresponse_},
+{CodeofConduct:-[X]Iagreetofollowthisproject'sCodeofConduct
