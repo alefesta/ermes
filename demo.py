@@ -49,7 +49,7 @@ for i in range(25):
     plt.grid(False)
     plt.imshow(train_images[i], cmap=plt.cm.binary)
     plt.xlabel(class_names[train_labels[i]])
-plt.savefig('./outputs/images/image2.png', bbox_inches='tight')
+plt.savefig('.output/images/image2.png', bbox_inches='tight')
 
 model = tf.keras.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
