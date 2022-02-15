@@ -41,12 +41,9 @@ jobs:
           body="${{ github.event.issue.body }}"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}" 
+          body="${body//$'\r'/'%0D'}"
+          sed -i 's/ //g;s/%0A%0A###/},{/g;s/%0A%0A/:/g;s/###/{/g' $body
           echo $body
-      - name: View the github context
-        run: echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
       - uses: actions/checkout@v2
       - name: Prepare Output Environment
         run: |
