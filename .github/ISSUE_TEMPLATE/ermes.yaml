@@ -1,57 +1,110 @@
-name: Bug Report
-description: File a bug report
-title: "[Bug]: "
-labels: ["bug", "triage"]
-assignees:
-  - octocat
+name: Ermes Run
+description: Run your code with Ermes
+title: "[RUN]: "
+labels: ["ermes"]
+# assignees:
+#   - ${{github.issue.user.login}}
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
-  - type: input
-    id: contact
+        Thanks for using Ermes. We appreciate you want to use our service to run your code!
+        Over the next minutes you'll see this issue change and add the results of your run...
+  - type: markdown
     attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
+      value: |
+        Do you have any requirement?
+        It's simple as to know where is your requirements.txt file (By Default on the root of your branch)?
+  - type: input
+    id: requirements
+    attributes:
+      label: Requirements Path (OPTIONAL)
+      description: Where is your requirements list (if any)?
+      placeholder: ex. requirements.txt
     validations:
       required: false
+  - type: markdown
+    attributes:
+      value: |
+        Do you have any requirement?
+        It's simple as to know where is your requirements.txt file (By Default on the root of your branch)?
+  - type: input
+    id: entrypoint
+    attributes:
+      label: Entrypoint Path
+      description: What we need to run?
+      placeholder: ex. mycode.py
+    validations:
+      required: true
   - type: textarea
     id: what-happened
     attributes:
-      label: What happened?
+      label: What your code does?
       description: Also tell us, what did you expect to happen?
       placeholder: Tell us what you see!
-      value: "A bug happened!"
+      value: "Some magic is going happened!"
+    validations:
+      required: false
+  - type: dropdown
+    id: type
+    attributes:
+      label: Code Type
+      description: What are we going to execute?
+      options:
+        - Python Script (Default)
+        - Jupyter Notebook
+        - MLFlow Project
+        - Kubeflow Pipeline
     validations:
       required: true
-  - type: dropdown
-    id: version
+  - type: markdown
     attributes:
-      label: Version
-      description: What version of our software are you running?
-      options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+      value: |
+        From now on everything is **OPTIONAL**!
+        Let's setup where to store your results. Remeber the below paths are  **OPTIONAL**
+        so you don't really need to change them. But for maximum flexibility we offer you the
+        choice to do so. **NOTE** use variables in your code to point to these 
+        (i.e: myscript.py --model $MODELPATH --images $IMAGESPATH --logs $LOGSPATH)
+  - type: input
+    id: model
+    attributes:
+      label: Model Path (OPTIONAL)
+      description: Where do you want use to save your models (if any)?
+      placeholder: ex. .output/models
     validations:
-      required: true
-  - type: dropdown
-    id: browsers
+      required: false
+  - type: input
+    id: images
     attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
-  - type: textarea
+      label: Images Path (OPTIONAL)
+      description: Where do you want use to save your images (if any)?
+      placeholder: ex. .output/images
+    validations:
+      required: false
+  - type: input
     id: logs
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+      label: Logs Path (OPTIONAL)
+      description: Where do you want use to save your logs (if any)?
+      placeholder: ex. .output/logs
+    validations:
+      required: false
+  # - type: dropdown
+  #   id: browsers
+  #   attributes:
+  #     label: What browsers are you seeing the problem on?
+  #     multiple: true
+  #     options:
+  #       - Firefox
+  #       - Chrome
+  #       - Safari
+  #       - Microsoft Edge
+  # - type: textarea
+  #   id: logs
+  #   attributes:
+  #     label: Relevant log output
+  #     description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+  #     render: shell
   - type: checkboxes
     id: terms
     attributes:
