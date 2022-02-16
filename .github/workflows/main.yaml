@@ -4,8 +4,8 @@ name: Ermes Main
 #   issues:
 #     types: [opened]
 on:
-  workflow_dispatch
-  
+  workflow_call
+
 env:
   BRANCH: ${{github.actor}}
 jobs:
