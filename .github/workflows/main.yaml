@@ -8,12 +8,14 @@ env:
 jobs:
   Set-Up-Ermes:
     runs-on: ubuntu-latest
-    # container: docker.io/hello-world
+    outputs:
+      body: ${{steps.reading-inputs.outputs.body}}
     steps:
-      - run: |
-          echo "${{ github.event.issue.body }}"
-      - uses: actions/github-script@v6
-        id: set-branch-name
+      # - run: |
+      #     echo "${{ github.event.issue.body }}"
+      - name: 🧰 Set Up Ermes Environment 🧰
+        uses: actions/github-script@v6
+        id: set-ermes-start
         with:
           script: |  
             const date = new Date();
@@ -30,29 +32,26 @@ jobs:
               issue_number: context.issue.number,
               title: '🚦 Run Started on: ' + date.getMonth() + '/' + date.getDate() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' - Author: ' + author.capitalize()
             });
-
-      - name: Label issues
+      - uses: actions/checkout@v2
+      - name: 🧰 Add Status labels
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
         with:
           add-labels: "in Progress"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Initial Comment to JSON
+      - name: 📩 Reading Inputs
+        id: reading-inputs
         run: |
           body="${{ github.event.issue.body }}"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}"
           body="$(echo $body | sed 's/ //g')"
-          body="$(echo $body | sed 's/%0A%0A###/\"},{\"/g')"
+          body="$(echo $body | sed 's/%0A%0A###/\",\"/g')"
           body="$(echo $body | sed 's/%0A%0A/\":\"/g')"
           body="$(echo $body | sed 's/###/{\"/g')"
           body="$(echo $body | sed 's/Conduct/Conduct\"}/g')"
-          JSON="{\"include\":["
-          JSON=$JSON$body
-          JSON="$JSON]}"
-          echo $JSON
-      - uses: actions/checkout@v2
-      - name: Prepare Output Environment
+          echo "::set-output name=body::$( echo "$body")"
+      - name: ⚙️ Finalize Environment
         run: |
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/models/
@@ -73,13 +72,31 @@ jobs:
         body: ${{ steps.get-comment-body.outputs.body }}
         start: ${{steps.set-start-time.outputs.start}}
         elapsed: ${{steps.set-end-time.outputs.elapsed}}
+        entrypoint: ${{steps.capture-inputs.outputs.entrypoint}}
+        reqs: ${{steps.capture-inputs.outputs.reqs}}
       steps:
-      - uses: actions/setup-python@v2
-      - uses: actions/checkout@v2
+      - name: 📬 Preparing Execution
+        uses: actions/setup-python@v2
+        id: capture-inputs
+        run: |
+          import json
+
+          # some JSON:
+          x = '${{needs.Set-Up-Ermes.outputs.body}}'
+
+          # parse x:
+          y = json.loads(x)
+
+          # the result is a Python dictionary:
+          print(f"::set-output name=reqs::{y["Requirements"]}")
+          print(f"::set-output name=entrypoint::{y["Entrypoint"]}")
+      - name: ⚗️ Setting Up Requirements
+        uses: actions/checkout@v2
         with:
           python-version: '3.8'
           cache: 'pip'
-      - run: pip install -r requirements.txt
+      - name: ⚗️ Requirements Installation
+        run: pip install -r requirements.txt
       - run: |
           git fetch
           git checkout 
@@ -91,10 +108,11 @@ jobs:
             let start = Date.now();
             console.log(start)
             core.setOutput("start", start);
-      - id: get-comment-body
+      - name: 🧪 Executing Code
+        id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          body="$(python demo.py)"
+          body="$(python ${{steps.capture-inputs.outputs.entrypoint}})"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
@@ -103,7 +121,8 @@ jobs:
           git add .
           git commit -m "upload images"
           git push -f origin main
-      - uses: actions/github-script@v6
+      - name: 🧪 Calculating Elapsed Time
+        uses: actions/github-script@v6
         id: set-end-time
         with:
           script: |  
@@ -136,7 +155,8 @@ jobs:
         elapsed: ${{steps.create-matrix.outputs.elapsed}}
       steps:
       - uses: actions/checkout@v2
-      - id: create-matrix
+      - name: 📝 Preparing Results
+        id: create-matrix
         run: |
           git fetch
           git checkout 
@@ -163,7 +183,7 @@ jobs:
           echo "::set-output name=matrix::$( echo "$JSON" )"
           echo "::set-output name=body::$( echo "$body")"
           echo "::set-output name=elapsed::${{needs.Executing-Code.outputs.elapsed}}"
-      - name: Create Initial Comment
+      - name: 📝 Publish First Report
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -177,7 +197,7 @@ jobs:
         matrix: ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
       steps:
       - uses: actions/checkout@v2
-      - name: Create Results Comments
+      - name: 📝 Publish Comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -197,7 +217,7 @@ jobs:
               title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + elapsed + ' - Author:' + author
             });
 
-      - name: Label issues
+      - name: 🧰 Finalize Labels
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
         with:
           add-labels: "done"
