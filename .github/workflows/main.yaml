@@ -49,7 +49,7 @@ jobs:
           body="$(echo $body | sed 's/%0A%0A###/\",\"/g')"
           body="$(echo $body | sed 's/%0A%0A/\":\"/g')"
           body="$(echo $body | sed 's/###/{\"/g')"
-          body="$(echo $body | sed 's/Conduct/Conduct"}/g')"
+          body="$(echo $body | sed 's/projectCodeofConduct/projectCodeofConduct"}/g')"
           echo "::set-output name=body::$( echo "$body")"
       - name: ⚙️ Finalize Environment
         run: |
