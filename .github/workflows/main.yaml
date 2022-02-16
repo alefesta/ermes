@@ -90,8 +90,10 @@ jobs:
           y = json.loads(x)
 
           # the result is a Python dictionary:
-          print("::set-output name=reqs::{y[\\"Requirements\\"]}")
-          print("::set-output name=entrypoint::{y[\\"Entrypoint\\"]}")
+          entry=y[\\"Entrypoint\\"]
+          req=y[\\"Requirements\\"]
+          print("::set-output name=reqs::{\\" + y[\\"Requirements\\"] + \\"}")
+          print("::set-output name=entrypoint::{\\" + y[\\"Entrypoint\\"] + \\"}")
           EOF
           python tmp.py
           rm tmp.py
