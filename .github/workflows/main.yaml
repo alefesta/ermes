@@ -92,14 +92,14 @@ jobs:
           # the result is a Python dictionary:
           if y["Requirements"] == "_Noresponse_":
               req="requirements.txt"
-              print("::set-output name=reqs::{" + req + "}")
+              print("::set-output name=reqs::" + req + ")
           else:
-              print("::set-output name=reqs::{" + y["Requirements"] + "}")
+              print("::set-output name=reqs::" + y["Requirements"] + ")
           if y["Entrypoint"] == "_No response_":
               ent="main.py"
-              print("::set-output name=entrypoint::{" + ent + "}")
+              print("::set-output name=entrypoint::" + ent + ")
           else:
-              print("::set-output name=entrypoint::{" + y["Entrypoint"] + "}")
+              print("::set-output name=entrypoint::" + y["Entrypoint"] + ")
           EOF
           python tmp.py
           rm tmp.py
@@ -109,7 +109,7 @@ jobs:
           python-version: '3.8'
           cache: 'pip'
       - name: ⚗️ Requirements Installation
-        run: pip install -r ${steps.capture-inputs.outputs.reqs}
+        run: pip install -r ${{steps.capture-inputs.outputs.reqs}}
       - run: |
           git fetch
           git checkout 
@@ -125,7 +125,7 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          body="$(python ${steps.capture-inputs.outputs.entrypoint})"
+          body="$(python ${{steps.capture-inputs.outputs.entrypoint}})"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
