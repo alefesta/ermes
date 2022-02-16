@@ -1,7 +1,5 @@
 pandas 
 numpy
 tabulate
-keras
-tensorflow
 matplotlib
 termplotlib
