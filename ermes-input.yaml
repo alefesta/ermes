@@ -1,0 +1,122 @@
+name: Ermes Run
+description: Run your code with Ermes
+title: "[STATUS]: [DATE] - [ELAPSED] - [AUTHOR]"
+labels: ["ermes"]
+# assignees:
+#   - ${{github.issue.user.login}}
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for using Ermes. We appreciate you want to use our service to run your code!
+        Over the next minutes you'll see this issue change and add the results of your run...
+  - type: markdown
+    attributes:
+      value: |
+        ## Basics
+  - type: markdown
+    attributes:
+      value: |
+        Let's setup the basics to run your code. We assume that:
+        - requirements are in the form of `requirements.txt` are the root of the repo
+        - your code is matching one of the possible option (see below). By default we look for a `main.py` file at root.
+  - type: input
+    id: requirements
+    attributes:
+      label: Requirements
+      description: Where is your requirements list (if any) **(OPTIONAL)**?
+      placeholder: ex. requirements.txt
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        What are we going to run?
+        It's simple as to know what we are going to execute (your code) and where it is in your repo?
+  - type: input
+    id: entrypoint
+    attributes:
+      label: Entrypoint
+      description: What we need to run?
+      placeholder: ex. mycode.py
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      description: What are we going to execute?
+      options:
+        - Python Script (Default)
+        - Jupyter Notebook
+        - MLFlow Project
+        - Kubeflow Pipeline
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ## OPTIONALS
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What your code does?
+      description: Also tell us, what did you expect to happen? This is super useful for others to understand what you where doing here...
+      placeholder: Tell us what you see!
+      value: "Some magic is going happened!"
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Let's setup where to store your results. Remember the below paths are  **OPTIONAL** so you don't really need to change them.
+        But for maximum flexibility we offer you the choice to do so.
+        > **NOTE**: use variables in your code to point to these (i.e: `myscript.py --model $MODELPATH --images $IMAGESPATH --logs $LOGSPATH`)
+  - type: input
+    id: model
+    attributes:
+      label: Models
+      description: Where do you want use to save your models (if any)?
+      placeholder: ex. .output/models
+    validations:
+      required: false
+  - type: input
+    id: images
+    attributes:
+      label: Images
+      description: Where do you want use to save your images (if any)?
+      placeholder: ex. .output/images
+    validations:
+      required: false
+  - type: input
+    id: logs
+    attributes:
+      label: Logs
+      description: Where do you want use to save your logs (if any)?
+      placeholder: ex. .output/logs
+    validations:
+      required: false
+  # - type: dropdown
+  #   id: browsers
+  #   attributes:
+  #     label: What browsers are you seeing the problem on?
+  #     multiple: true
+  #     options:
+  #       - Firefox
+  #       - Chrome
+  #       - Safari
+  #       - Microsoft Edge
+  # - type: textarea
+  #   id: logs
+  #   attributes:
+  #     label: Relevant log output
+  #     description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+  #     render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project Code of Conduct
+          required: true

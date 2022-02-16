@@ -1,0 +1,323 @@
+name: Ermes Main
+
+# on:
+#   issues:
+#     types: [opened]
+on:
+  workflow_call
+
+env:
+  BRANCH: ${{github.actor}}
+jobs:
+  Set-Up-Ermes:
+    runs-on: ubuntu-latest
+    outputs:
+      body: ${{steps.reading-inputs.outputs.body}}
+    steps:
+      # - run: |
+      #     echo "${{ github.event.issue.body }}"
+      - name: 🧰 Set Up Ermes Environment 🧰
+        uses: actions/github-script@v6
+        id: set-ermes-start
+        with:
+          script: |  
+            const date = new Date();
+            var author = '${{github.event.issue.user.login}}';            
+            Object.defineProperty(String.prototype, 'capitalize', {
+              value: function() {
+                return this.charAt(0).toUpperCase() + this.slice(1);
+              },
+              enumerable: false
+            });
+            github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              title: '🚦 Run Started on: ' + date.getMonth() + '/' + date.getDate() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' - Author: ' + author.capitalize()
+            });
+      - uses: actions/checkout@v2
+      - name: 🧰 Add Status labels
+        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+        with:
+          add-labels: "in Progress"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 📩 Reading Inputs
+        id: reading-inputs
+        run: |
+          body="${{ github.event.issue.body }}"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}"
+          body="$(echo $body | sed 's/ //g')"
+          body="$(echo $body | sed 's/%0A%0A###/\",\"/g')"
+          body="$(echo $body | sed 's/%0A%0A/\":\"/g')"
+          body="$(echo $body | sed 's/###/{\"/g')"
+          body="$(echo $body | sed 's/projectCodeofConduct/projectCodeofConduct"}/g')"
+          echo "::set-output name=body::$( echo "$body")"
+      - name: ⚙️ Finalize Environment
+        run: |
+          if [ -d .output]; then rm -Rf .output; fi
+          mkdir -p .output/models/
+          mkdir -p .output/images/
+          mkdir -p .output/logs/
+          touch .output/models/.tmp
+          touch .output/images/.images
+          touch .output/logs/.tmp
+          git config user.name ${{github.actor}}
+          git add .
+          git commit -m "Environment created"
+          git push -f origin main      
+      
+  Executing-Code:
+      needs: Set-Up-Ermes
+      runs-on: ubuntu-latest
+      outputs:
+        body: ${{ steps.get-comment-body.outputs.body }}
+        start: ${{steps.set-start-time.outputs.start}}
+        elapsed: ${{steps.set-end-time.outputs.elapsed}}
+        entrypoint: ${{steps.capture-inputs.outputs.entrypoint}}
+        reqs: ${{steps.capture-inputs.outputs.reqs}}
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: 📬 Preparing Execution
+        id: capture-inputs
+        run: |
+          cat <<EOF > tmp.py
+          import json
+
+          # some JSON:
+          x = '${{needs.Set-Up-Ermes.outputs.body}}'
+
+          # parse x:
+          y = json.loads(x)
+
+          # the result is a Python dictionary:
+          if y["Requirements"] == "_Noresponse_":
+              req="requirements.txt"
+              print("::set-output name=reqs::" + req)
+          else:
+              print("::set-output name=reqs::" + y["Requirements"])
+          if y["Entrypoint"] == "_Noresponse_":
+              ent="main.py"
+              print("::set-output name=entrypoint::" + ent)
+          else:
+              print("::set-output name=entrypoint::" + y["Entrypoint"])
+          EOF
+          python tmp.py
+          rm tmp.py
+      - name: ⚗️ Setting Up Requirements
+        uses: actions/checkout@v2
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+      - name: ⚗️ Requirements Installation
+        run: pip install -r ${{steps.capture-inputs.outputs.reqs}}
+      - run: |
+          git fetch
+          git checkout 
+          git pull
+      - uses: actions/github-script@v6
+        id: set-start-time
+        with:
+          script: |  
+            let start = Date.now();
+            console.log(start)
+            core.setOutput("start", start);
+      - name: 🧪 Executing Code
+        id: get-comment-body
+        run: |
+          rm -Rf .output/images/.images
+          body="$(python ${{steps.capture-inputs.outputs.entrypoint}})"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo "::set-output name=body::$body"
+          git config user.name ${{github.actor}}
+          git add .
+          git commit -m "upload images"
+          git push -f origin main
+      - name: 🧪 Calculating Elapsed Time
+        uses: actions/github-script@v6
+        id: set-end-time
+        with:
+          script: |  
+            let end = Date.now();
+            let start = '${{steps.set-start-time.outputs.start}}';
+            console.log(start);
+            console.log(end);
+            const date = new Date();
+            let elapsed = end - start ;
+            console.log(elapsed)
+            function msToTime(duration) {
+              var milliseconds = parseInt((duration % 1000) / 100),
+                seconds = Math.floor((duration / 1000) % 60),
+                minutes = Math.floor((duration / (1000 * 60)) % 60),
+                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+              hours = (hours < 10) ? "0" + hours : hours;
+              minutes = (minutes < 10) ? "0" + minutes : minutes;
+              seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+              return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+            }
+             core.setOutput("elapsed", msToTime(elapsed));
+  Retrieving-Results:
+      needs: Executing-Code
+      runs-on: ubuntu-latest
+      outputs:
+        matrix: ${{ steps.create-matrix.outputs.matrix }}
+        body: ${{ steps.create-matrix.outputs.body }}
+        elapsed: ${{steps.create-matrix.outputs.elapsed}}
+      steps:
+      - uses: actions/checkout@v2
+      - name: 📝 Preparing Results
+        id: create-matrix
+        run: |
+          git fetch
+          git checkout 
+          git pull
+          JSON="{\"include\":["
+          for f in .output/images/*.png
+          do 
+            JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/main/$f?raw=true,\"},"
+              if [[ "$JSON" != *"$JSONline"* ]]
+              then
+                JSON="$JSON$JSONline"
+              fi
+          done
+          # Remove last "," and add closing brackets
+          if [[ $JSON == *, ]]; then
+            JSON="${JSON%?}"
+          fi
+          JSON="$JSON]}"
+          echo $JSON
+          # set output
+          body="${{needs.Executing-Code.outputs.body}}"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          echo "::set-output name=matrix::$( echo "$JSON" )"
+          echo "::set-output name=body::$( echo "$body")"
+          echo "::set-output name=elapsed::${{needs.Executing-Code.outputs.elapsed}}"
+      - name: 📝 Publish First Report
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ${{steps.create-matrix.outputs.body}}
+
+  Publishing-Results:
+      needs: Retrieving-Results
+      runs-on: ubuntu-latest
+      outputs:
+        test: ${{steps.set-branch-name.outputs.test}}
+      strategy:
+        matrix: ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
+      steps:
+      - uses: actions/checkout@v2
+      - name: 📝 Publish Comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ![](${{ matrix.body }})
+      - uses: actions/github-script@v6
+        id: set-branch-name
+        with:
+          script: |
+            const date = new Date();
+            var elapsed = '${{needs.Retrieving-Results.outputs.elapsed}}';
+            var author = '${{github.event.issue.user.login}}';
+            github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + elapsed + ' - Author:' + author
+            });
+            core.setOutput("test", "1234");
+      - name: 🧰 Finalize Labels
+        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+        with:
+          add-labels: "done"
+          remove-labels: "in Progress"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+  #     - name: Commit files # transfer the new html files back into the repository
+  #       uses: actions/checkout@v2
+  #       with:
+  #         token: ${{ secrets.GH_WORKFLOW }}
+  #     - run: |
+  #         git config user.name github-actions
+  #         git config user.email github-actions@github.com
+  #         git checkout -b ${{github.actor}}
+  #         cd .github/workflows && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml && mv test.yaml action.yaml
+  #         git add .
+  #         git commit -m "generated"
+  #         git push --set-upstream origin ${{github.actor}}
+  #     - name: Init
+  #       run: echo 'The triggering workflow passed at $BRANCH'
+  #     - name: Sync
+  #       uses: actions/checkout@v2
+  #     - run: |
+  #         git fetch
+  #         git checkout $BRANCH
+  #         git pull
+  #     - name: Create Initial Comment
+  #       uses: peter-evans/create-or-update-comment@v1
+  #       with:
+  #         issue-number: ${{ github.event.issue.number }}
+  #         body: |
+  #           ## Ermes Execution Steps
+
+  #           - [X] Branch created  as: [${{ github.workspace}}](${{ github.actor}})
+      
+  #     - name: Wait For It
+  #       run: |
+  #         sleep 3
+  #     - name: Find Comment
+  #       uses: peter-evans/find-comment@v1
+  #       id: fc
+  #       with:
+  #         issue-number: ${{ github.event.issue.number }}
+  #         comment-author: 'github-actions[bot]'
+  #         body-includes: Ermes Execution Steps
+  #     - name: Update comment
+  #       if: steps.fc.outputs.comment-id != ''
+  #       uses: peter-evans/create-or-update-comment@v1
+  #       with:
+  #         comment-id: ${{ steps.fc.outputs.comment-id }}
+  #         body: |
+  #           - [X] Scripts Installed
+
+  # Execute-Code:
+  #     needs: Set-Up-Ermes
+  #     uses: alefesta/executor/.github/workflows/executor.yaml@main
+  # Comment-Created:
+  #   needs: Execute-Code
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Find Comment
+  #     uses: peter-evans/find-comment@v1
+  #     id: fc
+  #     with:
+  #       issue-number: ${{ github.event.issue.number }}
+  #       comment-author: 'github-actions[bot]'
+  #       body-includes: Ermes Execution Steps
+
+  #   - name: Create comment
+  #     if: steps.fc.outputs.comment-id == ''
+  #     uses: peter-evans/create-or-update-comment@v1
+  #     with:
+  #       issue-number: ${{ github.event.issue.number }}
+  #       body: |
+  #         This comment was written by a bot!
+  #       reactions: rocket
+
+  #   - name: Update comment
+  #     if: steps.fc.outputs.comment-id != ''
+  #     uses: peter-evans/create-or-update-comment@v1
+  #     with:
+  #       comment-id: ${{ steps.fc.outputs.comment-id }}
+  #       body: |
+  #           - [X] Code Executed
+  #       reactions: hooray

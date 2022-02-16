@@ -1,8 +1,0 @@
-{Requirements:_Noresponse_},
-{Entrypoint:demo.py},
-{Type:PythonScript(Default)},
-{Whatyourcodedoes?(OPTIONAL):Somemagicisgoinghappened!},
-{Models:_Noresponse_},
-{Images:_Noresponse_},
-{Logs:_Noresponse_},
-"{CodeofConduct:-[X]Iagreetofollowthisproject'sCodeofConduct
