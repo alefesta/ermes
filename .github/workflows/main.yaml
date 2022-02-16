@@ -75,6 +75,7 @@ jobs:
         entrypoint: ${{steps.capture-inputs.outputs.entrypoint}}
         reqs: ${{steps.capture-inputs.outputs.reqs}}
       steps:
+      - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
       - name: 📬 Preparing Execution
         id: capture-inputs
