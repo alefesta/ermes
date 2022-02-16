@@ -12,7 +12,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Ermes Variables')
 parser.add_argument('--models', dest='model', type=str, default=".output/models",help='Models path')
 parser.add_argument('--images', dest='images', type=str,default=".outputs/images",help='Image path')
-parser.add_argument('--logs', dest='logs', type=int,default=".output/logs" ,help='logs path')
+parser.add_argument('--logs', dest='logs', type=str,default=".output/logs" ,help='logs path')
 
 args = parser.parse_args()
 MODELPATH = args.models
