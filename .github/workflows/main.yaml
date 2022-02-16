@@ -79,7 +79,8 @@ jobs:
       - name: 📬 Preparing Execution
         id: capture-inputs
         run: |
-          python -c """import json
+          cat <<EOF > tmp.py
+          import json
 
           # some JSON:
           x = '${{needs.Set-Up-Ermes.outputs.body}}'
@@ -90,7 +91,8 @@ jobs:
           # the result is a Python dictionary:
           print(f"::set-output name=reqs::{y["Requirements"]}")
           print(f"::set-output name=entrypoint::{y["Entrypoint"]}")
-          """
+          <EOF
+          python tmp.py | rm tmp.py
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
         with:
