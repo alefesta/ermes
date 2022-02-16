@@ -5,6 +5,22 @@ import tensorflow as tf
 from contextlib import contextmanager
 import sys, os
 
+###################################################################
+
+import argparse
+
+parser = argparse.ArgumentParser(description='Ermes Variables')
+parser.add_argument('--models', dest='model', type=str, default=".output/models",help='Models path')
+parser.add_argument('--images', dest='images', type=str,default=".outputs/images",help='Image path')
+parser.add_argument('--logs', dest='logs', type=int,default=".output/logs" ,help='logs path')
+
+args = parser.parse_args()
+MODELPATH = args.models
+IMAGESPATH = args.images
+LOGSPATH = args.logs
+
+###################################################################
+
 # Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
@@ -35,7 +51,7 @@ plt.imshow(train_images[0])
 plt.colorbar()
 plt.grid(False)
 plt.title("Image Sample")
-plt.savefig('.output/images/image1.png', bbox_inches='tight')
+plt.savefig(IMAGESPATH + '/image1.png', bbox_inches='tight')
 
 train_images = train_images / 255.0
 
@@ -49,7 +65,7 @@ for i in range(25):
     plt.grid(False)
     plt.imshow(train_images[i], cmap=plt.cm.binary)
     plt.xlabel(class_names[train_labels[i]])
-plt.savefig('.output/images/image2.png', bbox_inches='tight')
+plt.savefig(IMAGESPATH + '/image2.png', bbox_inches='tight')
 
 model = tf.keras.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
