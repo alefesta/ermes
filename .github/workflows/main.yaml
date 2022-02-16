@@ -92,7 +92,8 @@ jobs:
           print(f"::set-output name=reqs::{y["Requirements"]}")
           print(f"::set-output name=entrypoint::{y["Entrypoint"]}")
           EOF
-          python tmp.py | rm tmp.py
+          python tmp.py
+          rm tmp.py
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
         with:
