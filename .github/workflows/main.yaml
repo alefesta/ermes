@@ -91,7 +91,7 @@ jobs:
           # the result is a Python dictionary:
           print(f"::set-output name=reqs::{y["Requirements"]}")
           print(f"::set-output name=entrypoint::{y["Entrypoint"]}")
-          <EOF
+          EOF
           python tmp.py | rm tmp.py
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
