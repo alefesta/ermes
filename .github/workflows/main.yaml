@@ -1,8 +1,11 @@
 name: Ermes Main
 
+# on:
+#   issues:
+#     types: [opened]
 on:
-  issues:
-    types: [opened]
+  workflow_dispatch
+  
 env:
   BRANCH: ${{github.actor}}
 jobs:
@@ -238,10 +241,6 @@ jobs:
           add-labels: "done"
           remove-labels: "in Progress"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-  Remote-Code:
-      needs: Publishing-Results
-      uses: alefesta/executor/.github/workflows/executor.yaml@main
-
 
   #     - name: Commit files # transfer the new html files back into the repository
   #       uses: actions/checkout@v2
