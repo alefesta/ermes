@@ -77,6 +77,7 @@ jobs:
         elapsed: ${{steps.set-end-time.outputs.elapsed}}
         entrypoint: ${{steps.capture-inputs.outputs.entrypoint}}
         reqs: ${{steps.capture-inputs.outputs.reqs}}
+        type: ${{steps.capture-inputs.outputs.type}}
       steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -103,15 +104,25 @@ jobs:
               print("::set-output name=entrypoint::" + ent)
           else:
               print("::set-output name=entrypoint::" + y["Entrypoint"])
+          if y["Type"] == "PythonScript(Default)":
+              ent="python"
+              print("::set-output name=type::" + ent)
+          if y["Type"] == "JupyterNotebook":
+              ent="jupyter"
+              print("::set-output name=type::" + ent)
+          if y["Type"] == "MLFlowProject":
+              ent="mlflow"
+              print("::set-output name=type::" + ent)
           EOF
           python tmp.py
           rm tmp.py
+        if: steps.capture-inputs.outputs.type == 'python'
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
         with:
           python-version: '3.8'
           cache: 'pip'
-      - name: ⚗️ Requirements Installation
+      - name: ⚗️ Python Requirements Installation
         run: pip install -r ${{steps.capture-inputs.outputs.reqs}}
       - run: |
           git fetch
@@ -124,7 +135,8 @@ jobs:
             let start = Date.now();
             console.log(start)
             core.setOutput("start", start);
-      - name: 🧪 Executing Code
+        if: steps.capture-inputs.outputs.type == 'python'
+      - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
@@ -162,6 +174,11 @@ jobs:
               return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
             }
              core.setOutput("elapsed", msToTime(elapsed));
+        if: steps.capture-inputs.outputs.type == 'jupyter'
+      - name: Executing Jupyter
+        id: jupyter-execution
+        run: |
+          echo "jupyter"
   Retrieving-Results:
       needs: Executing-Code
       runs-on: ubuntu-latest

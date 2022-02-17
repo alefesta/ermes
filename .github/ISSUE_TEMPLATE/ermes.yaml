@@ -50,9 +50,8 @@ body:
         - Python Script (Default)
         - Jupyter Notebook
         - MLFlow Project
-        - Kubeflow Pipeline
     validations:
-      required: true
+      required: false
   - type: markdown
     attributes:
       value: |
