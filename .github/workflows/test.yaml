@@ -13,4 +13,4 @@ jobs:
           python-version: '3.8'
       - run: pip install tensorboard
       - name: Execute Tensorboard
-        run: tensorboard --logdir tmp
+        run: tensorboard --logdir tmp --bind_all
