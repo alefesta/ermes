@@ -118,6 +118,7 @@ jobs:
           rm tmp.py
         
   Python:
+      needs: Executing-Code
       if: needs.Executing-Code.outputs.type == 'python'
       runs-on: ubuntu-latest      
       steps:
@@ -180,6 +181,7 @@ jobs:
              core.setOutput("elapsed", msToTime(elapsed));
         
   Jupyter:
+      needs: Executing-Code
       if: needs.Executing-Code.outputs.type == 'jupyter'
       runs-on: ubuntu-latest
       steps:
