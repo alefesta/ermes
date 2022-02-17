@@ -264,7 +264,7 @@ jobs:
           git checkout 
           git pull
           JSON="{\"include\":["
-          for f in .output/images/*.png
+          for f in .output/images/*.*
           do 
             JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/main/$f?raw=true,\"},"
               if [[ "$JSON" != *"$JSONline"* ]]
@@ -281,10 +281,13 @@ jobs:
           # set output
           if ${{needs.Jupyter.outputs.body}} != "" then
               body="${{needs.Jupyter.outputs.body}}"
+              body="${body//'%'/'%25'}"
+              body="${body//$'\n'/'%0A'}"
           else
             body="${{needs.Python.outputs.body}}"
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
+            body="${body//'%'/'%25'}"
+            body="${body//$'\n'/'%0A'}"
+
           echo "::set-output name=matrix::$( echo "$JSON" )"
           echo "::set-output name=body::$( echo "$body")"
           echo "::set-output name=elapsed::${{needs.Executing-Code.outputs.elapsed}}"
