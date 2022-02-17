@@ -120,7 +120,9 @@ jobs:
   Python:
       needs: Executing-Code
       if: needs.Executing-Code.outputs.type == 'python'
-      runs-on: ubuntu-latest      
+      runs-on: ubuntu-latest
+      outputs:
+        body: ${{steps.get-comment-body.outputs.body}}   
       steps:
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
@@ -277,7 +279,10 @@ jobs:
           JSON="$JSON]}"
           echo $JSON
           # set output
-          body="${{needs.Executing-Code.outputs.body}}"
+          if ${{needs.Jupyter.outputs.body}} != "" then
+              body="${{needs.Jupyter.outputs.body}}"
+          else
+            body="${{needs.Python.outputs.body}}"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           echo "::set-output name=matrix::$( echo "$JSON" )"
