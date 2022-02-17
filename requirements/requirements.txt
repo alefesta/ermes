@@ -1,0 +1,9 @@
+pandas 
+numpy
+tabulate
+keras
+tensorflow
+tensorboard
+matplotlib
+termplotlib
+skleran

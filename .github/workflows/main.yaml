@@ -190,7 +190,9 @@ jobs:
         with:
           python-version: '3.8'
       - name: ⚗️ Python Requirements Installation
-        run: pip install --upgrade jupyter pygments
+        run: pip install --upgrade jupyter pygments 
+      - name: Install requirements
+        run: pip install -r requirements/requirements.txt
       - run: |
           git fetch
           git checkout 
