@@ -1,0 +1,17 @@
+name: tensorboard
+
+on:
+  push
+
+jobs:
+  Tensorboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+      - name: Install Tensorboard
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+        run: pip install tensorboard
+      - name: Execute Tensorboard
+        run: tensorboard --logdir tmp
