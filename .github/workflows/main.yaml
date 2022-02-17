@@ -283,18 +283,19 @@ jobs:
           echo $JSON
           echo "::set-output name=matrix::$( echo "$JSON" )"
           # set output
-          if ${{needs.Jupyter.outputs.body}} != ""; then
+          if ${{needs.Jupyter.outputs.results}} == "success"; then
               body="${{needs.Jupyter.outputs.body}}"
               body="${body//'%'/'%25'}"
               body="${body//$'\n'/'%0A'}"
               echo "::set-output name=body::$( echo "$body")"
               echo "::set-output name=elapsed::$(echo ${{needs.Jupyter.outputs.elapsed}})"
-          else
+          elif ${{needs.Python.outputs.results}} == "success"; then
             body="${{needs.Python.outputs.body}}"
             body="${body//'%'/'%25'}"
             body="${body//$'\n'/'%0A'}"
             echo "::set-output name=body::$( echo "$body")"
-            echo "::set-output name=elapsed::$(echo ${{needs.Python.outputs.elapsed}})"    
+            echo "::set-output name=elapsed::$(echo ${{needs.Python.outputs.elapsed}})"
+          fi    
       # - name: 📝 Publish First Report
       #   uses: peter-evans/create-or-update-comment@v1
       #   with:
