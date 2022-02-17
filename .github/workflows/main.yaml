@@ -212,7 +212,7 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
-          rm -Rf .output/images/.images
+          # rm -Rf .output/images/.images
           jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/ermes.html"
           echo "::set-output name=body::$body"
@@ -291,12 +291,12 @@ jobs:
           echo "::set-output name=matrix::$( echo "$JSON" )"
           echo "::set-output name=body::$( echo "$body")"
           echo "::set-output name=elapsed::${{needs.Executing-Code.outputs.elapsed}}"
-      - name: 📝 Publish First Report
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            ${{steps.create-matrix.outputs.body}}
+      # - name: 📝 Publish First Report
+      #   uses: peter-evans/create-or-update-comment@v1
+      #   with:
+      #     issue-number: ${{ github.event.issue.number }}
+      #     body: |
+      #       ${{steps.create-matrix.outputs.body}}
 
   Publishing-Results:
       needs: Retrieving-Results
