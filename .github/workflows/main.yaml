@@ -207,7 +207,7 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          echo "jupyter nbconvert ${{needs.Executing-Code.outputs.entrypoint}} --to html --output ../.output/models/ermes.html "
+          jupyter nbconvert ${{needs.Executing-Code.outputs.entrypoint}} --to html --output ../.output/models/ermes.html
           body=".output/models/ermes.html"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
@@ -239,9 +239,11 @@ jobs:
               return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
             }
              core.setOutput("elapsed", msToTime(elapsed));
+             core.setOutput("result", "success");
 
   Retrieving-Results:
-      needs: [Jupyter,Python]
+      if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+      needs: [dep1, dep2]
       runs-on: ubuntu-latest
       outputs:
         matrix: ${{ steps.create-matrix.outputs.matrix }}
