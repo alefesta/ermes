@@ -128,7 +128,7 @@ jobs:
           python-version: '3.8'
           cache: 'pip'
       - name: ⚗️ Python Requirements Installation
-        run: pip install -r ${{steps.capture-inputs.outputs.reqs}}
+        run: pip install -r ${{needs.Executing-Code.outputs.reqs}}
       - run: |
           git fetch
           git checkout 
@@ -145,7 +145,7 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          body="$(python ${{steps.capture-inputs.outputs.entrypoint}})"
+          body="$(python ${{needs.Executing-Code.outputs.entrypoint}})"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
@@ -207,7 +207,7 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          echo "jupyter nbconvert ${{steps.capture-inputs.outputs.entrypoint}} --to html "
+          echo "jupyter nbconvert ${{needs.Executing-Code.outputs.entrypoint}} --to html "
           mv *.html .output/logs
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
