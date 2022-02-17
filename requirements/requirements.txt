@@ -6,4 +6,4 @@ tensorflow
 tensorboard
 matplotlib
 termplotlib
-skleran
+scikit-learn
