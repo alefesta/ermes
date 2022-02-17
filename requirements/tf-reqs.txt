@@ -3,5 +3,6 @@ numpy
 tabulate
 keras
 tensorflow
+tensorboard
 matplotlib
 termplotlib

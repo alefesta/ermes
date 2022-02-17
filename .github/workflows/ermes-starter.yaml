@@ -1,0 +1,7 @@
+name: Ermes
+on:
+   issues:
+     types: [opened]
+jobs:
+  Ermes:
+     uses: alefesta/ermes/.github/workflows/main.yaml@main
