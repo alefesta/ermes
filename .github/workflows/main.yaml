@@ -184,6 +184,8 @@ jobs:
       needs: Executing-Code
       if: needs.Executing-Code.outputs.type == 'jupyter'
       runs-on: ubuntu-latest
+      outputs:
+        body: ${{steps.get-comment-body.outputs.body}}
       steps:
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
