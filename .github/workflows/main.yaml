@@ -207,7 +207,7 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          jupyter nbconvert ${{needs.Executing-Code.outputs.entrypoint}} --to html --output ../.output/models/ermes.html
+          jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/ermes.html"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
