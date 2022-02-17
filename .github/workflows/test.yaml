@@ -6,7 +6,6 @@ on:
 jobs:
   Tensorboard:
     runs-on: ubuntu-latest
-    Tensorboard.tensorboard.container.ports: [6006]
     steps:
       - name: Install Tensorboard
         uses: actions/setup-python@v2
