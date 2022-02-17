@@ -243,7 +243,7 @@ jobs:
 
   Retrieving-Results:
       if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-      needs: [dep1, dep2]
+      needs: [Jupyter, Python]
       runs-on: ubuntu-latest
       outputs:
         matrix: ${{ steps.create-matrix.outputs.matrix }}
