@@ -215,12 +215,33 @@ jobs:
         matrix: ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
       steps:
       - uses: actions/checkout@v2
+      - name: Check if we need to publish anything
+        id: check
+        run: |
+            if [ -z "$(ls -A .output/images)" ]; then
+              echo "Images Empty"
+            else
+              echo "Images Not Empty"
+            fi
+            if [ -z "$(ls -A .output/logs)" ]; then
+              echo "Logs Empty"
+            else
+              echo " Logs NotEmpty"
+            fi
+        if: steps.check.outcomes == "Images Not Empty"
       - name: 📝 Publish Comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
             ![](${{ matrix.body }})
+        if: steps.check.outcomes == "Logs Not Empty"
+      - name: 📝 Publish Comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Please review logs [here](https://github.com/${{ github.repository }}/blob/main/.output/logs/)
       - uses: actions/github-script@v6
         id: set-branch-name
         with:
