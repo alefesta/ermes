@@ -116,7 +116,11 @@ jobs:
           EOF
           python tmp.py
           rm tmp.py
-        if: steps.capture-inputs.outputs.type == 'python'
+        
+  Python:
+      runs-on: ubuntu-latest
+      if: ${{Executing-Code.capture-inputs.outputs.type}} == 'python'
+      steps:
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
         with:
@@ -174,11 +178,68 @@ jobs:
               return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
             }
              core.setOutput("elapsed", msToTime(elapsed));
-        if: steps.capture-inputs.outputs.type == 'jupyter'
-      - name: Executing Jupyter
-        id: jupyter-execution
+        
+  Jupyter:
+      if: ${{Execute-Code.capture-inputs.outputs.type }} == 'jupyter'
+      runs-on: ubuntu-latest
+      steps:
+      - name: ⚗️ Setting Up Requirements
+        uses: actions/checkout@v2
+        with:
+          python-version: '3.8'
+      - name: ⚗️ Python Requirements Installation
+        run: pip install jupyter
+      - run: |
+          git fetch
+          git checkout 
+          git pull
+      - uses: actions/github-script@v6
+        id: set-start-time
+        with:
+          script: |  
+            let start = Date.now();
+            console.log(start)
+            core.setOutput("start", start);
+        if: steps.capture-inputs.outputs.type == 'python'
+      - name: 🧪 Executing Python Code
+        id: get-comment-body
         run: |
-          echo "jupyter"
+          rm -Rf .output/images/.images
+          body="$(jupyter nbconvert ${{steps.capture-inputs.outputs.entrypoint}} --to stdout)"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo "::set-output name=body::$body"
+          git config user.name ${{github.actor}}
+          git add .
+          git commit -m "upload images"
+          git push -f origin main
+      - name: 🧪 Calculating Elapsed Time
+        uses: actions/github-script@v6
+        id: set-end-time
+        with:
+          script: |  
+            let end = Date.now();
+            let start = '${{steps.set-start-time.outputs.start}}';
+            console.log(start);
+            console.log(end);
+            const date = new Date();
+            let elapsed = end - start ;
+            console.log(elapsed)
+            function msToTime(duration) {
+              var milliseconds = parseInt((duration % 1000) / 100),
+                seconds = Math.floor((duration / 1000) % 60),
+                minutes = Math.floor((duration / (1000 * 60)) % 60),
+                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+              hours = (hours < 10) ? "0" + hours : hours;
+              minutes = (minutes < 10) ? "0" + minutes : minutes;
+              seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+              return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+            }
+             core.setOutput("elapsed", msToTime(elapsed));
+
   Retrieving-Results:
       needs: Executing-Code
       runs-on: ubuntu-latest
