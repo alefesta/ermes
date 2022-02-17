@@ -207,8 +207,8 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          echo "jupyter nbconvert ${{needs.Executing-Code.outputs.entrypoint}} --to html "
-          mv *.html .output/logs
+          cd .outputs/logs
+          echo "jupyter nbconvert ./${{needs.Executing-Code.outputs.entrypoint}} --to html "
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
           git add .
