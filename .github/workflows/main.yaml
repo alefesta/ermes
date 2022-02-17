@@ -288,13 +288,13 @@ jobs:
               body="${body//'%'/'%25'}"
               body="${body//$'\n'/'%0A'}"
               echo "::set-output name=body::$( echo "$body")"
-              echo "::set-output name=elapsed::${{needs.Jupyter.outputs.elapsed}}"
+              echo "::set-output name=elapsed::$(echo ${{needs.Jupyter.outputs.elapsed}})"
           else
             body="${{needs.Python.outputs.body}}"
             body="${body//'%'/'%25'}"
             body="${body//$'\n'/'%0A'}"
             echo "::set-output name=body::$( echo "$body")"
-            echo "::set-output name=elapsed::${{needs.Python.outputs.elapsed}}"    
+            echo "::set-output name=elapsed::$(echo ${{needs.Python.outputs.elapsed}})"    
       # - name: 📝 Publish First Report
       #   uses: peter-evans/create-or-update-comment@v1
       #   with:
