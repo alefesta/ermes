@@ -189,7 +189,8 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         body: ${{steps.get-comment-body.outputs.body}}
-        elapsed: ${{steps.get-comment-body.outputs.elapsed}}
+        elapsed: ${{steps.set-end-time.outputs.elapsed}}
+        results: ${{steps.set-end-time.outputs.results}}
       steps:
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
@@ -282,7 +283,7 @@ jobs:
           echo $JSON
           echo "::set-output name=matrix::$( echo "$JSON" )"
           # set output
-          if ${{needs.Jupyter.outputs.body}} != "" then
+          if ${{needs.Jupyter.outputs.body}} != ""; then
               body="${{needs.Jupyter.outputs.body}}"
               body="${body//'%'/'%25'}"
               body="${body//$'\n'/'%0A'}"
