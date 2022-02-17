@@ -118,7 +118,7 @@ jobs:
           rm tmp.py
         
   Python:
-      if: ${{Executing-Code.outputs.type}} == 'python'
+      if: Executing-Code.outputs.type == 'python'
       runs-on: ubuntu-latest      
       steps:
       - name: ⚗️ Setting Up Requirements
@@ -180,7 +180,7 @@ jobs:
              core.setOutput("elapsed", msToTime(elapsed));
         
   Jupyter:
-      if: ${{Execute-Code.outputs.type }} == 'jupyter'
+      if: Executing-Code.outputs.type == 'jupyter'
       runs-on: ubuntu-latest
       steps:
       - name: ⚗️ Setting Up Requirements
