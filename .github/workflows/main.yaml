@@ -207,7 +207,7 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          body="$(jupyter nbconvert --to html --template basic .output/logs/${{steps.capture-inputs.outputs.entrypoint}})"
+          body="$(jupyter nbconvert --to html --template basic ${{steps.capture-inputs.outputs.entrypoint}})"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
