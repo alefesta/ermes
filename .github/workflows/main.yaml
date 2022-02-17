@@ -122,7 +122,8 @@ jobs:
       if: needs.Executing-Code.outputs.type == 'python'
       runs-on: ubuntu-latest
       outputs:
-        body: ${{steps.get-comment-body.outputs.body}}   
+        body: ${{steps.get-comment-body.outputs.body}}
+        elapsed: ${{steps.get-comment-body.outputs.elapsed}}
       steps:
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
@@ -188,6 +189,7 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         body: ${{steps.get-comment-body.outputs.body}}
+        elapsed: ${{steps.get-comment-body.outputs.elapsed}}
       steps:
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
@@ -212,7 +214,7 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
-          # rm -Rf .output/images/.images
+          rm -Rf .output/images/.images
           jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/ermes.html"
           echo "::set-output name=body::$body"
@@ -278,21 +280,20 @@ jobs:
           fi
           JSON="$JSON]}"
           echo $JSON
+          echo "::set-output name=matrix::$( echo "$JSON" )"
           # set output
           if ${{needs.Jupyter.outputs.body}} != "" then
               body="${{needs.Jupyter.outputs.body}}"
               body="${body//'%'/'%25'}"
               body="${body//$'\n'/'%0A'}"
+              echo "::set-output name=body::$( echo "$body")"
               echo "::set-output name=elapsed::${{needs.Jupyter.outputs.elapsed}}"
           else
             body="${{needs.Python.outputs.body}}"
             body="${body//'%'/'%25'}"
             body="${body//$'\n'/'%0A'}"
-            echo "::set-output name=elapsed::${{needs.Python.outputs.elapsed}}"
-
-          echo "::set-output name=matrix::$( echo "$JSON" )"
-          echo "::set-output name=body::$( echo "$body")"
-          
+            echo "::set-output name=body::$( echo "$body")"
+            echo "::set-output name=elapsed::${{needs.Python.outputs.elapsed}}"    
       # - name: 📝 Publish First Report
       #   uses: peter-evans/create-or-update-comment@v1
       #   with:
