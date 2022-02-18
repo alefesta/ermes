@@ -1,4 +1,5 @@
-pandas 
+torch
+pandas
 numpy
 tabulate
 matplotlib
