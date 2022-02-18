@@ -251,8 +251,8 @@ jobs:
              core.setOutput("result", "success");
 
   Retrieving-Results:
-      if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-      needs: [Jupyter, Python]
+      if: needs.Jupyter.outputs.results == "success" || needs.Python.outputs.results == "success"
+      # needs: [Jupyter, Python]
       runs-on: ubuntu-latest
       outputs:
         matrix: ${{ steps.create-matrix.outputs.matrix }}
@@ -296,14 +296,15 @@ jobs:
             echo "::set-output name=body::$( echo "$body")"
             echo "::set-output name=elapsed::$(echo ${{needs.Python.outputs.elapsed}})"
           fi    
-      # - name: 📝 Publish First Report
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     body: |
-      #       ${{steps.create-matrix.outputs.body}}
+      - name: 📝 Publish First Report
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            "Execution Completed...checking results"
 
   Publishing-Results:
+      if: ${{ always()}}
       needs: Retrieving-Results
       runs-on: ubuntu-latest
       outputs:
