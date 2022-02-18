@@ -210,7 +210,7 @@ jobs:
           git pull
       - run: |
           folder=${${{needs.Executing-Code.outputs.entrypoint}}%/*}
-          console.log($folder)
+          echo $folder
           mkdir -p .output/executions/$folder/
           touch .output/executions/$folder/.tmp
           git config user.name ${{github.actor}}
