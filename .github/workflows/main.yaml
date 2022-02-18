@@ -251,7 +251,7 @@ jobs:
              core.setOutput("result", "success");
 
   Retrieving-Results:
-      if: always() && ${{needs.Jupyter.outputs.results}} == 'success' || ${{needs.Python.outputs.results}} == 'success'
+      if: ${{ always() }}
       needs: [Jupyter, Python]
       runs-on: ubuntu-latest
       outputs:
@@ -290,7 +290,8 @@ jobs:
               body="${body//$'\n'/'%0A'}"
               echo "::set-output name=body::$( echo "$body")"
               echo "::set-output name=elapsed::$(echo ${{needs.Jupyter.outputs.elapsed}})"
-          elif ${{needs.Python.outputs.results}} == "success"; then
+          fi
+          if ${{needs.Python.outputs.results}} == "success"; then
             body="${{needs.Python.outputs.body}}"
             body="${body//'%'/'%25'}"
             body="${body//$'\n'/'%0A'}"
