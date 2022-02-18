@@ -84,7 +84,7 @@ jobs:
           git add .
           git commit -m "Environment created"
           # git push -f origin main   
-          git push --set-upstream origin ${{github.actor}}   
+          git push  
       
   Executing-Code:
       needs: Set-Up-Ermes
