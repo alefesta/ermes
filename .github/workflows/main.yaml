@@ -156,9 +156,6 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
-          folder=${${{needs.Executing-Code.outputs.entrypoint}}%/*}
-          mkdir -p .output/executions/$folder
-          touch .output/executions/$folder/.tmp
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
@@ -211,6 +208,18 @@ jobs:
           git fetch
           git checkout 
           git pull
+      - run: |
+          folder=${${{needs.Executing-Code.outputs.entrypoint}}%/*}
+          mkdir -p .output/executions/$folder
+          touch .output/executions/$folder/.tmp
+          git config user.name ${{github.actor}}
+          git add .
+          git commit -m "preparing execution environment"
+          git push -f origin main
+      - run: |
+          git fetch
+          git checkout 
+          git pull
       - uses: actions/github-script@v6
         id: set-start-time
         with:
@@ -218,13 +227,15 @@ jobs:
             let start = Date.now();
             console.log(start)
             core.setOutput("start", start);
-        if: steps.capture-inputs.outputs.type == 'python'
+        if: steps.capture-inputs.outputs.type == 'jupyter'
+      - run: |
+          git fetch
+          git checkout 
+          git pull
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          folder=${${{needs.Executing-Code.outputs.entrypoint}}%/*}
-          mkdir -p .output/executions/$folder
           papermill ${{needs.Executing-Code.outputs.entrypoint}} .output/executions/${{needs.Executing-Code.outputs.entrypoint}}
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
