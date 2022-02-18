@@ -84,7 +84,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Environment created"
-          git push  origin $${{github.actor}}:$${{github.actor}}
+          git push  origin ${{github.actor}}:${{github.actor}}
       
   Executing-Code:
       needs: Set-Up-Ermes
@@ -175,7 +175,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Preparing Python Execution"
-          git push  origin $${{github.actor}}:$${{github.actor}}
+          git push  origin ${{github.actor}}:${{github.actor}}
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
@@ -257,7 +257,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
-          git push  origin $${{github.actor}}:$${{github.actor}}
+          git push  origin ${{github.actor}}:${{github.actor}}
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
