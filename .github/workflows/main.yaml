@@ -217,14 +217,17 @@ jobs:
           git fetch
           git checkout 
           git pull
+      - name: Prepare Execution
+        id: prepare-execution
+        run: |
+          orig=${{needs.Executing-Code.outputs.entrypoint}}
+          notebook=${orig#*/}
+          echo "::set-output name=notebook::$notebook"
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          orig=${{needs.Executing-Code.outputs.entrypoint}}
-          notebook=${orig#*/}
-          console.log(notebook)
-          papermill ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${notebook}"
+          papermill ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
