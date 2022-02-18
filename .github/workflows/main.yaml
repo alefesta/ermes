@@ -73,14 +73,14 @@ jobs:
           git pull origin ${{github.actor}}
           git checkout ${{github.actor}}          
           if [ -d .output]; then rm -Rf .output; fi
-          mkdir -p .output/run-${{github.event.issue.number}}/models/
-          mkdir -p .output/run-${{github.event.issue.number}}/images/
-          mkdir -p .output/run-${{github.event.issue.number}}/logs/
-          mkdir -p .output/run-${{github.event.issue.number}}/executions/
-          touch .output/run-${{github.event.issue.number}}/models/.tmp
-          touch .output/run-${{github.event.issue.number}}/images/.images
-          touch .output/run-${{github.event.issue.number}}/logs/.tmp
-          touch .output/run-${{github.event.issue.number}}/executions/.tmp
+          mkdir -p .output/issue-#${{github.event.issue.number}}/models/
+          mkdir -p .output/issue-#${{github.event.issue.number}}/images/
+          mkdir -p .output/issue-#${{github.event.issue.number}}/logs/
+          mkdir -p .output/issue-#${{github.event.issue.number}}/executions/
+          touch .output/issue-#${{github.event.issue.number}}/models/.tmp
+          touch .output/issue-#${{github.event.issue.number}}/images/.images
+          touch .output/issue-#${{github.event.issue.number}}/logs/.tmp
+          touch .output/issue-#${{github.event.issue.number}}/executions/.tmp
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Environment created"
@@ -166,7 +166,7 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
-          rm -Rf .output/run-${{github.event.issue.number}}/images/.images
+          rm -Rf .output/issue-#${{github.event.issue.number}}/images/.images
           body="$(python ${{needs.Executing-Code.outputs.entrypoint}})"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
@@ -248,10 +248,10 @@ jobs:
           sudo apt-get install -y texlive  pandoc
           export PATH=/Library/TeX/texbin:$PATH
           rm -Rf .output/images/.images
-          # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/run-${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
-          # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/run-${{github.event.issue.number}}/models/ermes.ipynb
+          # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/issue-#${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
+          # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/issue-#${{github.event.issue.number}}/models/ermes.ipynb
           jupyter nbconvert --to pdf  --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
-          mv source/results.pdf .output/executions/run-${{github.event.issue.number}}/
+          mv source/results.pdf .output/executions/issue-#${{github.event.issue.number}}/
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
@@ -302,7 +302,7 @@ jobs:
           # git checkout ${{github.actor}}
           git pull origin ${{github.actor}}
           JSON="{\"include\":["
-          for f in .output/run-${{github.event.issue.number}}/images/*.*
+          for f in .output/issue-#${{github.event.issue.number}}/images/*.*
           do 
             JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/${{github.actor}}/$f?raw=true,\"},"
               if [[ "$JSON" != *"$JSONline"* ]]
@@ -338,7 +338,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/run-${{github.event.issue.number}}/executions/results.pdf)
+            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-#${{github.event.issue.number}}/executions/results.pdf)
 
   Publishing-Results:
       if: ${{ always()}}
@@ -379,7 +379,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            Please review logs [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/run-${{github.event.issue.number}}/logs/)
+            Please review logs [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-#${{github.event.issue.number}}/logs/)
       - uses: actions/github-script@v6
         id: set-branch-name
         with:
