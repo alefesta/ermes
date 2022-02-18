@@ -60,6 +60,7 @@ jobs:
           mkdir -p .output/models/
           mkdir -p .output/images/
           mkdir -p .output/logs/
+          mkdir -p .output/executions/
           touch .output/models/.tmp
           touch .output/images/.images
           touch .output/logs/.tmp
