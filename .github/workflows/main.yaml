@@ -71,15 +71,17 @@ jobs:
         run: |
           git config user.name ${{github.actor}}
           git checkout -b ${{github.actor}}
+          git fetch
+          git pull
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/run-${{github.event.issue.number}}/models/
-          mkdir -p .output/run-${{github.event.issue.number}}images/
-          mkdir -p .output/run-${{github.event.issue.number}}logs/
-          mkdir -p .output/run-${{github.event.issue.number}}executions/
-          touch .output/run-${{github.event.issue.number}}models/.tmp
-          touch .output/run-${{github.event.issue.number}}images/.images
-          touch .output/run-${{github.event.issue.number}}logs/.tmp
-          touch .output/run-${{github.event.issue.number}}executions/.tmp
+          mkdir -p .output/run-${{github.event.issue.number}}/images/
+          mkdir -p .output/run-${{github.event.issue.number}}/logs/
+          mkdir -p .output/run-${{github.event.issue.number}}/executions/
+          touch .output/run-${{github.event.issue.number}}/models/.tmp
+          touch .output/run-${{github.event.issue.number}}/images/.images
+          touch .output/run-${{github.event.issue.number}}/logs/.tmp
+          touch .output/run-${{github.event.issue.number}}/executions/.tmp
           git add .
           git commit -m "Environment created"
           # git push -f origin main   
