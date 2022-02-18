@@ -27,7 +27,7 @@ jobs:
             touch .output/.tmp
             git add .
             git commit -m "generated"
-            git push --set-upstream origin ${{github.actor}}
+            git push  origin $${{github.actor}}:$${{github.actor}}
           fi
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
@@ -83,7 +83,6 @@ jobs:
           touch .output/run-${{github.event.issue.number}}/executions/.tmp
           git add .
           git commit -m "Environment created"
-          # git push -f origin main   
           git push  origin $${{github.actor}}:$${{github.actor}}
       
   Executing-Code:
@@ -175,7 +174,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Preparing Python Execution"
-          git push -f origin ${{github.actor}}
+          git push  origin $${{github.actor}}:$${{github.actor}}
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
@@ -257,7 +256,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
-          git push -f origin ${{github.actor}}
+          git push  origin $${{github.actor}}:$${{github.actor}}
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
