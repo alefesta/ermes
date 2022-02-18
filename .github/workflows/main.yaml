@@ -27,7 +27,7 @@ jobs:
             touch .output/.tmp
             git add .
             git commit -m "generated"
-            git push origin $${{github.actor}}:$${{github.actor}}
+            git push --set-upstream origin $${{github.actor}}
           fi
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
