@@ -226,7 +226,7 @@ jobs:
         run: |
           rm -Rf .output/images/.images
           notebook=${${{needs.Executing-Code.outputs.entrypoint}}#*/}
-          papermill ${{needs.Executing-Code.outputs.entrypoint}} .output/executions/$notebook
+          papermill ${{needs.Executing-Code.outputs.entrypoint}} .output/executions/${echo "$notebook"}
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
