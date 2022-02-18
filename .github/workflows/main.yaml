@@ -71,7 +71,7 @@ jobs:
         run: |
           git config user.name ${{github.actor}}
           git checkout -b ${{github.actor}}
-          git pull ${{github.actor}} ${{github.actor}}
+          git pull origin/${{github.actor}} ${{github.actor}}
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/run-${{github.event.issue.number}}/models/
           mkdir -p .output/run-${{github.event.issue.number}}/images/
