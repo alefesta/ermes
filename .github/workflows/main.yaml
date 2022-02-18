@@ -71,7 +71,7 @@ jobs:
         run: |
           git config user.name ${{github.actor}}
           # git checkout -b ${{github.actor}}
-          git pull ${{github.repository}} ${{github.actor}}          
+          git pull origin ${{github.actor}}          
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/run-${{github.event.issue.number}}/models/
           mkdir -p .output/run-${{github.event.issue.number}}/images/
@@ -153,8 +153,8 @@ jobs:
         run: pip install -r ${{needs.Executing-Code.outputs.reqs}}
       - run: |
           git fetch
-          git checkout ${{github.actor}}
-          git pull origin/${{github.actor}} ${{github.actor}}
+          # git checkout ${{github.actor}}
+          git pull origin ${{github.actor}}
       - uses: actions/github-script@v6
         id: set-start-time
         with:
@@ -232,8 +232,8 @@ jobs:
         if: steps.capture-inputs.outputs.type == 'jupyter'
       - run: |
           git fetch
-          git checkout ${{github.actor}}
-          git pull origin/${{github.actor}} ${{github.actor}}
+          # git checkout ${{github.actor}}
+          git pull origin ${{github.actor}}
       - name: Prepare Execution
         id: prepare-execution
         run: |
@@ -299,8 +299,8 @@ jobs:
         id: create-matrix
         run: |
           git fetch
-          git checkout ${{github.actor}}
-          git pull origin/${{github.actor}} ${{github.actor}}
+          # git checkout ${{github.actor}}
+          git pull origin ${{github.actor}}
           JSON="{\"include\":["
           for f in .output/run-${{github.event.issue.number}}/images/*.*
           do 
