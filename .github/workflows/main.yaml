@@ -64,6 +64,7 @@ jobs:
           touch .output/models/.tmp
           touch .output/images/.images
           touch .output/logs/.tmp
+          touch .output/executions/.tmp
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Environment created"
