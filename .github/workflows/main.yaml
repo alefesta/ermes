@@ -27,7 +27,7 @@ jobs:
             touch .output/.tmp
             git add .
             git commit -m "generated"
-            git push  origin $${{github.actor}}:$${{github.actor}}
+            git push origin $${{github.actor}}:$${{github.actor}}
           fi
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
@@ -69,9 +69,9 @@ jobs:
           echo "::set-output name=body::$( echo "$body")"
       - name: ⚙️ Finalize Environment
         run: |
-          git config user.name ${{github.actor}}
           # git checkout -b ${{github.actor}}
-          git pull origin ${{github.actor}}          
+          git pull origin ${{github.actor}}
+          git checkout ${{github.actor}}          
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/run-${{github.event.issue.number}}/models/
           mkdir -p .output/run-${{github.event.issue.number}}/images/
@@ -81,6 +81,7 @@ jobs:
           touch .output/run-${{github.event.issue.number}}/images/.images
           touch .output/run-${{github.event.issue.number}}/logs/.tmp
           touch .output/run-${{github.event.issue.number}}/executions/.tmp
+          git config user.name ${{github.actor}}
           git add .
           git commit -m "Environment created"
           git push  origin $${{github.actor}}:$${{github.actor}}
