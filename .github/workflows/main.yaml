@@ -197,7 +197,7 @@ jobs:
         with:
           python-version: '3.8'
       - name: ⚗️ Python Requirements Installation
-        run: pip install --upgrade jupyter pygments 
+        run: pip install --upgrade jupyter pygments papermill
       - name: Install requirements
         run: pip install -r requirements/requirements.txt
       - run: |
@@ -215,9 +215,10 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
-          rm -Rf .output/images/.images
-          jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
-          body=".output/models/ermes.html"
+          rm -Rf .output/images/.images 
+          papermill ${{needs.Executing-Code.outputs.entrypoint}} ../.output/models/{{needs.Executing-Code.outputs.entrypoint}}
+          # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
+          body=".output/models/{{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
           git add .
