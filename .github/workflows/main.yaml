@@ -223,8 +223,8 @@ jobs:
           rm -Rf .output/images/.images
           orig=${{needs.Executing-Code.outputs.entrypoint}}
           notebook=${orig#*/}
-          console.log($notebook)
-          papermill ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/$notebook"
+          console.log(notebook)
+          papermill ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${{notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
