@@ -234,7 +234,7 @@ jobs:
           rm -Rf .output/images/.images
           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
-          jupyter nbconvert --to pdf ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
+          jupyter nbconvert --to pdf  --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
           mv source/results.pdf .output/executions/
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
@@ -322,8 +322,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/executions/${{needs.Jupyter.outputs.notebook}})
-            ![](https://github.com/${{ github.repository }}/blob/main/.output/executions/results.pdf)
+            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/executions/results.pdf)
 
   Publishing-Results:
       if: ${{ always()}}
