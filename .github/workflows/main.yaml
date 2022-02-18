@@ -16,8 +16,6 @@ jobs:
     steps:
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_WORKFLOW }}
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
