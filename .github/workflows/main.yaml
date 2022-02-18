@@ -319,7 +319,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            # The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/executions/${{needs.Jupyter.outputs.notebook}})
+            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/executions/${{needs.Jupyter.outputs.notebook}})
             ![](https://github.com/${{ github.repository }}/blob/main/.output/executions/results.pdf)
 
   Publishing-Results:
