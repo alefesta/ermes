@@ -227,6 +227,8 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
+          sudo add-apt-repository universe
+          sudo apt update
           sudo apt-get install -y texlive texlive-latex-extra textlive-xetex pandoc
           export PATH=/Library/TeX/texbin:$PATH
           rm -Rf .output/images/.images
