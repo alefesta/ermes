@@ -72,7 +72,7 @@ jobs:
           git config user.name ${{github.actor}}
           git checkout -b ${{github.actor}}
           git fetch
-          git pull
+          git pull ${{github.actor}} ${{github.actor}}
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/run-${{github.event.issue.number}}/models/
           mkdir -p .output/run-${{github.event.issue.number}}/images/
@@ -155,7 +155,7 @@ jobs:
       - run: |
           git fetch
           git checkout ${{github.actor}}
-          git pull
+          git pull ${{github.actor}} ${{github.actor}}
       - uses: actions/github-script@v6
         id: set-start-time
         with:
@@ -176,7 +176,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Preparing Python Execution"
-          git push -f origin main
+          git push -f origin ${{github.actor}}
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
@@ -234,7 +234,7 @@ jobs:
       - run: |
           git fetch
           git checkout ${{github.actor}}
-          git pull
+          git pull ${{github.actor}} ${{github.actor}}
       - name: Prepare Execution
         id: prepare-execution
         run: |
@@ -258,7 +258,7 @@ jobs:
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
-          git push -f origin main
+          git push -f origin ${{github.actor}}
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
@@ -300,8 +300,8 @@ jobs:
         id: create-matrix
         run: |
           git fetch
-          git checkout 
-          git pull
+          git checkout ${{github.actor}}
+          git pull ${{github.actor}} ${{github.actor}}
           JSON="{\"include\":["
           for f in .output/run-${{github.event.issue.number}}/images/*.*
           do 
