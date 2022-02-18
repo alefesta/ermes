@@ -252,7 +252,7 @@ jobs:
 
   Retrieving-Results:
       if: needs.Jupyter.outputs.results == "success" || needs.Python.outputs.results == "success"
-      # needs: [Jupyter, Python]
+      needs: [Jupyter, Python]
       runs-on: ubuntu-latest
       outputs:
         matrix: ${{ steps.create-matrix.outputs.matrix }}
