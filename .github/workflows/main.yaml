@@ -234,7 +234,8 @@ jobs:
           rm -Rf .output/images/.images
           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
-          jupyter nbconvert --to pdf ${{needs.Executing-Code.outputs.entrypoint}} --output .output/executions/results.pdf
+          jupyter nbconvert --to pdf ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
+          mv source/results.pdf .output/executions/
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
