@@ -23,7 +23,7 @@ jobs:
           if [ -d .output ]; then
             echo "Proceding to next step"
           else
-            mkidr -p .output
+            mkdir -p .output
             touch .output/.tmp
             git add .
             git commit -m "generated"
