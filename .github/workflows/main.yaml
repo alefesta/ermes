@@ -204,11 +204,7 @@ jobs:
         run: pip install --upgrade jupyter pygments papermill
       - name: Install requirements
         run: pip install -r requirements/requirements.txt
-      - uses: actions/checkout@v2
-      - run: |
-          git fetch
-          git checkout 
-          git pull     
+      - uses: actions/checkout@v2    
       - uses: actions/github-script@v6
         id: set-start-time
         with:
@@ -226,7 +222,7 @@ jobs:
         run: |
           rm -Rf .output/images/.images
           notebook=${${{needs.Executing-Code.outputs.entrypoint}}#*/}
-          papermill ${{needs.Executing-Code.outputs.entrypoint}} .output/executions/${echo "$notebook"}
+          papermill ${{needs.Executing-Code.outputs.entrypoint}} .output/executions/${notebook}
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
