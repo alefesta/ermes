@@ -20,9 +20,15 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout -b ${{github.actor}}
-          git add .
-          git commit -m "generated"
-          git push --set-upstream origin ${{github.actor}}
+          if [ -d .output ]; then
+            echo "Proceding to next step"
+          else
+            mkidr -p .output
+            touch .output/.tmp
+            git add .
+            git commit -m "generated"
+            git push --set-upstream origin ${{github.actor}}
+          fi
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
         id: set-ermes-start
