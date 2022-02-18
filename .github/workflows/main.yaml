@@ -228,6 +228,7 @@ jobs:
         id: get-comment-body
         run: |
           sudo apt-get install -y texlive texlive-latex-extra pandoc
+          export PATH=/Library/TeX/texbin:$PATH
           rm -Rf .output/images/.images
           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
