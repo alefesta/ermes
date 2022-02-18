@@ -222,7 +222,7 @@ jobs:
         run: |
           rm -Rf .output/images/.images
           orig=${{needs.Executing-Code.outputs.entrypoint}}
-          notebook=${$orig#*/}
+          notebook=${orig#*/}
           console.log($notebook)
           papermill ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/$notebook"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
