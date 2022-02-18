@@ -307,7 +307,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/models/${{needs.Executing-Code.outputs.entrypoint}}"
+            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/executions/${{needs.Executing-Code.outputs.entrypoint}}"
 
   Publishing-Results:
       if: ${{ always()}}
