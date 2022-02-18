@@ -251,7 +251,7 @@ jobs:
              core.setOutput("result", "success");
 
   Retrieving-Results:
-      if: ${{always}} && ${{needs.Jupyter.outputs.results}} == 'success' || ${{needs.Python.outputs.results}} == 'success'
+      if: always() && ${{needs.Jupyter.outputs.results}} == 'success' || ${{needs.Python.outputs.results}} == 'success'
       needs: [Jupyter, Python]
       runs-on: ubuntu-latest
       outputs:
