@@ -195,6 +195,7 @@ jobs:
         body: ${{steps.get-comment-body.outputs.body}}
         elapsed: ${{steps.set-end-time.outputs.elapsed}}
         results: ${{steps.set-end-time.outputs.results}}
+        notebook: ${{steps.prepare-execution.outputs.notebook}}
       steps:
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
@@ -226,9 +227,11 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
+          sudo apt-get install -y texlive texlive-latex-extra pandoc
           rm -Rf .output/images/.images
-          papermill ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${{steps.prepare-execution.outputs.notebook}}"
+          # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
+          jupyter nbconvert --to pdf ${{needs.Executing-Code.outputs.entrypoint}} --output .output/executions/results.pdf
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
@@ -301,21 +304,22 @@ jobs:
               body="${body//'%'/'%25'}"
               body="${body//$'\n'/'%0A'}"
               echo "::set-output name=body::$( echo "$body")"
-              echo "::set-output name=elapsed::$(echo ${{needs.Jupyter.outputs.elapsed}})"
+              echo "::set-output name=elapsed::${{needs.Jupyter.outputs.elapsed}}"
           fi
           if ${{needs.Python.outputs.results}} == "success"; then
             body="${{needs.Python.outputs.body}}"
             body="${body//'%'/'%25'}"
             body="${body//$'\n'/'%0A'}"
             echo "::set-output name=body::$( echo "$body")"
-            echo "::set-output name=elapsed::$(echo ${{needs.Python.outputs.elapsed}})"
+            echo "::set-output name=elapsed::${{needs.Python.outputs.elapsed}}"
           fi    
       - name: 📝 Publish First Report
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/executions/${{needs.Executing-Code.outputs.entrypoint}})"
+            # The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/executions/${{needs.Jupyter.outputs.notebook}})
+            ![](https://github.com/${{ github.repository }}/blob/main/.output/executions/results.pdf)
 
   Publishing-Results:
       if: ${{ always()}}
