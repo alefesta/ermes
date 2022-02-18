@@ -84,7 +84,7 @@ jobs:
           git add .
           git commit -m "Environment created"
           # git push -f origin main   
-          git push  
+          git push  origin $${{github.actor}}:$${{github.actor}}
       
   Executing-Code:
       needs: Set-Up-Ermes
