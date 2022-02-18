@@ -204,6 +204,7 @@ jobs:
         run: pip install --upgrade jupyter pygments papermill
       - name: Install requirements
         run: pip install -r requirements/requirements.txt
+      - uses: actions/checkout@v2
       - run: |
           git fetch
           git checkout 
