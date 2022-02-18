@@ -190,7 +190,7 @@ jobs:
   Jupyter:
       needs: Executing-Code
       if: needs.Executing-Code.outputs.type == 'jupyter'
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-18.04
       outputs:
         body: ${{steps.get-comment-body.outputs.body}}
         elapsed: ${{steps.set-end-time.outputs.elapsed}}
