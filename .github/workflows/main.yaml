@@ -126,6 +126,7 @@ jobs:
       outputs:
         body: ${{steps.get-comment-body.outputs.body}}
         elapsed: ${{steps.get-comment-body.outputs.elapsed}}
+        results: ${{steps.set-end-time.outputs.results}}
       steps:
       - name: ⚗️ Setting Up Requirements
         uses: actions/checkout@v2
@@ -157,6 +158,7 @@ jobs:
           echo "::set-output name=body::$body"
           folder=${${{needs.Executing-Code.outputs.entrypoint}}%/*}
           mkdir -p .output/executions/$folder
+          touch .output/executions/$folder/.tmp
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
@@ -185,7 +187,8 @@ jobs:
 
               return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
             }
-             core.setOutput("elapsed", msToTime(elapsed));
+            core.setOutput("elapsed", msToTime(elapsed));
+            core.setOutput("result", "success");
         
   Jupyter:
       needs: Executing-Code
@@ -220,6 +223,8 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
+          folder=${${{needs.Executing-Code.outputs.entrypoint}}%/*}
+          mkdir -p .output/executions/$folder
           papermill ${{needs.Executing-Code.outputs.entrypoint}} .output/executions/${{needs.Executing-Code.outputs.entrypoint}}
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
