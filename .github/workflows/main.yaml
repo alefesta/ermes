@@ -14,8 +14,17 @@ jobs:
     outputs:
       body: ${{steps.reading-inputs.outputs.body}}
     steps:
-      # - run: |
-      #     echo "${{ github.event.issue.body }}"
+      - name: Commit files # transfer the new html files back into the repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_WORKFLOW }}
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b ${{github.actor}}
+          git add .
+          git commit -m "generated"
+          git push --set-upstream origin ${{github.actor}}
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
         id: set-ermes-start
@@ -56,19 +65,21 @@ jobs:
           echo "::set-output name=body::$( echo "$body")"
       - name: ⚙️ Finalize Environment
         run: |
-          if [ -d .output]; then rm -Rf .output; fi
-          mkdir -p .output/models/
-          mkdir -p .output/images/
-          mkdir -p .output/logs/
-          mkdir -p .output/executions/
-          touch .output/models/.tmp
-          touch .output/images/.images
-          touch .output/logs/.tmp
-          touch .output/executions/.tmp
           git config user.name ${{github.actor}}
+          git checkout -b ${{github.actor}}
+          if [ -d .output]; then rm -Rf .output; fi
+          mkdir -p .output/run-${{github.event.issue.number}}/models/
+          mkdir -p .output/run-${{github.event.issue.number}}images/
+          mkdir -p .output/run-${{github.event.issue.number}}logs/
+          mkdir -p .output/run-${{github.event.issue.number}}executions/
+          touch .output/run-${{github.event.issue.number}}models/.tmp
+          touch .output/run-${{github.event.issue.number}}images/.images
+          touch .output/run-${{github.event.issue.number}}logs/.tmp
+          touch .output/run-${{github.event.issue.number}}executions/.tmp
           git add .
           git commit -m "Environment created"
-          git push -f origin main      
+          # git push -f origin main   
+          git push --set-upstream origin ${{github.actor}}   
       
   Executing-Code:
       needs: Set-Up-Ermes
@@ -137,7 +148,7 @@ jobs:
         run: pip install -r ${{needs.Executing-Code.outputs.reqs}}
       - run: |
           git fetch
-          git checkout 
+          git checkout ${{github.actor}}
           git pull
       - uses: actions/github-script@v6
         id: set-start-time
@@ -150,7 +161,7 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
-          rm -Rf .output/images/.images
+          rm -Rf .output/run-${{github.event.issue.number}}/images/.images
           body="$(python ${{needs.Executing-Code.outputs.entrypoint}})"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
@@ -158,7 +169,7 @@ jobs:
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
           git add .
-          git commit -m "upload images"
+          git commit -m "Preparing Python Execution"
           git push -f origin main
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
@@ -216,7 +227,7 @@ jobs:
         if: steps.capture-inputs.outputs.type == 'jupyter'
       - run: |
           git fetch
-          git checkout 
+          git checkout ${{github.actor}}
           git pull
       - name: Prepare Execution
         id: prepare-execution
@@ -232,10 +243,10 @@ jobs:
           sudo apt-get install -y texlive  pandoc
           export PATH=/Library/TeX/texbin:$PATH
           rm -Rf .output/images/.images
-          # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/executions/${{steps.prepare-execution.outputs.notebook}}"
-          # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
+          # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/run-${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
+          # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/run-${{github.event.issue.number}}/models/ermes.ipynb
           jupyter nbconvert --to pdf  --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
-          mv source/results.pdf .output/executions/
+          mv source/results.pdf .output/executions/run-${{github.event.issue.number}}/
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
@@ -286,9 +297,9 @@ jobs:
           git checkout 
           git pull
           JSON="{\"include\":["
-          for f in .output/images/*.*
+          for f in .output/run-${{github.event.issue.number}}/images/*.*
           do 
-            JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/main/$f?raw=true,\"},"
+            JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/${{github.actor}}/$f?raw=true,\"},"
               if [[ "$JSON" != *"$JSONline"* ]]
               then
                 JSON="$JSON$JSONline"
@@ -322,7 +333,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/main/.output/executions/results.pdf)
+            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/run-${{github.event.issue.number}}/executions/results.pdf)
 
   Publishing-Results:
       if: ${{ always()}}
@@ -363,7 +374,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            Please review logs [here](https://github.com/${{ github.repository }}/blob/main/.output/logs/)
+            Please review logs [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/run-${{github.event.issue.number}}/logs/)
       - uses: actions/github-script@v6
         id: set-branch-name
         with:
@@ -384,83 +395,3 @@ jobs:
           add-labels: "done"
           remove-labels: "in Progress"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-  #     - name: Commit files # transfer the new html files back into the repository
-  #       uses: actions/checkout@v2
-  #       with:
-  #         token: ${{ secrets.GH_WORKFLOW }}
-  #     - run: |
-  #         git config user.name github-actions
-  #         git config user.email github-actions@github.com
-  #         git checkout -b ${{github.actor}}
-  #         cd .github/workflows && curl -O https://raw.githubusercontent.com/alefesta/ermes/main/test.yaml && mv test.yaml action.yaml
-  #         git add .
-  #         git commit -m "generated"
-  #         git push --set-upstream origin ${{github.actor}}
-  #     - name: Init
-  #       run: echo 'The triggering workflow passed at $BRANCH'
-  #     - name: Sync
-  #       uses: actions/checkout@v2
-  #     - run: |
-  #         git fetch
-  #         git checkout $BRANCH
-  #         git pull
-  #     - name: Create Initial Comment
-  #       uses: peter-evans/create-or-update-comment@v1
-  #       with:
-  #         issue-number: ${{ github.event.issue.number }}
-  #         body: |
-  #           ## Ermes Execution Steps
-
-  #           - [X] Branch created  as: [${{ github.workspace}}](${{ github.actor}})
-      
-  #     - name: Wait For It
-  #       run: |
-  #         sleep 3
-  #     - name: Find Comment
-  #       uses: peter-evans/find-comment@v1
-  #       id: fc
-  #       with:
-  #         issue-number: ${{ github.event.issue.number }}
-  #         comment-author: 'github-actions[bot]'
-  #         body-includes: Ermes Execution Steps
-  #     - name: Update comment
-  #       if: steps.fc.outputs.comment-id != ''
-  #       uses: peter-evans/create-or-update-comment@v1
-  #       with:
-  #         comment-id: ${{ steps.fc.outputs.comment-id }}
-  #         body: |
-  #           - [X] Scripts Installed
-
-  # Execute-Code:
-  #     needs: Set-Up-Ermes
-  #     uses: alefesta/executor/.github/workflows/executor.yaml@main
-  # Comment-Created:
-  #   needs: Execute-Code
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Find Comment
-  #     uses: peter-evans/find-comment@v1
-  #     id: fc
-  #     with:
-  #       issue-number: ${{ github.event.issue.number }}
-  #       comment-author: 'github-actions[bot]'
-  #       body-includes: Ermes Execution Steps
-
-  #   - name: Create comment
-  #     if: steps.fc.outputs.comment-id == ''
-  #     uses: peter-evans/create-or-update-comment@v1
-  #     with:
-  #       issue-number: ${{ github.event.issue.number }}
-  #       body: |
-  #         This comment was written by a bot!
-  #       reactions: rocket
-
-  #   - name: Update comment
-  #     if: steps.fc.outputs.comment-id != ''
-  #     uses: peter-evans/create-or-update-comment@v1
-  #     with:
-  #       comment-id: ${{ steps.fc.outputs.comment-id }}
-  #       body: |
-  #           - [X] Code Executed
-  #       reactions: hooray

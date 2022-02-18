@@ -1,11 +1,11 @@
-torch
-torchvision
+# torch
+# torchvision
 pandas
 numpy
 tabulate
-# keras
-# tensorflow
-# tensorboard
+keras
+tensorflow
+tensorboard
 matplotlib
 termplotlib
 scikit-learn
