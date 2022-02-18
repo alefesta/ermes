@@ -154,7 +154,7 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
-          folder=${${{needs.Executing-Code.outputs.entrypoint%/*}
+          folder=${${{needs.Executing-Code.outputs.entrypoint}}%/*}
           mkdir -p .output/executions/$folder
           git config user.name ${{github.actor}}
           git add .
