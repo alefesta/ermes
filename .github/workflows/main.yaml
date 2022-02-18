@@ -25,10 +25,10 @@ jobs:
           else
             mkdir -p .output
             touch .output/.tmp
-            git add .
-            git commit -m "generated"
-            git push --set-upstream origin $${{github.actor}}
           fi
+          git add .
+          git commit -m "generated"
+          git push --set-upstream origin ${{github.actor}}
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
         id: set-ermes-start
