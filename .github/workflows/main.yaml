@@ -154,6 +154,8 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
+          folder=${${{needs.Executing-Code.outputs.entrypoint%/*}
+          mkdir -p .output/executions/$folder
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
@@ -217,7 +219,7 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/images/.images
-          papermill ${{needs.Executing-Code.outputs.entrypoint}} .output/executions/${{needs.Executing-Code.outputs.entrypoint}}
+          papermill ${{needs.Executing-Code.outputs.entrypoint}} .output/executions/${needs.Executing-Code.outputs.entrypoint}
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/models/ermes.ipynb
           body=".output/models/{{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
