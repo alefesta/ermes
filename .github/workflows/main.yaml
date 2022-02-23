@@ -167,7 +167,7 @@ jobs:
         id: get-comment-body
         run: |
           rm -Rf .output/issue-#${{github.event.issue.number}}/images/.images
-          body="$(python ${{needs.Executing-Code.outputs.entrypoint}})"
+          body="$(python ${{needs.Executing-Code.outputs.entrypoint}} --models .output/issue-#${{github.event.issue.number}}/models/ --images .output/issue-#${{github.event.issue.number}}/images/ --logs .output/issue-#${{github.event.issue.number}}/logs/)"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 

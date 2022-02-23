@@ -65,51 +65,36 @@ body:
       value: "Some magic is going happened!"
     validations:
       required: false
-  - type: markdown
-    attributes:
-      value: |
-        Let's setup where to store your results. Remember the below paths are  **OPTIONAL** so you don't really need to change them.
-        But for maximum flexibility we offer you the choice to do so.
-        > **NOTE**: use variables in your code to point to these (i.e: `myscript.py --model $MODELPATH --images $IMAGESPATH --logs $LOGSPATH`)
-  - type: input
-    id: model
-    attributes:
-      label: Models
-      description: Where do you want use to save your models (if any)?
-      placeholder: ex. .output/models
-    validations:
-      required: false
-  - type: input
-    id: images
-    attributes:
-      label: Images
-      description: Where do you want use to save your images (if any)?
-      placeholder: ex. .output/images
-    validations:
-      required: false
-  - type: input
-    id: logs
-    attributes:
-      label: Logs
-      description: Where do you want use to save your logs (if any)?
-      placeholder: ex. .output/logs
-    validations:
-      required: false
-  # - type: dropdown
-  #   id: browsers
+  # - type: markdown
   #   attributes:
-  #     label: What browsers are you seeing the problem on?
-  #     multiple: true
-  #     options:
-  #       - Firefox
-  #       - Chrome
-  #       - Safari
-  #       - Microsoft Edge
-  # - type: textarea
+  #     value: |
+  #       Let's setup where to store your results. Remember the below paths are  **OPTIONAL** so you don't really need to change them.
+  #       But for maximum flexibility we offer you the choice to do so.
+  #       > **NOTE**: use variables in your code to point to these (i.e: `myscript.py --model $MODELPATH --images $IMAGESPATH --logs $LOGSPATH`)
+  # - type: input
+  #   id: model
+  #   attributes:
+  #     label: Models
+  #     description: Where do you want use to save your models (if any)?
+  #     placeholder: ex. .output/models
+  #   validations:
+  #     required: false
+  # - type: input
+  #   id: images
+  #   attributes:
+  #     label: Images
+  #     description: Where do you want use to save your images (if any)?
+  #     placeholder: ex. .output/images
+  #   validations:
+  #     required: false
+  # - type: input
   #   id: logs
   #   attributes:
-  #     label: Relevant log output
-  #     description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+  #     label: Logs
+  #     description: Where do you want use to save your logs (if any)?
+  #     placeholder: ex. .output/logs
+  #   validations:
+  #     required: false
   #     render: shell
   - type: checkboxes
     id: terms
