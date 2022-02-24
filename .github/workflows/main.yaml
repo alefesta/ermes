@@ -78,6 +78,7 @@ jobs:
       - name: ⚙️ Finalize Environment
         run: |
           # git checkout -b ${{github.actor}}
+          git config --global pull.ff only
           git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout ${{github.actor}}          
           if [ -d .output]; then rm -Rf .output; fi
