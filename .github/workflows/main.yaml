@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - run: |
           if (git ls-remote --heads origin ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
-            git config pull.rebase true
+            git config pull.rebase false
             git fetch
             git pull origin ${{github.actor}}
             git checkout -b ${{github.actor}}
