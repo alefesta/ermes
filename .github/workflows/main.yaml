@@ -17,7 +17,7 @@ jobs:
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
       - run: |
-          if (git ls-remote --heads https://github.com/alefesta/ermes.git ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
+          if (git ls-remote --heads origin ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
             git config pull.rebase true
             git fetch
             git pull origin ${{github.actor}}
