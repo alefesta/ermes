@@ -20,7 +20,7 @@ jobs:
           if (git ls-remote --heads origin ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
             git config pull.rebase false
             git fetch
-            git pull origin ${{github.actor}}
+            git pull origin ${{github.actor}} --allow-unrelated-histories
             git checkout -b ${{github.actor}}
           else
             git config user.name github-actions
