@@ -17,18 +17,25 @@ jobs:
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
       - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git checkout -b ${{github.actor}}
-          if [ -d .output ]; then
-            echo "Proceding to next step"
+          if ["`git ls-remote --heads origin ${{github.actor}}`"]
+          then
+           echo "exist"
+            git pull origin ${{github.actor}}
+           git checkout -b ${{github.actor}}
           else
-            mkdir -p .output
-            touch .output/.tmp
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git checkout -b ${{github.actor}}
+            if [ -d .output ]; then
+              echo "Proceding to next step"
+            else
+              mkdir -p .output
+              touch .output/.tmp
+            fi
+            git add .
+            git commit -m "generated"
+            git push --set-upstream origin ${{github.actor}}
           fi
-          git add .
-          git commit -m "generated"
-          git push --set-upstream origin ${{github.actor}}
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
         id: set-ermes-start
@@ -166,6 +173,8 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
+          git pull origin ${{github.actor}}
+          git checkout ${{github.actor}} 
           rm -Rf .output/issue-#${{github.event.issue.number}}/images/.images
           body="$(python ${{needs.Executing-Code.outputs.entrypoint}} --models .output/issue-#${{github.event.issue.number}}/models/ --images .output/issue-#${{github.event.issue.number}}/images/ --logs .output/issue-#${{github.event.issue.number}}/logs/)"
           body="${body//'%'/'%25'}"
