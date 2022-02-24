@@ -264,7 +264,7 @@ jobs:
           rm -Rf .output/images/.images
           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/issue-#${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/issue-#${{github.event.issue.number}}/models/ermes.ipynb
-          jupyter nbconvert --to pdf  --execute ${{needs.Executing-Code.outputs.entrypoint}} --output .output/executions/issue-#${{github.event.issue.number}}/results.pdf
+          jupyter nbconvert --to pdf  --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
           
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
@@ -272,9 +272,11 @@ jobs:
           git add .
           git commit -m "upload images"
           git push  origin ${{github.actor}}:${{github.actor}}
+      - name: Finilize Results
+        run: |
           git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout ${{github.actor}}
-          # mv source/results.pdf .output/executions/issue-#${{github.event.issue.number}}/
+          mv source/results.pdf .output/executions/issue-#${{github.event.issue.number}}/
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
