@@ -17,9 +17,8 @@ jobs:
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
       - run: |
-          result = "git ls-remote --heads origin ${{github.actor}} | wc -l"
-          console.log($result)
-          if $result == 1
+          git ls-remote --heads origin ${{github.actor}} | grep ${{github.actor}} >/dev/null
+          if [ "$?" == "1"]
           then
            git fetch
            git pull origin ${{github.actor}}
