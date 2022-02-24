@@ -17,9 +17,8 @@ jobs:
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
       - run: |
-          git ls-remote --heads origin ${{github.actor}} | grep ${{github.actor}} >/dev/null
-          if [ "$?" == "1"]
-          then
+          git ls-remote --heads origin /refs/heads/${{github.actor}} | grep /refs/heads/${{github.actor}} >/dev/null
+          if [ "$?" == "1"]; then
            git fetch
            git pull origin ${{github.actor}}
            git checkout -b ${{github.actor}}
@@ -36,7 +35,6 @@ jobs:
               git commit -m "generated"
               git push --set-upstream origin ${{github.actor}}
             fi
-
           fi
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
