@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - run: |
           if (git ls-remote --heads https://github.com/alefesta/ermes.git ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
+            git config pull.ff only
             git fetch
             git pull origin ${{github.actor}}
             git checkout -b ${{github.actor}}
