@@ -17,11 +17,10 @@ jobs:
       - name: Commit files # transfer the new html files back into the repository
         uses: actions/checkout@v2
       - run: |
-          git ls-remote --heads origin /refs/heads/${{github.actor}} | grep /refs/heads/${{github.actor}} >/dev/null
-          if [ "$?" == "1"]; then
-           git fetch
-           git pull origin ${{github.actor}}
-           git checkout -b ${{github.actor}}
+          if (git ls-remote --heads https://github.com/alefesta/ermes.git ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
+            git fetch
+            git pull origin ${{github.actor}}
+            git checkout -b ${{github.actor}}
           else
             git config user.name github-actions
             git config user.email github-actions@github.com
