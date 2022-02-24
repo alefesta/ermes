@@ -19,24 +19,23 @@ jobs:
       - run: |
           if ["`git ls-remote --heads origin ${{github.actor}}`"]
           then
-           console.log("exist")
            git fetch
            git pull origin ${{github.actor}}
            git checkout -b ${{github.actor}}
           else
-            console.log("NOT exist")
             git config user.name github-actions
             git config user.email github-actions@github.com
             git checkout -b ${{github.actor}}
             if [ -d .output ]; then
-              echo "Proceding to next step"
+              echo "Proceeding to next step"
             else
               mkdir -p .output
               touch .output/.tmp
+              git add .
+              git commit -m "generated"
+              git push --set-upstream origin ${{github.actor}}
             fi
-            git add .
-            git commit -m "generated"
-            git push --set-upstream origin ${{github.actor}}
+
           fi
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
