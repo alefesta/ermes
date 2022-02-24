@@ -77,7 +77,7 @@ jobs:
       - name: ⚙️ Finalize Environment
         run: |
           # git checkout -b ${{github.actor}}
-          git pull origin ${{github.actor}}
+          git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout ${{github.actor}}          
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/issue-#${{github.event.issue.number}}/models/
@@ -161,7 +161,7 @@ jobs:
       - run: |
           git fetch
           # git checkout ${{github.actor}}
-          git pull origin ${{github.actor}}
+          git pull origin ${{github.actor}} --allow-unrelated-histories
       - uses: actions/github-script@v6
         id: set-start-time
         with:
@@ -173,7 +173,7 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
-          git pull origin ${{github.actor}}
+          git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout ${{github.actor}} 
           rm -Rf .output/issue-#${{github.event.issue.number}}/images/.images
           body="$(python ${{needs.Executing-Code.outputs.entrypoint}} --models .output/issue-#${{github.event.issue.number}}/models/ --images .output/issue-#${{github.event.issue.number}}/images/ --logs .output/issue-#${{github.event.issue.number}}/logs/)"
