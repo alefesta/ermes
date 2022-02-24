@@ -20,7 +20,8 @@ jobs:
           if ["`git ls-remote --heads origin ${{github.actor}}`"]
           then
            echo "exist"
-            git pull origin ${{github.actor}}
+           git fetch
+           git pull origin ${{github.actor}}
            git checkout -b ${{github.actor}}
           else
             git config user.name github-actions
