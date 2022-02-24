@@ -265,13 +265,16 @@ jobs:
           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/issue-#${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/issue-#${{github.event.issue.number}}/models/ermes.ipynb
           jupyter nbconvert --to pdf  --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
-          mv source/results.pdf .output/executions/issue-#${{github.event.issue.number}}/
+          
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
           git add .
           git commit -m "upload images"
           git push  origin ${{github.actor}}:${{github.actor}}
+          git pull origin ${{github.actor}} --allow-unrelated-histories
+          git checkout ${{github.actor}}
+          mv source/results.pdf .output/executions/issue-#${{github.event.issue.number}}/
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
