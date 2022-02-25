@@ -84,7 +84,7 @@ jobs:
           # git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout -b ${{github.actor}}
           git fetch
-          git rebase --rebase-merges   -Xtheirs      
+          git rebase --rebase-merges   -Xtheirs  ${{github.actor}}   
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/issue-#${{github.event.issue.number}}/models/
           mkdir -p .output/issue-#${{github.event.issue.number}}/images/
