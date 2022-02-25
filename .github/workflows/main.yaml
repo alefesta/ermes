@@ -188,9 +188,7 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
-          git lfs install
-          git lfs track "*.*"
-          git add .gitattributes
+          find /source -type f -size +100M -exec ls -lh {} \; | awk '{rm $9}'
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Preparing Python Execution"
