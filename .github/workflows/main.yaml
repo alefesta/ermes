@@ -189,8 +189,9 @@ jobs:
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
           rm -Rf source/data
+          git ls-files --deleted -z | git update-index --assume-unchanged -z --stdin
           git config user.name ${{github.actor}}
-          git add . -u
+          git add -u .
           git commit -m "Preparing Python Execution"
           git push  origin ${{github.actor}}:${{github.actor}}
       - name: 🧪 Calculating Elapsed Time
