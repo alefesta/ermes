@@ -272,7 +272,7 @@ jobs:
           git add .
           git commit -m "upload images"
           git push  origin ${{github.actor}}:${{github.actor}}
-      - name: Finilize Results
+      - name: Finalize Results
         run: |
           git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout ${{github.actor}}
