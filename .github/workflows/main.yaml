@@ -37,8 +37,6 @@ jobs:
               git push --set-upstream origin ${{github.actor}}
             fi
           fi
-          git lfs install
-          git lfs track "*.*"
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
         id: set-ermes-start
@@ -190,6 +188,9 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
+          git lfs install
+          git lfs track "*.*"
+          git add .gitattributes
           git config user.name ${{github.actor}}
           git add .
           git commit -m "Preparing Python Execution"
