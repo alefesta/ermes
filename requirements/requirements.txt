@@ -10,3 +10,4 @@ tensorboard
 matplotlib
 termplotlib
 scikit-learn
+seaborn
