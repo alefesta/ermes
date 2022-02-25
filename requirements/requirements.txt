@@ -6,7 +6,7 @@ numpy
 tabulate
 keras
 tensorflow
-# tensorboard
+tensorboard
 matplotlib
 termplotlib
 scikit-learn
