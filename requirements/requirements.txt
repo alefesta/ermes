@@ -1,6 +1,7 @@
 # torch
 # torchvision
 pandas
+pillow
 numpy
 tabulate
 keras
