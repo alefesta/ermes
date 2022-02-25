@@ -188,10 +188,9 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo "::set-output name=body::$body"
+          rm -Rf source/data
           git config user.name ${{github.actor}}
-          git reset -- source/*/*.zip
           git add . -u
-          git reset -- source/*/*.zip
           git commit -m "Preparing Python Execution"
           git push  origin ${{github.actor}}:${{github.actor}}
       - name: 🧪 Calculating Elapsed Time
