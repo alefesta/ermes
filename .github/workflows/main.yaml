@@ -81,10 +81,10 @@ jobs:
           git config --global pull.rebase false
           git config user.name github-actions
           git config user.email github-actions@github.com
-          # git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout -b ${{github.actor}}
           git fetch
-          git rebase --rebase-merges   -Xtheirs  ${{github.actor}}   
+          git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
+          git pull origin ${{github.actor}} --allow-unrelated-histories
           if [ -d .output]; then rm -Rf .output; fi
           mkdir -p .output/issue-#${{github.event.issue.number}}/models/
           mkdir -p .output/issue-#${{github.event.issue.number}}/images/
