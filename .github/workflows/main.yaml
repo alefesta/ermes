@@ -37,6 +37,8 @@ jobs:
               git push --set-upstream origin ${{github.actor}}
             fi
           fi
+          git lfs install
+          git lfs track "*.*"
       - name: 🧰 Set Up Ermes Environment 🧰
         uses: actions/github-script@v6
         id: set-ermes-start
