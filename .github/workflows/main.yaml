@@ -398,7 +398,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            Please review logs [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-#${{github.event.issue.number}}/logs/)
+            Please review logs [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-%23${{github.event.issue.number}}/logs/)
       - uses: actions/github-script@v6
         id: set-branch-name
         with:
