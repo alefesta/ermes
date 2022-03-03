@@ -21,7 +21,7 @@ jobs:
       - run: ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
         shell: bash
       - run: |
-          nohup ./ngrok http 6006 &
+          nohup ./ngrok http 6006
           echo $(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')
         shell: bash
   
