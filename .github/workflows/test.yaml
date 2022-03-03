@@ -3,6 +3,7 @@ on:
   issue_comment:
     types:
       - created
+      - edited
 
 jobs:
   Tensorboard-Start:
