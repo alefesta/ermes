@@ -37,7 +37,7 @@ jobs:
       - id: url
         run: |
           ./ngrok http -log=stdout 6006 > /dev/null &
-          sudo curl -s http://localhost:4040/api/tunnels/command_line | sudo jq -r --unbuffered '.public_url'
+          curl -s http://127.0.0.1:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url'
           sleep infinity
         shell: bash
       - name: 📝 Tensorboard URL
