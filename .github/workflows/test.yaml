@@ -1,10 +1,13 @@
 name: Tensorboard
-on: push
+on:
+  issue_comment:
+    types:
+      - created
 
 jobs:
-  Tensorboard:
+  Tensorboard-Start:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.comment.body == '%tensorboard'}}
     steps:
       - name: Set-Up-Environment
         run: |
@@ -18,3 +21,13 @@ jobs:
         shell: bash
       - run: ./ngrok http 6006
         shell: bash
+      - run : |
+          echo $(curl -s localhost:6006/inspect/http | grep -oP 'window.common[^;]+' | sed 's/^[^\(]*("//' | sed 's/")\s*$//' | sed 's/\\"/"/g') | jq -r ".Session.Tunnels | values | map(.URL) | .[]" | grep "^http:"
+        shell: bash 
+  
+  Tensorboard-Stop:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.comment.body == '/done'}}
+    steps:
+      - name: Shutdown
+        run: exit 1
