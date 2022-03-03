@@ -37,8 +37,8 @@ jobs:
       - id: url
         run: |
           ./ngrok http -log=stdout 6006 > /dev/null &
-          echo "hostname -I"
-          localurl="$(echo 'hostname -I')"
+          echo $(hostname -I)
+          localurl="$(echo $(hostname -I))"
           curl -s http://$localurl:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url'
           sleep infinity
         shell: bash
