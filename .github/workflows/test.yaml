@@ -1,0 +1,16 @@
+name: Tensorboard
+on: push
+
+jobs:
+  Tensorboard:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Set-Up-Environment
+        with:
+          ngrok_secret: ${{ secrets.NGROK_SECRET }}
+        run: |
+           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.tgz
+           unzip ngrok-stable-linux-amd64.tgz
+           pip install tensorboard
+           tensorboard --logdir /tmp --host 0.0.0.0 --port 6006 &
+           ngrok http 6006 &
