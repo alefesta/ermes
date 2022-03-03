@@ -37,12 +37,7 @@ jobs:
       - run: |
           nohup ./ngrok http 6006 &
           echo $(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')
-          while [ true ] ; do
-          read -t 3 -n 1
-          if [ $? = 0 ] ; then
-          exit ;
-          fi
-          done
+          sleep infinity
         shell: bash
   
 
