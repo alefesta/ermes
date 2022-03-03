@@ -35,7 +35,7 @@ jobs:
       - run: ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
         shell: bash
       - run: |
-          ./ngrok -log=stdout 6006 > /dev/null &
+          ./ngrok http -log=stdout 6006 > /dev/null &
           echo $(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')
           sleep infinity
         shell: bash
