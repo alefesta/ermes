@@ -10,8 +10,11 @@ jobs:
         run: |
           pip install --upgrade pip tensorboard
           tensorboard --logdir /tmp --port 6006 &
-      - uses: apogiatzis/ngrok-tunneling-action@v0.1.4
-        with:
-          timeout: 1h
-          port: 6006
-          ngrok_authtoken: ${{ secrets.NGROK_SECRET }}
+      - run: wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+        shell: bash
+      - run: unzip -qq ngrok-stable-linux-amd64.zip
+        shell: bash
+      - run: ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
+        shell: bash
+      - run: timeout ${{ inputs.timeout }} ./ngrok http 6006
+        shell: bash
