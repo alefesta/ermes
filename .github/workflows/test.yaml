@@ -27,6 +27,7 @@ jobs:
   
   Tensorboard-Stop:
     runs-on: ubuntu-latest
+    needs: Tensorboard-Start
     if: ${{ github.event.comment.body == '/done'}}
     steps:
       - name: Shutdown
