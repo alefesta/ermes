@@ -6,14 +6,21 @@ on:
       - edited
 
 jobs:
+
   Tensorboard-Stop:
-    runs-on: ubuntu-latest
     if: ${{ github.event.comment.body == '/done'}}
+    concurrency: 
+      group: ${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
     steps:
       - name: Shutdown
         run: exit 0
   
   Tensorboard-Start:
+    concurrency: 
+      group: ${{ github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     if: ${{ github.event.comment.body == '%tensorboard'}}
     steps:
