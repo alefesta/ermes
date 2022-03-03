@@ -20,11 +20,10 @@ jobs:
         shell: bash
       - run: ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
         shell: bash
-      - run: ./ngrok http 6006 &
-        shell: bash
-      - run : |
+      - run: |
+          nohup ./ngrok http 6006 &
           echo $(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')
-        shell: bash 
+        shell: bash
   
   Tensorboard-Stop:
     runs-on: ubuntu-latest
