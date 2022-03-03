@@ -10,7 +10,7 @@ jobs:
         run: |
           pip install --upgrade pip tensorboard
           tensorboard --logdir /tmp --port 6006 &
-      - uses: apogiatzis/ngrok-tunneling-action@<VERSION>
+      - uses: apogiatzis/ngrok-tunneling-action@0.1.4
         with:
           timeout: 1h
           port: 6006
