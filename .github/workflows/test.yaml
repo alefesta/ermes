@@ -37,7 +37,8 @@ jobs:
       - id: url
         run: |
           ./ngrok http -log=stdout 6006 > /dev/null &
-          echo "::set-output name=body::$( echo "curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url'")
+          body=$(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')
+          echo "::set-output name=body::$body"
           echo $()          sleep infinity
         shell: bash
       - name: 📝 Tensorboard URL
