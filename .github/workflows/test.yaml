@@ -8,9 +8,10 @@ jobs:
     steps:
       - name: Set-Up-Environment
         run: |
-          wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.tgz
-          tar -xvzf ngrok-stable-linux-amd64.tgz
           pip install --upgrade pip tensorboard
-          sudo ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
-          sudo ./ngrok http 6006 &
-          tensorboard --logdir /tmp --host 0.0.0.0 --port 6006 &
+          tensorboard --logdir /tmp --port 6006 &
+      - uses: apogiatzis/ngrok-tunneling-action@<VERSION>
+        with:
+          timeout: 1h
+          port: 4000
+          ngrok_authtoken: ${{ secrets.NGROK_SECRET }}
