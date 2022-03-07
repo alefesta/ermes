@@ -22,7 +22,7 @@ jobs:
       group: ${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
-    if: ${{ github.event.comment.body == '%tensorboard'}}
+    if: ${{ github.event.comment.body == '%tensorboard'}}"
     steps:
       - name: Set-Up-Environment
         run: |
@@ -37,7 +37,7 @@ jobs:
       - id: url
         run: |
           ./ngrok http -log=stdout 6006 > /dev/null &
-          body=$(echo $(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url'))
+          body=$(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')
           echo $body
           echo "::set-output name=body::$body"
           sleep infinity
