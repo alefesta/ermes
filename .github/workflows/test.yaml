@@ -41,7 +41,6 @@ jobs:
           body="$(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')"
           echo $body
           echo "::set-output name=body::$body"
-          sleep infinity
         shell: bash
       - name: 📝 Tensorboard URL
         uses: peter-evans/create-or-update-comment@v1
@@ -49,5 +48,6 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
             You may use Tensorboard at: [](${{steps.url.outputs.body}})
+      - run:  sleep infinity
   
 
