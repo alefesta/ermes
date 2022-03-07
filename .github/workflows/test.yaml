@@ -26,7 +26,7 @@ jobs:
       - name: Set-Up-Environment
         id: url
         run: |
-          echo '::echo::off'
+          echo off
           pip install --upgrade pip tensorboard
           tensorboard --logdir /tmp --port 6006 &
           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
@@ -34,7 +34,7 @@ jobs:
           ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
                     ./ngrok http --auth ${{github.actor}}:${{github.actor}} -log=stdout 6006 > /dev/null &
           sleep 10
-          echo '::echo::on'
+          echo on
           body="$(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')"
           echo $body
           echo "::set-output name=body::$body"
