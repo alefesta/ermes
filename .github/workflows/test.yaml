@@ -27,15 +27,10 @@ jobs:
         run: |
           pip install --upgrade pip tensorboard
           tensorboard --logdir /tmp --port 6006 &
-      - run: wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-        shell: bash
-      - run: unzip -qq ngrok-stable-linux-amd64.zip
-        shell: bash
-      - run: ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
-        shell: bash
-      - id: url
-        run: |
-          ./ngrok http -log=stdout 6006 > /dev/null &
+          wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+          unzip -qq ngrok-stable-linux-amd64.zip
+          ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
+                    ./ngrok http --auth ${{github.actor}}:${{github.actor}} -log=stdout 6006 > /dev/null &
           sleep 10
           body="$(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')"
           echo $body
@@ -46,7 +41,9 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            You may use Tensorboard at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}})
+            You may use Tensorboard at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}}) with
+            username: ${{github.actor}}
+            password: ${{github.actor}}
       - run:  sleep infinity
   
 
