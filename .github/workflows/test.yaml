@@ -10,7 +10,7 @@ jobs:
     if: ${{ github.event.comment.body == '/done'}}
     concurrency: 
       group: ${{ github.ref }}
-      # cancel-in-progress: true
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - name: Shutdown
@@ -24,7 +24,9 @@ jobs:
     if: ${{ github.event.comment.body == '%tensorboard'}}
     steps:
       - name: Set-Up-Environment
+        id: url
         run: |
+          echo '::echo::off'
           pip install --upgrade pip tensorboard
           tensorboard --logdir /tmp --port 6006 &
           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
@@ -32,6 +34,7 @@ jobs:
           ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
                     ./ngrok http --auth ${{github.actor}}:${{github.actor}} -log=stdout 6006 > /dev/null &
           sleep 10
+          echo '::echo::on'
           body="$(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')"
           echo $body
           echo "::set-output name=body::$body"
@@ -41,7 +44,9 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            You may use Tensorboard at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}}) with
+            You may use Tensorboard at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}})
+            
+            Login with:
             username: ${{github.actor}}
             password: ${{github.actor}}
       - run:  sleep infinity
