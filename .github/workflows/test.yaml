@@ -3,7 +3,6 @@ on:
   issue_comment:
     types:
       - created
-      - edited
 
 jobs:
 
@@ -11,7 +10,7 @@ jobs:
     if: ${{ github.event.comment.body == '/done'}}
     concurrency: 
       group: ${{ github.ref }}
-      cancel-in-progress: true
+      # cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - name: Shutdown
@@ -47,7 +46,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            You may use Tensorboard at: [](${{steps.url.outputs.body}})
+            You may use Tensorboard at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}})
       - run:  sleep infinity
   
 
