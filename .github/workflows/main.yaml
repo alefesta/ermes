@@ -237,13 +237,19 @@ jobs:
         with:
           python-version: '3.8'
       - name: ⚗️ Python Requirements Installation
-        run: pip install --upgrade jupyter pygments papermill
+        run: 
+          echo "⚙️⚙️⚙️ working..."
+          stty -echo
+          pip install --upgrade jupyter pygments papermill
+          stty echo
+        shell: bash
       - name: Install requirements
         run: |
           echo "⚙️⚙️⚙️ working..."
           stty -echo
           pip install -r requirements/requirements.txt
           stty echo
+        shell: bash
       - uses: actions/checkout@v2    
       - uses: actions/github-script@v6
         id: set-start-time
