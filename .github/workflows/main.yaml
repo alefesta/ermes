@@ -365,7 +365,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-%23${{github.event.issue.number}}/executions/results.pdf)
+            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-%23${{github.event.issue.number}}/executions/)
 
   Publishing-Results:
       if: ${{ always()}}
