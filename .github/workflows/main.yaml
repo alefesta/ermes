@@ -238,17 +238,9 @@ jobs:
           python-version: '3.8'
       - name: ⚗️ Python Requirements Installation
         run: 
-          echo "⚙️⚙️⚙️ working..."
-          stty -echo
+          echo "⚙️⚙️⚙️ working on requirements..."
           pip install --upgrade jupyter pygments papermill
-          stty echo
-        shell: bash
-      - name: Install requirements
-        run: |
-          echo "⚙️⚙️⚙️ working..."
-          stty -echo
-          pip install -r requirements/requirements.txt
-          stty echo
+          pip install -r ${{needs.Executing-Code.outputs.reqs}}
         shell: bash
       - uses: actions/checkout@v2    
       - uses: actions/github-script@v6
@@ -262,17 +254,12 @@ jobs:
       - run: |
           git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout ${{github.actor}} 
-      - name: Prepare Execution
+      - name: ⚙️ Prepare Execution
         id: prepare-execution
         run: |
           orig=${{needs.Executing-Code.outputs.entrypoint}}
           notebook=${orig#*/}
           echo "::set-output name=notebook::$notebook"
-      - name: 🧪 Executing Python Code
-        id: get-comment-body
-        run: |
-          echo "⚙️⚙️⚙️ working..."
-          stty -echo
           git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout ${{github.actor}} 
           sudo apt-get update
@@ -280,7 +267,10 @@ jobs:
           sudo apt-get install -y texlive  pandoc
           export PATH=/Library/TeX/texbin:$PATH
           rm -Rf .output/images/.images
-          stty echo
+      - name: 🧪 Executing Python Code
+        id: get-comment-body
+        run: |
+          echo "⚙️⚙️⚙️ working..."
           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/issue-#${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/issue-#${{github.event.issue.number}}/models/ermes.ipynb
           # jupyter nbconvert --to pdf --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
