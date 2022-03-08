@@ -1,4 +1,4 @@
-name: ⭐️⭐️⭐️ Tensorboard Action⭐️⭐️⭐️
+name: ⭐️ Tensorboard Action ⭐️
 on:
   issue_comment:
     types:
