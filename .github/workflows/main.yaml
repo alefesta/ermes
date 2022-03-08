@@ -261,7 +261,7 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
-          echo "working..."
+          echo "⚙️⚙️⚙️ working..."
           stty_orig=`stty -g`
           stty -echo
           git pull origin ${{github.actor}} --allow-unrelated-histories
