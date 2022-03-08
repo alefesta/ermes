@@ -239,7 +239,12 @@ jobs:
       - name: ⚗️ Python Requirements Installation
         run: pip install --upgrade jupyter pygments papermill
       - name: Install requirements
-        run: pip install -r requirements/requirements.txt
+        run: |
+          echo "⚙️⚙️⚙️ working..."
+          stty_orig=`stty -g`
+          stty -echo
+          pip install -r requirements/requirements.txt
+          stty $stty_orig
       - uses: actions/checkout@v2    
       - uses: actions/github-script@v6
         id: set-start-time
