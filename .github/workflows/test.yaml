@@ -1,4 +1,4 @@
-name: Tensorboard
+name: ⭐️⭐️⭐️ Tensorboard Action⭐️⭐️⭐️
 on:
   issue_comment:
     types:
@@ -13,7 +13,7 @@ jobs:
       cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
-      - name: Shutdown
+      - name: ⛔️⛔️⛔️ Shuting down Tensoboard ⛔️⛔️⛔️
         run: exit 0
   
   Tensorboard-Start:
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.comment.body == '%tensorboard'}}
     steps:
-      - name: Set-Up-Environment
+      - name: 🚀🚀🚀 Starting Tensorboard 🚀🚀🚀
         id: url
         run: |
           echo off
@@ -39,14 +39,21 @@ jobs:
           echo $body
           echo "::set-output name=body::$body"
         shell: bash
-      - name: 📝 Tensorboard URL
+      - name: 📝 Publishing Tensorboard URL
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            You may use Tensorboard at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}})
+            🤩🤩🤩🤩🤩🤩🤩🤩🤩🤩
+
+            Hey @${{github.actor}}!
+
+            Tensorboard is ready at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}})
             
             Login with:
             username: ${{github.actor}}
             password: ${{github.actor}}
-      - run:  sleep infinity
+            
+            🤩🤩🤩🤩🤩🤩🤩🤩🤩🤩
+      - name: 🛸🛸🛸 Waiting for shutdown command 🛸🛸🛸
+        run:  sleep infinity
