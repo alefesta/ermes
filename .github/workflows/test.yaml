@@ -32,10 +32,10 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout -b ${{github.actor}}
-          git fetch
-          git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
-          git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
-          git pull --allow-unrelated-histories
+          # git fetch
+          # git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
+          # git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
+          # git pull --allow-unrelated-histories
           pip install --upgrade pip tensorboard
           tensorboard --logdir /source/logs/train_data20220308-175730 --port 6006 &
           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
