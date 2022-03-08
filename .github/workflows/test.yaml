@@ -28,7 +28,7 @@ jobs:
         run: |
           echo off
           pip install --upgrade pip tensorboard
-          tensorboard --logdir /${{ github.repository }}/tree/${{github.actor}}/source/logs --port 6006 &
+          tensorboard --logdir /${{ github.repository }}/tree/${{github.actor}}/source/logs/20220308-173749 --port 6006 &
           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
           unzip -qq ngrok-stable-linux-amd64.zip
           ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
