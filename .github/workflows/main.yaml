@@ -239,7 +239,7 @@ jobs:
         with:
           python-version: '3.8'
       - name: ⚗️ Python Requirements Installation
-        run: 
+        run: |
           echo "⚙️⚙️⚙️ working on requirements..."
           pip install --upgrade jupyter pygments papermill
           pip install -r ${{needs.Executing-Code.outputs.reqs}}
