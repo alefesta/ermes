@@ -10,14 +10,15 @@ env:
   BRANCH: ${{github.actor}}
 
 jobs:
-  Set-Up-Ermes:
+  Initialize:
     runs-on: ubuntu-latest
     outputs:
       body: ${{steps.reading-inputs.outputs.body}}
     steps:
-      - name: Commit files # transfer the new html files back into the repository
+      - name: 📥 Get Info 📥
         uses: actions/checkout@v2
-      - run: |
+      - name: 📥 Synchronize... 📥
+        run: |
           if (git ls-remote --heads origin ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
             # git config user.name github-actions
             # git config user.email github-actions@github.com
@@ -37,8 +38,8 @@ jobs:
               git commit -m "generated"
               git push --set-upstream origin ${{github.actor}}
             fi
-          fi
-      - name: 🧰 Set Up Ermes Environment 🧰
+            fi
+      - name: 🧰 Change Issue Title... 🧰
         uses: actions/github-script@v6
         id: set-ermes-start
         with:
@@ -57,13 +58,14 @@ jobs:
               issue_number: context.issue.number,
               title: '🚦 Run Started on: ' + date.getMonth() + '/' + date.getDate() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' - Author: ' + author.capitalize()
             });
-      - uses: actions/checkout@v2
-      - name: 🧰 Add Status labels
+      - name: 📥 Synchronize... 📥
+        uses: actions/checkout@v2
+      - name: 🧰 Add Labels... 🧰
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
         with:
           add-labels: "in Progress"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: 📩 Reading Inputs
+      - name: 📥 Getting Final Inputs... 📥
         id: reading-inputs
         run: |
           body="${{ github.event.issue.body }}"
@@ -76,7 +78,7 @@ jobs:
           body="$(echo $body | sed 's/###/{\"/g')"
           body="$(echo $body | sed 's/projectCodeofConduct/projectCodeofConduct"}/g')"
           echo "::set-output name=body::$( echo "$body")"
-      - name: ⚙️ Finalize Environment
+      - name: ⚙️ Finalize Steps Before Execution... ⚙️
         run: |
           # git checkout -b ${{github.actor}}
           git config --global pull.rebase false
@@ -114,14 +116,14 @@ jobs:
       steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: 📬 Preparing Execution
+      - name: 📬 Preparing Execution... 📬
         id: capture-inputs
         run: |
           cat <<EOF > tmp.py
           import json
 
           # some JSON:
-          x = '${{needs.Set-Up-Ermes.outputs.body}}'
+          x = '${{needs.Initialize.outputs.body}}'
 
           # parse x:
           y = json.loads(x)
