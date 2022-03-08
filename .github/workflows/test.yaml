@@ -37,7 +37,7 @@ jobs:
           # git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
           # git pull --allow-unrelated-histories
           pip install --upgrade pip tensorboard
-          tensorboard --logdir /source/logs/train_data20220308-175730 --port 6006 &
+          tensorboard --logdir /source/logs/train_data20220308-175730/ --port 6006 &
           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
           unzip -qq ngrok-stable-linux-amd64.zip
           ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
