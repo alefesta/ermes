@@ -261,6 +261,9 @@ jobs:
       - name: 🧪 Executing Python Code
         id: get-comment-body
         run: |
+          echo "working..."
+          stty_orig=`stty -g`
+          stty -echo
           git pull origin ${{github.actor}} --allow-unrelated-histories
           git checkout ${{github.actor}} 
           sudo apt-get update
@@ -268,6 +271,7 @@ jobs:
           sudo apt-get install -y texlive  pandoc
           export PATH=/Library/TeX/texbin:$PATH
           rm -Rf .output/images/.images
+          stty $stty_orig
           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/issue-#${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/issue-#${{github.event.issue.number}}/models/ermes.ipynb
           # jupyter nbconvert --to pdf --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
@@ -280,6 +284,7 @@ jobs:
           git add .
           git commit -m "upload images"
           git push  origin ${{github.actor}}:${{github.actor}}
+        shell: bash
       - name: 🧪 Calculating Elapsed Time
         uses: actions/github-script@v6
         id: set-end-time
