@@ -275,9 +275,9 @@ jobs:
           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/issue-#${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/issue-#${{github.event.issue.number}}/models/ermes.ipynb
           # jupyter nbconvert --to pdf --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
-          jupyter nbconvert --to notebook --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output-dir ".output/issue-#${{github.event.issue.number}}/executions/"
+          jupyter nbconvert --to notebook --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output-dir ".output/issue-#${{github.event.issue.number}}/executions/" --output ${{ steps.prepare-execution.outputs.notebook}}
           # mv source/results.pdf .output/issue-#${{github.event.issue.number}}/executions/
-          echo $(</dev/stdout)
+          # echo $(</dev/stdout)
           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
           echo "::set-output name=body::$body"
           git config user.name ${{github.actor}}
