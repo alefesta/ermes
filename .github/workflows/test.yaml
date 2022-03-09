@@ -21,7 +21,7 @@ jobs:
       group: ${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
-    if: ${{ github.event.comment.body == '%tensorboard'}}
+    if: contains(${{ github.event.comment.body }},'%tensorboard')
     steps:
       - name: 📥 Get Info 📥
         uses: actions/checkout@v2
