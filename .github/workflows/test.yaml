@@ -35,7 +35,7 @@ jobs:
           git checkout -b ${{github.actor}}
           # git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
           git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
-          git checkout ${{github.actor}} .github/workflows/test.yaml
+          git checkout main .github/workflows/test.yaml
           git pull --allow-unrelated-histories
           ls source/logs/ -l
           pip install --upgrade pip tensorboard
