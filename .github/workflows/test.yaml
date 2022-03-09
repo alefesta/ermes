@@ -37,7 +37,7 @@ jobs:
           # git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
           git checkout main .github/workflows/test.yaml
           # git pull --allow-unrelated-histories
-          ls source/logs/ -l
+          ls source -l
           pip install --upgrade pip tensorboard
           tensor=$(echo "${{ github.event.comment.body }}"  | sed 's/%//')
           $tensor --port 6006 &
