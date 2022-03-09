@@ -7,7 +7,7 @@ on:
 jobs:
 
   Tensorboard-Stop:
-    if: ${{ github.event.comment.body == '/done'}}
+    if: github.event.comment.body == '/done'
     concurrency: 
       group: ${{ github.ref }}
       cancel-in-progress: true
@@ -21,7 +21,7 @@ jobs:
       group: ${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
-    if: contains(${{ github.event.comment.body }},"%tensorboard")
+    if: contains(github.event.comment.body,"%tensorboard") && github.event.comment.body != "/done"
     steps:
       - name: 📥 Get Info 📥
         uses: actions/checkout@v2
@@ -32,6 +32,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout -b ${{github.actor}}
+          ls source/logs/ -l
           # git fetch
           # git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
           # git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
