@@ -37,7 +37,7 @@ jobs:
           # git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
           # git pull --allow-unrelated-histories
           pip install --upgrade pip tensorboard
-          tensor ="$(echo ${{ github.event.comment.body }}  | sed 's/h//')"
+          tensor=$(echo "${{ github.event.comment.body }}"  | sed 's/h//')
           echo $tensor
           $tensor --port 6006 &)
           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
