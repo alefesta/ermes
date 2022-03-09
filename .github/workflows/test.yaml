@@ -35,7 +35,7 @@ jobs:
           git config --global core.excludesfile .github/workflows/*.yaml
           git fetch
           git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
-          # git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
+          git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
           git pull --allow-unrelated-histories
           ls source/logs/ -l
           pip install --upgrade pip tensorboard
