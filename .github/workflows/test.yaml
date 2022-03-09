@@ -32,11 +32,11 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout -b ${{github.actor}}
+          git fetch
+          git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
+          git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
+          git pull --allow-unrelated-histories
           ls source/logs/ -l
-          # git fetch
-          # git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
-          # git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
-          # git pull --allow-unrelated-histories
           pip install --upgrade pip tensorboard
           tensor=$(echo "${{ github.event.comment.body }}"  | sed 's/%//')
           $tensor --port 6006 &
