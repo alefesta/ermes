@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: get-infos
     steps:
-      - uses: action/toolkit
+      - uses: actions/toolkit@v2
       - name: Set selected color
         run: echo '::set-output name=SELECTED_COLOR::green'
         id: random-color-generator
