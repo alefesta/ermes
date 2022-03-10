@@ -26,7 +26,6 @@ jobs:
 
    evaluate-code:
       name: evaluate code to be run
-      needs: prepare-environment
       runs-on: ubuntu-latest
       steps:
          - name: evaluate
