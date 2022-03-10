@@ -14,22 +14,18 @@ jobs:
       uses: ./.github/workflows/issue-setup.yml
 
    prepare-environment:
-      needs: issue-setup
       if: github.ref != 'main'
       uses: ./.github/workflows/issue-setup.yml
 
    evaluate-code:
-      needs: prepare-environment
       if: github.ref != 'main'
       uses: ./.github/workflows/issue-setup.yml
    
    execute-code:
-      needs: evaluate-code
       if: github.ref != 'main'
       uses: ./.github/workflows/issue-setup.yml
    
    clean-up:
-      needs: execute-code
       if: github.ref != 'main'
       uses: ./.github/workflows/issue-setup.yml
    
