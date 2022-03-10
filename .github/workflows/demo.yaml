@@ -8,17 +8,9 @@ on: push
 #   cancel-in-progress: true
 
 jobs:
-   setup:
-      name: setup
-      runs-on: ubuntu-latest
-      
-      defaults:
-         run:
-            shell: bash
-      steps:
-         - uses: actions/checkout@v2
-         
+
    issue-setup:
+      name: setup
       uses: ./github/workflow/issue-setup.yml
 
    prepare-environment:
