@@ -45,7 +45,7 @@ jobs:
             gh issue comment ${{github.event.issue.number}} -b "
             Please note that there was en error in one of the steps, the error is:
             
-            `$body`
+            /`$body/`
                        
             "
    
