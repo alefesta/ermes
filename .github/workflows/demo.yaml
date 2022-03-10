@@ -16,6 +16,8 @@ jobs:
          run:
             shell: bash
       steps:
+         - uses: actions/checkout@v2
+         
          - name: Issue Setup
            uses: ./.github/actions/issue-setup.yml
 
