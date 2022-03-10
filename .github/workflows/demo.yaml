@@ -18,8 +18,8 @@ jobs:
       steps:
          - uses: actions/checkout@v2
          
-         - name: Issue Setup
-           uses: ./github/workflow/issue-setup.yml
+   issue-setup:
+      uses: ./github/workflow/issue-setup.yml
 
    prepare-environment:
       needs: retrieve-infos
