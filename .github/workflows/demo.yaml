@@ -26,7 +26,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: execute
-           if: needs.prepare-environment.result == 'success'
+           if: needs.prepare-environment.result == 'skipped'
            uses: ./.github/workflows/issue-setup.yml
          - name: catch-error
            if: needs.prepare-environment.result == 'failure'
