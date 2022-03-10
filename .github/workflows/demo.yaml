@@ -16,7 +16,7 @@ jobs:
 
    prepare:
       name: prepare environment
-      needs: issue-setup
+      needs: setup
       runs-on: ubuntu-latest
       steps:
          - name: prepare
@@ -39,14 +39,14 @@ jobs:
    
    execute:
       name: execute code
-      needs: [prepare-environment,evaluate-code]
+      needs: evaluate
       runs-on: ubuntu-latest
       steps:
          - name: execute
-           if: needs.evaluate-code.result == 'skipped'
+           if: needs.evaluate.result == 'skipped'
            uses: ./.github/workflows/issue-setup.yml
          - name: catch-error
-           if: needs.evaluate-code.result == 'failure'
+           if: needs.evaluate.result == 'failure'
            uses: ./.github/workflows/issue-setup.yml
    
    # catch-errors:
