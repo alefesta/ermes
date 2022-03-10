@@ -1,0 +1,16 @@
+name: "Retrieve Execution Infos"
+description: "Read the input from issue, pr or json input,change issue/pr titles and standardize inputs to be used later."
+
+runs:
+  using: "composite"
+  steps:
+    - name: Read and Evaluate Inputs
+      run: |
+        echo "reading input"
+        console.log("this is a test")
+
+
+    - name: Load Json
+      shell: bash
+      # if: ${{ matrix.os == 'windows-latest' }}
+      run: python --version

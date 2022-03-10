@@ -1,0 +1,32 @@
+name: ⭐️ Demo Action ⭐️
+
+on: push
+
+# concurrency:
+#   group: ci-tests-${{ github.ref }}-1
+#   # New commit on branch cancels running workflows of the same branch
+#   cancel-in-progress: true
+
+jobs:
+   retrieve-infos:
+      uses: ./.github/actions/issue-setup.yml
+
+   # prepare-environment:
+   #    needs: retrieve-infos
+   #    uses: ./.github/actions/setup-env.yml
+
+   # evaluate-code:
+   #    needs: prepare-environment
+   #    uses: ./.github/actions/issue-evaluation.yml
+   
+   # execute-code:
+   #    needs: evaluate-code
+   #    uses: ./.github/actions/execute-code.yaml
+   
+   # clean-up:
+   #    needs: execute-code
+   #    uses: ./.github/actions/clean-up.yaml
+   
+
+
+
