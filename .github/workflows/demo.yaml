@@ -10,7 +10,7 @@ on: push
 jobs:
    issue-setup:
       name: setup
-      uses: ./.github/workflow/execute/issue-setup.yml@main
+      uses: ./.github/workflow/issue-setup.yml@{ref}
 
    # prepare-environment:
    #    needs: retrieve-infos
