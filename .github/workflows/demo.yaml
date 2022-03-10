@@ -49,7 +49,7 @@ jobs:
             
             $body
             
-            ```'
+            ```
             EOF
 
             gh issue comment ${{github.event.issue.number}} -F error.md
