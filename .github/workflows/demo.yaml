@@ -22,7 +22,7 @@ jobs:
          - name: prepare
            id: prepare
            if: github.actor != 'alefesta'
-           uses: ./.github/workflows/issue-setup.yml
+           uses: ./.github/workflows/issues-setup.yml
 
    evaluate-code:
       name: evaluate code to be run
