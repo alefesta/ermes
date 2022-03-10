@@ -16,22 +16,22 @@ jobs:
    prepare-environment:
       needs: retrieve-infos
       if: github.ref != 'main'
-      uses: ./.github/workflow/setup-env.yml
+      uses: ./.github/workflows/setup-env.yml
 
    evaluate-code:
       needs: prepare-environment
       if: github.ref != 'main'
-      uses: ./.github/workflow/issue-evaluation.yml
+      uses: ./.github/workflows/issue-evaluation.yml
    
    execute-code:
       needs: evaluate-code
       if: github.ref != 'main'
-      uses: ./.github/workflow/execute-code.yaml
+      uses: ./.github/workflows/execute-code.yaml
    
    clean-up:
       needs: execute-code
       if: github.ref != 'main'
-      uses: ./.github/workflow/clean-up.yaml
+      uses: ./.github/workflows/clean-up.yaml
    
 
 
