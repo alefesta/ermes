@@ -28,12 +28,13 @@ jobs:
    
    execute-code:
       name: execute code
-      needs: [evaluate-code]
-      if: github.actor != 'alefesta'
+      needs: evaluate-code
+      if: needs.prepare-environment.result=='success'
       uses: ./.github/workflows/issue-setup.yml
    
    catch-errors:
       name: catch errors
+      needs: [prepare-environment,evaluate-code,execute-code]
       if: needs.prepare-environment.result=='failure' || needs.execute-code.result == 'failure'
       uses: ./.github/workflows/issue-setup.yml
    
