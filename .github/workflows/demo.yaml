@@ -34,7 +34,7 @@ jobs:
    
    catch-errors:
       name: catch errors
-      if: jobs.evaluate-code.status != 'success' || jobs.execute-code.status != 'success'
+      if: needs.prepare-environment.result=='failure' || needs.execute-code.result == 'failure'
       uses: ./.github/workflows/issue-setup.yml
    
 
