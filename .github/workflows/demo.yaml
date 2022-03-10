@@ -20,6 +20,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: prepare
+           id: prepare
            if: github.actor != 'alefesta'
            uses: ./.github/workflows/issue-setup.yml
 
@@ -29,7 +30,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: evaluate
-           if: needs.prepare-environment.result == 'skipped'
+           if: needs.prepare-environment.steps.prepare.result == 'skipped'
            uses: ./.github/workflows/issue-setup.yml
          - name: catch-error
            if: needs.prepare-environment.result == 'failure'
