@@ -33,7 +33,7 @@ jobs:
            if: needs.prepare-environment.steps.prepare.result == 'skipped'
            uses: ./.github/workflows/issue-setup.yml
          - name: catch-error
-           if: ${always} && needs.prepare-environment.result == 'failure'
+           if: always() && needs.prepare-environment.result == 'failure'
            uses: ./.github/workflows/issue-setup.yml
    
    execute-code:
