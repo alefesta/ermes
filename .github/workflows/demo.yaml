@@ -25,12 +25,12 @@ jobs:
       uses: ./.github/workflows/issue-setup.yml
    
    execute-code:
-      needs: evaluate-code
+      needs: issue-setup
       if: github.actor != 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
    
    clean-up:
-      needs: execute-code
+      needs: issue-setup
       if: github.actor != 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
    
