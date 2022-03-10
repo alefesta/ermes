@@ -21,7 +21,7 @@ jobs:
       steps:
          - name: prepare
            id: prepare
-           if: github.actor != 'alefesta'
+           if: github.actor == 'alefesta'
            uses: ./.github/workflows/issues-setup.yml
 
    evaluate-code:
