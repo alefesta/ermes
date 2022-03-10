@@ -8,10 +8,9 @@ on: push
 #   cancel-in-progress: true
 
 jobs:
-
    issue-setup:
       name: setup
-      uses: ./github/workflow/issue-setup.yml
+      uses: ./github/workflow/execute/issue-setup.yml
 
    prepare-environment:
       needs: retrieve-infos
