@@ -22,7 +22,7 @@ jobs:
 
    evaluate-code:
       name: evaluate code to be run
-      needs: issue-setup
+      needs: prepare-environment
       if: github.actor != 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
    
