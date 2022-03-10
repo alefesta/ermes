@@ -42,7 +42,7 @@ jobs:
            if: needs.prepare.result == 'failure'
            run: |
             body=$(gh run view --log-failed --job=5498884524)
-            gh issue comment ${{github.event.issue.number}} -b $body
+            gh issue comment ${{github.event.issue.number}} -b "$body"
    
    execute:
       name: execute code
