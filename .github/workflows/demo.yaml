@@ -21,7 +21,7 @@ jobs:
       uses: ./.github/workflows/issue-setup.yml
 
    evaluate-code:
-      name: evalutate code to be run
+      name: evaluate code to be run
       needs: issue-setup
       if: github.actor != 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
@@ -34,8 +34,7 @@ jobs:
    
    catch-errors:
       name: catch errors
-      needs: execute-code
-      if: github.actor != 'alefesta'
+      if: jobs.evaluate-code.status != 'success' || jobs.execute-code.status != 'success'
       uses: ./.github/workflows/issue-setup.yml
    
 
