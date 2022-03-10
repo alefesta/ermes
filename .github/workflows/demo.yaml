@@ -36,6 +36,7 @@ jobs:
          - name: catch-error
            if: needs.prepare.result == 'failure'
            run: |
+            gh auth login --with-token ${{GITHUB.TOKEN}}
             body=$(gh run view --log-failed --job=5498884524)
             echo $body
    
