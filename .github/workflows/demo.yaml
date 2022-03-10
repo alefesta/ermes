@@ -9,7 +9,7 @@ on: push
 
 jobs:
    retrieve-infos:
-      uses: ./.github/actions/issue-setup.yml
+      uses: ./.github/actions/issue-setup.yml@main
 
    # prepare-environment:
    #    needs: retrieve-infos
