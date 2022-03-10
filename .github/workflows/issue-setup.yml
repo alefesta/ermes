@@ -8,6 +8,7 @@ jobs:
     name: get-infos
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/toolkit@0.0.2
       - name: Set selected color
         run: echo '::set-output name=SELECTED_COLOR::green'
         id: random-color-generator
