@@ -1,7 +1,6 @@
 name: "Retrieve Execution Infos"
 
-on:
-  workflow_dispatch
+on: workflow_call
 
 jobs:
   setup:
