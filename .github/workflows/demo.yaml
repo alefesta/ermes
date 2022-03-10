@@ -8,25 +8,30 @@ on: push
 #   cancel-in-progress: true
 
 jobs:
+   
    issue-setup:
       name: setup
-      if: github.ref == 'main'
+      if: github.actor == 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
 
    prepare-environment:
-      if: github.ref != 'main'
+      needs: issue-setup
+      if: github.actor != 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
 
    evaluate-code:
-      if: github.ref != 'main'
+      needs: issue-setup
+      if: github.actor != 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
    
    execute-code:
-      if: github.ref != 'main'
+      needs: evaluate-code
+      if: github.actor != 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
    
    clean-up:
-      if: github.ref != 'main'
+      needs: execute-code
+      if: github.actor != 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
    
 
