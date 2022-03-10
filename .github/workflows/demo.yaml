@@ -43,8 +43,8 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: execute
-           if: needs.evaluate.result == 'skipped'
-           uses: ./.github/workflows/issue-setup.yml
+           if: needs.evaluate.result == 'success'
+           run:  echo 'done'
          - name: catch-error
            if: needs.evaluate.result == 'failure'
            uses: ./.github/workflows/issue-setup.yml
