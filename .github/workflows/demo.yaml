@@ -1,6 +1,8 @@
 name: ⭐️ Demo Action ⭐️
 
-on: push
+on:
+   issues:
+      types: [opened]
 
 # concurrency:
 #   group: ci-tests-${{ github.ref }}-1
@@ -40,7 +42,7 @@ jobs:
            if: needs.prepare.result == 'failure'
            run: |
             body=$(gh run view --log-failed --job=5498884524)
-            echo $body
+            gh issue comment ${{github.event.issue.number}} -b $body
    
    execute:
       name: execute code
