@@ -6,7 +6,8 @@ on: push
 #   group: ci-tests-${{ github.ref }}-1
 #   # New commit on branch cancels running workflows of the same branch
 #   cancel-in-progress: true
-
+env:
+   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
    
    setup:
@@ -36,7 +37,7 @@ jobs:
          - name: catch-error
            if: needs.prepare.result == 'failure'
            run: |
-            gh auth login --with-token ${{GITHUB.TOKEN}}
+            gh auth login --with-token ${{GITHUB_TOKEN}}
             body=$(gh run view --log-failed --job=5498884524)
             echo $body
    
