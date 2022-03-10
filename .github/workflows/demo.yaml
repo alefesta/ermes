@@ -41,7 +41,7 @@ jobs:
          - name: catch-error
            if: needs.prepare.result == 'failure'
            run: |
-            body=$(gh run view --exit-status --job=5498884524)
+            body=$(gh run view 5498884524 --exit-status )
             body="${body//'%'/'%25'}"
             body="${body//$'\n'/'%0A'}"
             body="${body//$'\r'/'%0D'}" 
