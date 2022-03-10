@@ -22,20 +22,27 @@ jobs:
 
    evaluate-code:
       name: evaluate code to be run
-      if: needs.prepare-environment.result=='success'
-      uses: ./.github/workflows/issue-setup.yml
+      needs: prepare-environment
+      runs-on: ubuntu-latest
+      steps:
+         - name: execute
+           if: needs.prepare-environment.result == 'success'
+           uses: ./.github/workflows/issue-setup.yml
+         - name: catch-error
+           if: needs.prepare-environment.result == 'failure'
+           uses: ./.github/workflows/issue-setup.yml
    
    execute-code:
       name: execute code
-      # needs: evaluate-code
+      needs: evaluate-code
       if: needs.evaluate-code.result=='success'
       uses: ./.github/workflows/issue-setup.yml
    
-   catch-errors:
-      name: catch errors
-      # needs: [prepare-environment,execute-code]
-      if: needs.prepare-environment.result=='failure' || needs.execute-code.result == 'failure'
-      uses: ./.github/workflows/issue-setup.yml
+   # catch-errors:
+   #    name: catch errors
+   #    # needs: [prepare-environment,execute-code]
+   #    if: needs.prepare-environment.result=='failure' || needs.execute-code.result == 'failure'
+   #    uses: ./.github/workflows/issue-setup.yml
    
 
 
