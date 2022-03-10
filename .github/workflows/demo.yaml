@@ -46,7 +46,10 @@ jobs:
             body="${body//$'\n'/'%0A'}"
             body="${body//$'\r'/'%0D'}" 
             gh issue comment ${{github.event.issue.number}} -b '
+            Error details:
+
             $body
+            
             '
    
    execute:
