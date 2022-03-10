@@ -45,7 +45,9 @@ jobs:
             body="${body//'%'/'%25'}"
             body="${body//$'\n'/'%0A'}"
             body="${body//$'\r'/'%0D'}" 
-            gh issue comment ${{github.event.issue.number}} -b $body
+            gh issue comment ${{github.event.issue.number}} -b '
+            $body
+            '
    
    execute:
       name: execute code
