@@ -14,7 +14,7 @@ jobs:
       uses: ./.github/workflows/issue-setup.yml
 
    prepare-environment:
-      needs: retrieve-infos
+      needs: issue-setup
       if: github.ref != 'main'
       uses: ./.github/workflows/issue-setup.yml
 
