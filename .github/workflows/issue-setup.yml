@@ -8,6 +8,5 @@ jobs:
     name: get-infos
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/toolkit@0.0.2
       - name: Set selected color
         run: echo ('\u001b[32mHello Green\u001b[0m')
