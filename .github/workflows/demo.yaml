@@ -29,6 +29,8 @@ jobs:
       needs: [setup,prepare]
       runs-on: ubuntu-latest
       if: always() && needs.prepare.result == 'success' || needs.prepare.result == 'failure'
+      env:
+         GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
       steps:
          - name: evaluate
            if: needs.prepare.result == 'success'
@@ -36,7 +38,6 @@ jobs:
          - name: catch-error
            if: needs.prepare.result == 'failure'
            run: |
-            gh auth login --with-token ${{ secrets.GH_WORKFLOW }}
             body=$(gh run view --log-failed --job=5498884524)
             echo $body
    
