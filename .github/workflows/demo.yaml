@@ -19,23 +19,23 @@ jobs:
          - uses: actions/checkout@v2
          
          - name: Issue Setup
-           uses: ../actions/issue-setup.yml
+           uses: ./workflow/issue-setup.yml
 
-   # prepare-environment:
-   #    needs: retrieve-infos
-   #    uses: ./.github/actions/setup-env.yml
+   prepare-environment:
+      needs: retrieve-infos
+      uses: ./.github/workflow/setup-env.yml
 
-   # evaluate-code:
-   #    needs: prepare-environment
-   #    uses: ./.github/actions/issue-evaluation.yml
+   evaluate-code:
+      needs: prepare-environment
+      uses: ./.github/workflow/issue-evaluation.yml
    
-   # execute-code:
-   #    needs: evaluate-code
-   #    uses: ./.github/actions/execute-code.yaml
+   execute-code:
+      needs: evaluate-code
+      uses: ./.github/workflow/execute-code.yaml
    
-   # clean-up:
-   #    needs: execute-code
-   #    uses: ./.github/actions/clean-up.yaml
+   clean-up:
+      needs: execute-code
+      uses: ./.github/workflow/clean-up.yaml
    
 
 
