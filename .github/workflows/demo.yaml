@@ -8,8 +8,16 @@ on: push
 #   cancel-in-progress: true
 
 jobs:
-   retrieve-infos:
-      uses: ./.github/actions/issue-setup.yml@main
+   setup:
+      name: setup
+      runs-on: ubuntu-latest
+      
+      defaults:
+         run:
+            shell: bash
+      steps:
+         - name: Issue Setup
+           uses: ./.github/actions/issue-setup.yml
 
    # prepare-environment:
    #    needs: retrieve-infos
