@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set selected color
-        run: echo ('\u001b[32mHello Green\u001b[0m')
+        run: echo -e "\e[31mRed Text\e[0m"
