@@ -10,23 +10,23 @@ on: push
 jobs:
    issue-setup:
       name: setup
-      uses: ./github/workflow/execute/issue-setup.yml
+      uses: ./.github/workflow/execute/issue-setup.yml
 
-   prepare-environment:
-      needs: retrieve-infos
-      uses: ./.github/workflow/setup-env.yml
+   # prepare-environment:
+   #    needs: retrieve-infos
+   #    uses: ./.github/workflow/setup-env.yml
 
-   evaluate-code:
-      needs: prepare-environment
-      uses: ./.github/workflow/issue-evaluation.yml
+   # evaluate-code:
+   #    needs: prepare-environment
+   #    uses: ./.github/workflow/issue-evaluation.yml
    
-   execute-code:
-      needs: evaluate-code
-      uses: ./.github/workflow/execute-code.yaml
+   # execute-code:
+   #    needs: evaluate-code
+   #    uses: ./.github/workflow/execute-code.yaml
    
-   clean-up:
-      needs: execute-code
-      uses: ./.github/workflow/clean-up.yaml
+   # clean-up:
+   #    needs: execute-code
+   #    uses: ./.github/workflow/clean-up.yaml
    
 
 
