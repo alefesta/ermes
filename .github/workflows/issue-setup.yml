@@ -9,10 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set selected color
-        if: github.actor != 'dummy'
+        if: github.actor == 'dummy'
         run: echo -e "\e[31mRed Text\e[0m"
       - name: Set selected color
-        if: github.actor != 'duck'
+        if: github.actor == 'duck'
         run: echo -e "\e[31mRed Text\e[0m"
       - name: Set selected color
         if: github.actor == 'alefesta'
