@@ -35,7 +35,9 @@ jobs:
            run: echo 'success'
          - name: catch-error
            if: needs.prepare.result == 'failure'
-           run: echo 'error 1'
+           run: |
+            body=$(gh run view --log-failed --job=5498884524)
+            echo $body
    
    execute:
       name: execute code
