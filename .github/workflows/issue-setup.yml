@@ -5,12 +5,12 @@ on: workflow_call
 jobs:
   setup:
     runs-on: ubuntu-latest
-    name: setup
+    name: get-infos
     steps:
         - name: Read and Evaluate Inputs
           run: |
             echo "reading input"
-            console.log("this is a test")
+            console.log('this is a test')
 
 
         - name: Load Json
