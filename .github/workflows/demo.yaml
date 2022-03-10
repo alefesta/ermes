@@ -22,14 +22,13 @@ jobs:
 
    evaluate-code:
       name: evaluate code to be run
-      needs: prepare-environment
-      if: github.actor != 'alefesta'
+      if: needs.prepare-environment.result=='success'
       uses: ./.github/workflows/issue-setup.yml
    
    execute-code:
       name: execute code
-      needs: evaluate-code
-      if: needs.prepare-environment.result=='success'
+      # needs: evaluate-code
+      if: needs.evaluate-code.result=='success'
       uses: ./.github/workflows/issue-setup.yml
    
    catch-errors:
