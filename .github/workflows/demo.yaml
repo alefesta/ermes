@@ -17,15 +17,18 @@ jobs:
    prepare-environment:
       name: prepare environment
       needs: issue-setup
-      if: github.actor != 'alefesta'
-      uses: ./.github/workflows/issue-setup.yml
+      runs-on: ubuntu-latest
+      steps:
+         - name: prepare
+           if: github.actor != 'alefesta'
+           uses: ./.github/workflows/issue-setup.yml
 
    evaluate-code:
       name: evaluate code to be run
       needs: prepare-environment
       runs-on: ubuntu-latest
       steps:
-         - name: execute
+         - name: evaluate
            if: needs.prepare-environment.result == 'skipped'
            uses: ./.github/workflows/issue-setup.yml
          - name: catch-error
@@ -34,9 +37,15 @@ jobs:
    
    execute-code:
       name: execute code
-      needs: evaluate-code
-      if: needs.evaluate-code.result=='success'
-      uses: ./.github/workflows/issue-setup.yml
+      needs: [prepare-environment,evaluate-code]
+      runs-on: ubuntu-latest
+      steps:
+         - name: execute
+           if: needs.evaluate-code.result == 'skipped'
+           uses: ./.github/workflows/issue-setup.yml
+         - name: catch-error
+           if: needs.evaluate-code.result == 'failure'
+           uses: ./.github/workflows/issue-setup.yml
    
    # catch-errors:
    #    name: catch errors
