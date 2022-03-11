@@ -4,7 +4,7 @@ name: ⭐️ Demo Action ⭐️
 on:
   # Allows you to run this workflow manually from the Actions tab
    issues:
-      types: [opened,edited]
+      types: [opened]
 
 # concurrency:
 #   group: ci-tests-${{ github.ref }}-1
