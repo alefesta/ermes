@@ -21,6 +21,8 @@ jobs:
       needs: setup
       runs-on: ubuntu-latest
       steps:
+         - name: add Labels
+           run: gh issue edit ${{github.event.issue.number}} --add-label "in Progress"
          - name: prepare
            id: prepare
            if: github.actor == 'alefesta'
