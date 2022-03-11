@@ -36,7 +36,7 @@ jobs:
    
    execute:
       name: execute code
-      needs: evaluate
+      needs: prepare
       runs-on: ubuntu-latest
       steps:
          - name: execute
