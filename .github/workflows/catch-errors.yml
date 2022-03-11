@@ -11,15 +11,16 @@ on:
 
 jobs:
    catch-errors:
-      name: evaluate code to be run
+      name: comments
       runs-on: ubuntu-latest
-      env:
-         GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
+
       steps:
         - name: sync
           uses: actions/checkout@v2
         - name: evaluate
           if: success()
+          env:
+            GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
           run: |
            gh run view ${{github.run_id}} > results.txt
            gh issue comment ${{github.event.issue.number}} -F results.txt
@@ -28,6 +29,8 @@ jobs:
            gh issue edit ${{github.event.issue.number}} --title "✅ ${{ github.event.issue.title }} - Run Completed "
         - name: catch-error
           if: failure()
+          env:
+            GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
           run: |
            gh run view ${{github.run_id}} --exit-status > error.txt
            gh issue comment ${{github.event.issue.number}} -F error.txt
