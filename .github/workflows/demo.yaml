@@ -45,7 +45,12 @@ jobs:
          - uses: actions/checkout@v2
          - name: evaluate
            if: needs.prepare.result == 'success'
-           run: echo 'success'
+           run: |
+            gh run view ${{github.run_id}} > results.txt
+            gh issue comment ${{github.event.issue.number}} -F results.txt
+            gh issue edit ${{github.event.issue.number}} --add-label done 
+            gh issue edit ${{github.event.issue.number}} --remove-label 'in Progress' 
+            gh issue edit ${{github.event.issue.number}} --title "✅ ${{ github.event.issue.title }} - Run Completed "
          - name: catch-error
            if: needs.prepare.result == 'failure'
            run: |
