@@ -25,6 +25,14 @@ jobs:
            id: prepare
            if: github.actor == 'alefesta'
            uses: ./.github/workflows/issues-setup.yml
+         - name: catch-error
+           if: failure()
+           run: |
+            gh run view ${{github.run_id}} --exit-status > error.txt
+            gh issue comment ${{github.event.issue.number}} -F error.txt
+            gh issue edit ${{github.event.issue.number}} --add-label invalid 
+            gh issue edit ${{github.event.issue.number}} --remove-label 'in Progress' 
+            gh issue edit ${{github.event.issue.number}} --title "⚠️ ${{ github.event.issue.title }} - Invalid run "
 
    evaluate:
       name: evaluate code to be run
