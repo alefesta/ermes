@@ -6,6 +6,8 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     name: get-infos
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
     steps:
       - uses: actions/checkout@v2
       - name: add Labels
