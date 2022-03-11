@@ -16,6 +16,7 @@ jobs:
       if: github.actor == 'alefesta'
       runs-on: ubuntu-latest
       steps:
+      - uses: actions/checkout@v2
       - name: add Labels
         env:
           GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
