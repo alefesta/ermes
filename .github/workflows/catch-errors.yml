@@ -14,7 +14,6 @@ jobs:
       name: evaluate code to be run
       needs: [setup,prepare,execute-code]
       runs-on: ubuntu-latest
-      if: always() && needs.execute-code.result == 'success' || needs.execute-code.result == 'failure'
       env:
          GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
       steps:
