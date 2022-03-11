@@ -22,7 +22,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
         run: |
           gh issue edit ${{github.event.issue.number}} --add-label 'in Progress'
-      - name: retrieve infos
+      - uses: actions/checkout@v2
+      - name: retrieve
+        id: infos
         uses: ./.github/workflows/issue-setup.yml
 
 
