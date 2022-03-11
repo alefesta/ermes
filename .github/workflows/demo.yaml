@@ -1,8 +1,14 @@
 name: ⭐️ Demo Action ⭐️
 
+# Controls when the workflow will run
 on:
-   issues:
-      types: [opened]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: 'Trigger event'     
+        required: true
+        default: 'manual'
 
 # concurrency:
 #   group: ci-tests-${{ github.ref }}-1
