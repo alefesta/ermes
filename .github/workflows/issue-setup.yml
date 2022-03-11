@@ -12,7 +12,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
         run: |
-          gh auth login --token $GITHUB_TOKEN
+          gh auth login --with-token $GITHUB_TOKEN
           gh issue edit ${{github.event.issue.number}} --add-label 'in Progress'
       - name: Set selected color
         if: github.actor == 'dummy'
