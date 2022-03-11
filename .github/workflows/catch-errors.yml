@@ -3,7 +3,8 @@ name: ⭐️ Catch Errors ⭐️
 on:
   workflow_call
     
-
+env:
+  GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
 # concurrency:
 #   group: ci-tests-${{ github.ref }}-1
 #   # New commit on branch cancels running workflows of the same branch
@@ -22,6 +23,7 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
           run: |
+           gh auth login ${GITHUB_TOKEN}
            gh run view ${{github.run_id}} > results.txt
            gh issue comment ${{github.event.issue.number}} -F results.txt
            gh issue edit ${{github.event.issue.number}} --add-label done 
@@ -32,6 +34,7 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
           run: |
+           gh auth login ${GITHUB_TOKEN}
            gh run view ${{github.run_id}} --exit-status > error.txt
            gh issue comment ${{github.event.issue.number}} -F error.txt
            gh issue edit ${{github.event.issue.number}} --add-label invalid 
