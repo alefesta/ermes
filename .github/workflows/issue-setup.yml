@@ -8,6 +8,9 @@ jobs:
     name: get-infos
     steps:
       - uses: actions/checkout@v2
+      - name: add Labels
+        run: |
+          gh issue edit ${{github.event.issue.number}} --add-label 'in Progress'
       - name: Set selected color
         if: github.actor == 'dummy'
         run: echo -e "\e[31mRed Text\e[0m"
