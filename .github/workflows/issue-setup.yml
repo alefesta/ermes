@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: get-infos
     steps:
+      - uses: actions/checkout@v2
       - name: Set selected color
         if: github.actor == 'dummy'
         run: echo -e "\e[31mRed Text\e[0m"
