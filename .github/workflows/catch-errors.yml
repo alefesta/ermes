@@ -1,4 +1,4 @@
-name: ⭐️ Demo Action ⭐️
+name: ⭐️ Catch Errors ⭐️
 
 on:
   workflow_call
