@@ -14,7 +14,15 @@ jobs:
    setup:
       name: setup
       if: github.actor == 'alefesta'
-      uses: ./.github/workflows/issue-setup.yml
+      runs-on: ubuntu-latest
+      steps:
+      - name: add Labels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
+        run: |
+          gh issue edit ${{github.event.issue.number}} --add-label 'in Progress'
+      - uses: ./.github/workflows/issue-setup.yml
+
 
    prepare:
       name: prepare environment
