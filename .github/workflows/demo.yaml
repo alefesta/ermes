@@ -42,12 +42,13 @@ jobs:
            if: needs.prepare.result == 'failure'
            run: |
             body=$(gh run view 1964194657 --exit-status )
-            gh issue comment ${{github.event.issue.number}} -b '
-            Error details:
+            echo $body
+            # gh issue comment ${{github.event.issue.number}} -b '
+            # Error details:
 
-            $body
+            # $body
 
-            '
+            # '
    
    execute:
       name: execute code
