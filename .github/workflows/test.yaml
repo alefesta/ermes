@@ -1,71 +1,71 @@
-name: ⭐️ Tensorboard Action ⭐️
-on:
-  issue_comment:
-    types:
-      - created
+# name: ⭐️ Tensorboard Action ⭐️
+# on:
+#   issue_comment:
+#     types:
+#       - created
 
-jobs:
+# jobs:
 
-  Tensorboard-Stop:
-    if: github.event.comment.body == '/done'
-    concurrency: 
-      group: ${{ github.ref }}
-      cancel-in-progress: true
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⛔️⛔️⛔️ Shuting down Tensoboard ⛔️⛔️⛔️
-        run: exit 0
+#   Tensorboard-Stop:
+#     if: github.event.comment.body == '/done'
+#     concurrency: 
+#       group: ${{ github.ref }}
+#       cancel-in-progress: true
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: ⛔️⛔️⛔️ Shuting down Tensoboard ⛔️⛔️⛔️
+#         run: exit 0
   
-  Tensorboard-Start:
-    concurrency: 
-      group: ${{ github.ref }}
-      cancel-in-progress: true
-    runs-on: ubuntu-latest
-    if: contains(github.event.comment.body,'%tensorboard') && github.event.comment.body != '/done'
-    steps:
-      - name: 📥 Get Info 📥
-        uses: actions/checkout@v2
-      - name: 🚀🚀🚀 Starting Tensorboard 🚀🚀🚀
-        id: url
-        run: |
-          git config --global pull.rebase false
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git fetch
-          git checkout -b ${{github.actor}}
-          git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
-          git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
-          git checkout main .github/workflows/test.yaml
-          git pull --allow-unrelated-histories
-          ls source -l
-          pip install --upgrade pip tensorboard
-          tensor=$(echo "${{ github.event.comment.body }}"  | sed 's/%//')
-          $tensor --port 6006 &
-          wget -nv https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-          unzip -qq ngrok-stable-linux-amd64.zip
-          ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
-                    ./ngrok http --auth ${{github.actor}}:${{github.actor}} -log=stdout 6006 > /dev/null &
-          sleep 10
-          echo on
-          body="$(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')"
-          echo $body
-          echo "::set-output name=body::$body"
-        shell: bash
-      - name: 📝 Publishing Tensorboard URL
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            🤩🤩🤩🤩🤩🤩🤩🤩🤩🤩
+#   Tensorboard-Start:
+#     concurrency: 
+#       group: ${{ github.ref }}
+#       cancel-in-progress: true
+#     runs-on: ubuntu-latest
+#     if: contains(github.event.comment.body,'%tensorboard') && github.event.comment.body != '/done'
+#     steps:
+#       - name: 📥 Get Info 📥
+#         uses: actions/checkout@v2
+#       - name: 🚀🚀🚀 Starting Tensorboard 🚀🚀🚀
+#         id: url
+#         run: |
+#           git config --global pull.rebase false
+#           git config user.name github-actions
+#           git config user.email github-actions@github.com
+#           git fetch
+#           git checkout -b ${{github.actor}}
+#           git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
+#           git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
+#           git checkout main .github/workflows/test.yaml
+#           git pull --allow-unrelated-histories
+#           ls source -l
+#           pip install --upgrade pip tensorboard
+#           tensor=$(echo "${{ github.event.comment.body }}"  | sed 's/%//')
+#           $tensor --port 6006 &
+#           wget -nv https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+#           unzip -qq ngrok-stable-linux-amd64.zip
+#           ./ngrok authtoken ${{ secrets.NGROK_SECRET }}
+#                     ./ngrok http --auth ${{github.actor}}:${{github.actor}} -log=stdout 6006 > /dev/null &
+#           sleep 10
+#           echo on
+#           body="$(curl -s http://localhost:4040/api/tunnels/command_line | jq -r --unbuffered '.public_url')"
+#           echo $body
+#           echo "::set-output name=body::$body"
+#         shell: bash
+#       - name: 📝 Publishing Tensorboard URL
+#         uses: peter-evans/create-or-update-comment@v1
+#         with:
+#           issue-number: ${{ github.event.issue.number }}
+#           body: |
+#             🤩🤩🤩🤩🤩🤩🤩🤩🤩🤩
 
-            Hey @${{github.actor}}!
+#             Hey @${{github.actor}}!
 
-            Tensorboard is ready at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}})
+#             Tensorboard is ready at: [${{steps.url.outputs.body}}](${{steps.url.outputs.body}})
             
-            Login with:
-            username: ${{github.actor}}
-            password: ${{github.actor}}
+#             Login with:
+#             username: ${{github.actor}}
+#             password: ${{github.actor}}
             
-            🤩🤩🤩🤩🤩🤩🤩🤩🤩🤩
-      - name: 🛸🛸🛸 Waiting for shutdown command 🛸🛸🛸
-        run:  sleep infinity
+#             🤩🤩🤩🤩🤩🤩🤩🤩🤩🤩
+#       - name: 🛸🛸🛸 Waiting for shutdown command 🛸🛸🛸
+#         run:  sleep infinity

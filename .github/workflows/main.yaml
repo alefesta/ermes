@@ -1,429 +1,429 @@
-name: 🔥 Ermes -  ML for GHA 🔥
+# name: 🔥 Ermes -  ML for GHA 🔥
 
+# # on:
+# #   issues:
+# #     types: [opened]
 # on:
-#   issues:
-#     types: [opened]
-on:
-  workflow_call
+#   workflow_call
 
-env:
-  BRANCH: ${{github.actor}}
+# env:
+#   BRANCH: ${{github.actor}}
 
-jobs:
-  Initialize:
-    runs-on: ubuntu-latest
-    outputs:
-      body: ${{steps.reading-inputs.outputs.body}}
-    steps:
-      - name: 📥 Get Info 📥
-        uses: actions/checkout@v2
-      - name: 📥 Synchronize... 📥
-        run: |
-          if (git ls-remote --heads origin ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
-            # git config user.name github-actions
-            # git config user.email github-actions@github.com
-            # git config pull.rebase false
-            # git pull origin ${{github.actor}} --allow-unrelated-histories
-            echo "Branch exist"
-          else
-            git config user.name github-actions
-            git config user.email github-actions@github.com
-            git checkout -b ${{github.actor}}
-            if [ -d .output ]; then
-              echo "Proceeding to next step"
-            else
-              mkdir -p .output
-              touch .output/.tmp
-              git add .
-              git commit -m "generated"
-              git push --set-upstream origin ${{github.actor}}
-            fi
-            fi
-      - name: 🧰 Change Issue Title... 🧰
-        uses: actions/github-script@v6
-        id: set-ermes-start
-        with:
-          script: |  
-            const date = new Date();
-            var author = '${{github.event.issue.user.login}}';            
-            Object.defineProperty(String.prototype, 'capitalize', {
-              value: function() {
-                return this.charAt(0).toUpperCase() + this.slice(1);
-              },
-              enumerable: false
-            });
-            github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              title: '🚦 Run Started on: ' + date.getMonth() + '/' + date.getDate() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' - Author: ' + author.capitalize()
-            });
-      - name: 📥 Synchronize... 📥
-        uses: actions/checkout@v2
-      - name: 🧰 Add Labels... 🧰
-        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
-        with:
-          add-labels: "in Progress"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: 📥 Getting Final Inputs... 📥
-        id: reading-inputs
-        run: |
-          body="${{ github.event.issue.body }}"
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}"
-          body="$(echo $body | sed 's/ //g')"
-          body="$(echo $body | sed 's/%0A%0A###/\",\"/g')"
-          body="$(echo $body | sed 's/%0A%0A/\":\"/g')"
-          body="$(echo $body | sed 's/###/{\"/g')"
-          body="$(echo $body | sed 's/projectCodeofConduct/projectCodeofConduct"}/g')"
-          echo "::set-output name=body::$( echo "$body")"
-      - name: ⚙️ Finalize Steps Before Execution... ⚙️
-        run: |
-          # git checkout -b ${{github.actor}}
-          git config --global pull.rebase false
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git checkout -b ${{github.actor}}
-          git fetch
-          git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
-          git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
-          git pull --allow-unrelated-histories
-          if [ -d .output]; then rm -Rf .output; fi
-          mkdir -p .output/issue-#${{github.event.issue.number}}/models/
-          mkdir -p .output/issue-#${{github.event.issue.number}}/images/
-          mkdir -p .output/issue-#${{github.event.issue.number}}/logs/
-          mkdir -p .output/issue-#${{github.event.issue.number}}/executions/
-          touch .output/issue-#${{github.event.issue.number}}/models/.tmp
-          touch .output/issue-#${{github.event.issue.number}}/images/.images
-          touch .output/issue-#${{github.event.issue.number}}/logs/.tmp
-          touch .output/issue-#${{github.event.issue.number}}/executions/.tmp
-          git config user.name ${{github.actor}}
-          git add .
-          git commit -m "Environment created"
-          git push  origin ${{github.actor}}:${{github.actor}}
+# jobs:
+#   Initialize:
+#     runs-on: ubuntu-latest
+#     outputs:
+#       body: ${{steps.reading-inputs.outputs.body}}
+#     steps:
+#       - name: 📥 Get Info 📥
+#         uses: actions/checkout@v2
+#       - name: 📥 Synchronize... 📥
+#         run: |
+#           if (git ls-remote --heads origin ${{github.actor}} | grep ${{github.actor}}  >/dev/null); then
+#             # git config user.name github-actions
+#             # git config user.email github-actions@github.com
+#             # git config pull.rebase false
+#             # git pull origin ${{github.actor}} --allow-unrelated-histories
+#             echo "Branch exist"
+#           else
+#             git config user.name github-actions
+#             git config user.email github-actions@github.com
+#             git checkout -b ${{github.actor}}
+#             if [ -d .output ]; then
+#               echo "Proceeding to next step"
+#             else
+#               mkdir -p .output
+#               touch .output/.tmp
+#               git add .
+#               git commit -m "generated"
+#               git push --set-upstream origin ${{github.actor}}
+#             fi
+#             fi
+#       - name: 🧰 Change Issue Title... 🧰
+#         uses: actions/github-script@v6
+#         id: set-ermes-start
+#         with:
+#           script: |  
+#             const date = new Date();
+#             var author = '${{github.event.issue.user.login}}';            
+#             Object.defineProperty(String.prototype, 'capitalize', {
+#               value: function() {
+#                 return this.charAt(0).toUpperCase() + this.slice(1);
+#               },
+#               enumerable: false
+#             });
+#             github.rest.issues.update({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               issue_number: context.issue.number,
+#               title: '🚦 Run Started on: ' + date.getMonth() + '/' + date.getDate() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' - Author: ' + author.capitalize()
+#             });
+#       - name: 📥 Synchronize... 📥
+#         uses: actions/checkout@v2
+#       - name: 🧰 Add Labels... 🧰
+#         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+#         with:
+#           add-labels: "in Progress"
+#           repo-token: ${{ secrets.GITHUB_TOKEN }}
+#       - name: 📥 Getting Final Inputs... 📥
+#         id: reading-inputs
+#         run: |
+#           body="${{ github.event.issue.body }}"
+#           body="${body//'%'/'%25'}"
+#           body="${body//$'\n'/'%0A'}"
+#           body="${body//$'\r'/'%0D'}"
+#           body="$(echo $body | sed 's/ //g')"
+#           body="$(echo $body | sed 's/%0A%0A###/\",\"/g')"
+#           body="$(echo $body | sed 's/%0A%0A/\":\"/g')"
+#           body="$(echo $body | sed 's/###/{\"/g')"
+#           body="$(echo $body | sed 's/projectCodeofConduct/projectCodeofConduct"}/g')"
+#           echo "::set-output name=body::$( echo "$body")"
+#       - name: ⚙️ Finalize Steps Before Execution... ⚙️
+#         run: |
+#           # git checkout -b ${{github.actor}}
+#           git config --global pull.rebase false
+#           git config user.name github-actions
+#           git config user.email github-actions@github.com
+#           git checkout -b ${{github.actor}}
+#           git fetch
+#           git rebase --rebase-merges   -Xtheirs  ${{github.actor}}
+#           git branch --set-upstream-to=origin/${{github.actor}} ${{github.actor}}
+#           git pull --allow-unrelated-histories
+#           if [ -d .output]; then rm -Rf .output; fi
+#           mkdir -p .output/issue-#${{github.event.issue.number}}/models/
+#           mkdir -p .output/issue-#${{github.event.issue.number}}/images/
+#           mkdir -p .output/issue-#${{github.event.issue.number}}/logs/
+#           mkdir -p .output/issue-#${{github.event.issue.number}}/executions/
+#           touch .output/issue-#${{github.event.issue.number}}/models/.tmp
+#           touch .output/issue-#${{github.event.issue.number}}/images/.images
+#           touch .output/issue-#${{github.event.issue.number}}/logs/.tmp
+#           touch .output/issue-#${{github.event.issue.number}}/executions/.tmp
+#           git config user.name ${{github.actor}}
+#           git add .
+#           git commit -m "Environment created"
+#           git push  origin ${{github.actor}}:${{github.actor}}
       
-  Executing-Code:
-      needs: Initialize
-      runs-on: ubuntu-latest
-      outputs:
-        body: ${{ steps.get-comment-body.outputs.body }}
-        start: ${{steps.set-start-time.outputs.start}}
-        elapsed: ${{steps.set-end-time.outputs.elapsed}}
-        entrypoint: ${{steps.capture-inputs.outputs.entrypoint}}
-        reqs: ${{steps.capture-inputs.outputs.reqs}}
-        type: ${{steps.capture-inputs.outputs.type}}
-      steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - name: 📬 Preparing Execution... 📬
-        id: capture-inputs
-        run: |
-          cat <<EOF > tmp.py
-          import json
+#   Executing-Code:
+#       needs: Initialize
+#       runs-on: ubuntu-latest
+#       outputs:
+#         body: ${{ steps.get-comment-body.outputs.body }}
+#         start: ${{steps.set-start-time.outputs.start}}
+#         elapsed: ${{steps.set-end-time.outputs.elapsed}}
+#         entrypoint: ${{steps.capture-inputs.outputs.entrypoint}}
+#         reqs: ${{steps.capture-inputs.outputs.reqs}}
+#         type: ${{steps.capture-inputs.outputs.type}}
+#       steps:
+#       - uses: actions/checkout@v2
+#       - uses: actions/setup-python@v2
+#       - name: 📬 Preparing Execution... 📬
+#         id: capture-inputs
+#         run: |
+#           cat <<EOF > tmp.py
+#           import json
 
-          # some JSON:
-          x = '${{needs.Initialize.outputs.body}}'
+#           # some JSON:
+#           x = '${{needs.Initialize.outputs.body}}'
 
-          # parse x:
-          y = json.loads(x)
+#           # parse x:
+#           y = json.loads(x)
 
-          # the result is a Python dictionary:
-          if y["Requirements"] == "_Noresponse_":
-              req="requirements.txt"
-              print("::set-output name=reqs::" + req)
-          else:
-              print("::set-output name=reqs::" + y["Requirements"])
-          if y["Entrypoint"] == "_Noresponse_":
-              ent="main.py"
-              print("::set-output name=entrypoint::" + ent)
-          else:
-              print("::set-output name=entrypoint::" + y["Entrypoint"])
-          if y["Type"] == "PythonScript(Default)":
-              ent="python"
-              print("::set-output name=type::" + ent)
-          if y["Type"] == "JupyterNotebook":
-              ent="jupyter"
-              print("::set-output name=type::" + ent)
-          if y["Type"] == "MLFlowProject":
-              ent="mlflow"
-              print("::set-output name=type::" + ent)
-          EOF
-          python tmp.py
-          rm tmp.py
+#           # the result is a Python dictionary:
+#           if y["Requirements"] == "_Noresponse_":
+#               req="requirements.txt"
+#               print("::set-output name=reqs::" + req)
+#           else:
+#               print("::set-output name=reqs::" + y["Requirements"])
+#           if y["Entrypoint"] == "_Noresponse_":
+#               ent="main.py"
+#               print("::set-output name=entrypoint::" + ent)
+#           else:
+#               print("::set-output name=entrypoint::" + y["Entrypoint"])
+#           if y["Type"] == "PythonScript(Default)":
+#               ent="python"
+#               print("::set-output name=type::" + ent)
+#           if y["Type"] == "JupyterNotebook":
+#               ent="jupyter"
+#               print("::set-output name=type::" + ent)
+#           if y["Type"] == "MLFlowProject":
+#               ent="mlflow"
+#               print("::set-output name=type::" + ent)
+#           EOF
+#           python tmp.py
+#           rm tmp.py
         
-  Python:
-      needs: Executing-Code
-      if: needs.Executing-Code.outputs.type == 'python'
-      runs-on: ubuntu-latest
-      outputs:
-        body: ${{steps.get-comment-body.outputs.body}}
-        elapsed: ${{steps.get-comment-body.outputs.elapsed}}
-        results: ${{steps.set-end-time.outputs.results}}
-      steps:
-      - name: ⚗️ Setting Up Requirements
-        uses: actions/checkout@v2
-        with:
-          python-version: '3.8'
-          cache: 'pip'
-      - name: ⚗️ Python Requirements Installation
-        run: pip install -r ${{needs.Executing-Code.outputs.reqs}}
-      - run: |
-          git fetch
-          # git checkout ${{github.actor}}
-          git pull origin ${{github.actor}} --allow-unrelated-histories
-      - uses: actions/github-script@v6
-        id: set-start-time
-        with:
-          script: |  
-            let start = Date.now();
-            console.log(start)
-            core.setOutput("start", start);
-        if: steps.capture-inputs.outputs.type == 'python'
-      - name: 🧪 Executing Python Code
-        id: get-comment-body
-        run: |
-          git pull origin ${{github.actor}} --allow-unrelated-histories
-          git checkout ${{github.actor}} 
-          rm -Rf .output/issue-#${{github.event.issue.number}}/images/.images
-          body="$(python ${{needs.Executing-Code.outputs.entrypoint}} --models .output/issue-#${{github.event.issue.number}}/models/ --images .output/issue-#${{github.event.issue.number}}/images/ --logs .output/issue-#${{github.event.issue.number}}/logs/)"
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}" 
-          echo "::set-output name=body::$body"
-          rm -Rf source/data
-          git ls-files --deleted -z | git update-index --assume-unchanged -z --stdin
-          git config user.name ${{github.actor}}
-          git add -u .
-          git commit -m "Preparing Python Execution"
-          git push  origin ${{github.actor}}:${{github.actor}}
-      - name: 🧪 Calculating Elapsed Time
-        uses: actions/github-script@v6
-        id: set-end-time
-        with:
-          script: |  
-            let end = Date.now();
-            let start = '${{steps.set-start-time.outputs.start}}';
-            console.log(start);
-            console.log(end);
-            const date = new Date();
-            let elapsed = end - start ;
-            console.log(elapsed)
-            function msToTime(duration) {
-              var milliseconds = parseInt((duration % 1000) / 100),
-                seconds = Math.floor((duration / 1000) % 60),
-                minutes = Math.floor((duration / (1000 * 60)) % 60),
-                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+#   Python:
+#       needs: Executing-Code
+#       if: needs.Executing-Code.outputs.type == 'python'
+#       runs-on: ubuntu-latest
+#       outputs:
+#         body: ${{steps.get-comment-body.outputs.body}}
+#         elapsed: ${{steps.get-comment-body.outputs.elapsed}}
+#         results: ${{steps.set-end-time.outputs.results}}
+#       steps:
+#       - name: ⚗️ Setting Up Requirements
+#         uses: actions/checkout@v2
+#         with:
+#           python-version: '3.8'
+#           cache: 'pip'
+#       - name: ⚗️ Python Requirements Installation
+#         run: pip install -r ${{needs.Executing-Code.outputs.reqs}}
+#       - run: |
+#           git fetch
+#           # git checkout ${{github.actor}}
+#           git pull origin ${{github.actor}} --allow-unrelated-histories
+#       - uses: actions/github-script@v6
+#         id: set-start-time
+#         with:
+#           script: |  
+#             let start = Date.now();
+#             console.log(start)
+#             core.setOutput("start", start);
+#         if: steps.capture-inputs.outputs.type == 'python'
+#       - name: 🧪 Executing Python Code
+#         id: get-comment-body
+#         run: |
+#           git pull origin ${{github.actor}} --allow-unrelated-histories
+#           git checkout ${{github.actor}} 
+#           rm -Rf .output/issue-#${{github.event.issue.number}}/images/.images
+#           body="$(python ${{needs.Executing-Code.outputs.entrypoint}} --models .output/issue-#${{github.event.issue.number}}/models/ --images .output/issue-#${{github.event.issue.number}}/images/ --logs .output/issue-#${{github.event.issue.number}}/logs/)"
+#           body="${body//'%'/'%25'}"
+#           body="${body//$'\n'/'%0A'}"
+#           body="${body//$'\r'/'%0D'}" 
+#           echo "::set-output name=body::$body"
+#           rm -Rf source/data
+#           git ls-files --deleted -z | git update-index --assume-unchanged -z --stdin
+#           git config user.name ${{github.actor}}
+#           git add -u .
+#           git commit -m "Preparing Python Execution"
+#           git push  origin ${{github.actor}}:${{github.actor}}
+#       - name: 🧪 Calculating Elapsed Time
+#         uses: actions/github-script@v6
+#         id: set-end-time
+#         with:
+#           script: |  
+#             let end = Date.now();
+#             let start = '${{steps.set-start-time.outputs.start}}';
+#             console.log(start);
+#             console.log(end);
+#             const date = new Date();
+#             let elapsed = end - start ;
+#             console.log(elapsed)
+#             function msToTime(duration) {
+#               var milliseconds = parseInt((duration % 1000) / 100),
+#                 seconds = Math.floor((duration / 1000) % 60),
+#                 minutes = Math.floor((duration / (1000 * 60)) % 60),
+#                 hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
-              hours = (hours < 10) ? "0" + hours : hours;
-              minutes = (minutes < 10) ? "0" + minutes : minutes;
-              seconds = (seconds < 10) ? "0" + seconds : seconds;
+#               hours = (hours < 10) ? "0" + hours : hours;
+#               minutes = (minutes < 10) ? "0" + minutes : minutes;
+#               seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-              return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-            }
-            core.setOutput("elapsed", msToTime(elapsed));
-            core.setOutput("result", "success");
+#               return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+#             }
+#             core.setOutput("elapsed", msToTime(elapsed));
+#             core.setOutput("result", "success");
         
-  Jupyter:
-      needs: Executing-Code
-      if: needs.Executing-Code.outputs.type == 'jupyter'
-      runs-on: ubuntu-20.04
-      outputs:
-        body: ${{steps.get-comment-body.outputs.body}}
-        elapsed: ${{steps.set-end-time.outputs.elapsed}}
-        results: ${{steps.set-end-time.outputs.results}}
-        notebook: ${{steps.prepare-execution.outputs.notebook}}
-      steps:
-      - name: ⚗️ Setting Up Requirements
-        uses: actions/checkout@v2
-        with:
-          python-version: '3.8'
-      - name: ⚗️ Requirements Installation
-        run: |
-          echo "⚙️⚙️⚙️ working on requirements..."
-          pip install --upgrade jupyter pygments papermill
-          pip install -r ${{needs.Executing-Code.outputs.reqs}}
-        shell: bash
-      - uses: actions/checkout@v2
-        id: set-start-time
-        with:
-          script: |  
-            let start = Date.now();
-            console.log(start)
-            core.setOutput("start", start);
-        if: steps.capture-inputs.outputs.type == 'jupyter'
-      - run: |
-          git pull origin ${{github.actor}} --allow-unrelated-histories
-          git checkout ${{github.actor}} 
-      - name: ⚙️ Prepare Execution
-        id: prepare-execution
-        run: |
-          orig=${{needs.Executing-Code.outputs.entrypoint}}
-          notebook=${orig#*/}
-          echo "::set-output name=notebook::$notebook"
-          git pull origin ${{github.actor}} --allow-unrelated-histories
-          git checkout ${{github.actor}} 
-          sudo apt-get update
-          sudo apt-get install texlive-xetex
-          sudo apt-get install -y texlive  pandoc
-          export PATH=/Library/TeX/texbin:$PATH
-          rm -Rf .output/images/.images
-      - name: 🧪 Executing Jupyter Code
-        id: get-comment-body
-        run: |
-          echo "⚙️⚙️⚙️ working..."
-          # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/issue-#${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
-          # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/issue-#${{github.event.issue.number}}/models/ermes.ipynb
-          # jupyter nbconvert --to pdf --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
-          jupyter nbconvert --to notebook --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output-dir ".output/issue-#${{github.event.issue.number}}/executions/" --output ${{ steps.prepare-execution.outputs.notebook}}
-          # mv source/results.pdf .output/issue-#${{github.event.issue.number}}/executions/
-          # echo $(</dev/stdout)
-          body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
-          echo "::set-output name=body::$body"
-          git config user.name ${{github.actor}}
-          git add .
-          git commit -m "upload images"
-          git push  origin ${{github.actor}}:${{github.actor}}
-        shell: bash
-      - name: 🧪 Calculating Elapsed Time
-        uses: actions/github-script@v6
-        id: set-end-time
-        with:
-          script: |  
-            let end = Date.now();
-            let start = '${{steps.set-start-time.outputs.start}}';
-            console.log(start);
-            console.log(end);
-            const date = new Date();
-            let elapsed = end - start ;
-            console.log(elapsed)
-            function msToTime(duration) {
-              var milliseconds = parseInt((duration % 1000) / 100),
-                seconds = Math.floor((duration / 1000) % 60),
-                minutes = Math.floor((duration / (1000 * 60)) % 60),
-                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+#   Jupyter:
+#       needs: Executing-Code
+#       if: needs.Executing-Code.outputs.type == 'jupyter'
+#       runs-on: ubuntu-20.04
+#       outputs:
+#         body: ${{steps.get-comment-body.outputs.body}}
+#         elapsed: ${{steps.set-end-time.outputs.elapsed}}
+#         results: ${{steps.set-end-time.outputs.results}}
+#         notebook: ${{steps.prepare-execution.outputs.notebook}}
+#       steps:
+#       - name: ⚗️ Setting Up Requirements
+#         uses: actions/checkout@v2
+#         with:
+#           python-version: '3.8'
+#       - name: ⚗️ Requirements Installation
+#         run: |
+#           echo "⚙️⚙️⚙️ working on requirements..."
+#           pip install --upgrade jupyter pygments papermill
+#           pip install -r ${{needs.Executing-Code.outputs.reqs}}
+#         shell: bash
+#       - uses: actions/checkout@v2
+#         id: set-start-time
+#         with:
+#           script: |  
+#             let start = Date.now();
+#             console.log(start)
+#             core.setOutput("start", start);
+#         if: steps.capture-inputs.outputs.type == 'jupyter'
+#       - run: |
+#           git pull origin ${{github.actor}} --allow-unrelated-histories
+#           git checkout ${{github.actor}} 
+#       - name: ⚙️ Prepare Execution
+#         id: prepare-execution
+#         run: |
+#           orig=${{needs.Executing-Code.outputs.entrypoint}}
+#           notebook=${orig#*/}
+#           echo "::set-output name=notebook::$notebook"
+#           git pull origin ${{github.actor}} --allow-unrelated-histories
+#           git checkout ${{github.actor}} 
+#           sudo apt-get update
+#           sudo apt-get install texlive-xetex
+#           sudo apt-get install -y texlive  pandoc
+#           export PATH=/Library/TeX/texbin:$PATH
+#           rm -Rf .output/images/.images
+#       - name: 🧪 Executing Jupyter Code
+#         id: get-comment-body
+#         run: |
+#           echo "⚙️⚙️⚙️ working..."
+#           # papermill --no-progress-bar ${{needs.Executing-Code.outputs.entrypoint}} ".output/issue-#${{github.event.issue.number}}/executions/${{steps.prepare-execution.outputs.notebook}}"
+#           # jupyter execute ${{needs.Executing-Code.outputs.entrypoint}} --output ../.output/issue-#${{github.event.issue.number}}/models/ermes.ipynb
+#           # jupyter nbconvert --to pdf --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output results.pdf
+#           jupyter nbconvert --to notebook --stdout --execute ${{needs.Executing-Code.outputs.entrypoint}} --output-dir ".output/issue-#${{github.event.issue.number}}/executions/" --output ${{ steps.prepare-execution.outputs.notebook}}
+#           # mv source/results.pdf .output/issue-#${{github.event.issue.number}}/executions/
+#           # echo $(</dev/stdout)
+#           body=".output/models/${{needs.Executing-Code.outputs.entrypoint}}"
+#           echo "::set-output name=body::$body"
+#           git config user.name ${{github.actor}}
+#           git add .
+#           git commit -m "upload images"
+#           git push  origin ${{github.actor}}:${{github.actor}}
+#         shell: bash
+#       - name: 🧪 Calculating Elapsed Time
+#         uses: actions/github-script@v6
+#         id: set-end-time
+#         with:
+#           script: |  
+#             let end = Date.now();
+#             let start = '${{steps.set-start-time.outputs.start}}';
+#             console.log(start);
+#             console.log(end);
+#             const date = new Date();
+#             let elapsed = end - start ;
+#             console.log(elapsed)
+#             function msToTime(duration) {
+#               var milliseconds = parseInt((duration % 1000) / 100),
+#                 seconds = Math.floor((duration / 1000) % 60),
+#                 minutes = Math.floor((duration / (1000 * 60)) % 60),
+#                 hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
-              hours = (hours < 10) ? "0" + hours : hours;
-              minutes = (minutes < 10) ? "0" + minutes : minutes;
-              seconds = (seconds < 10) ? "0" + seconds : seconds;
+#               hours = (hours < 10) ? "0" + hours : hours;
+#               minutes = (minutes < 10) ? "0" + minutes : minutes;
+#               seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-              return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-            }
-             core.setOutput("elapsed", msToTime(elapsed));
-             core.setOutput("result", "success");
+#               return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+#             }
+#              core.setOutput("elapsed", msToTime(elapsed));
+#              core.setOutput("result", "success");
 
-  Retrieving-Results:
-      if: ${{ always() }}
-      needs: [Jupyter, Python]
-      runs-on: ubuntu-latest
-      outputs:
-        matrix: ${{ steps.create-matrix.outputs.matrix }}
-        body: ${{ steps.create-matrix.outputs.body }}
-        elapsed: ${{steps.create-matrix.outputs.elapsed}}
-      steps:
-      - uses: actions/checkout@v2
-      - name: 📝 Preparing Results
-        id: create-matrix
-        run: |
-          git fetch
-          # git checkout ${{github.actor}}
-          git pull origin ${{github.actor}}
-          JSON="{\"include\":["
-          for f in .output/issue-#${{github.event.issue.number}}/images/*.*
-          do 
-            JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/${{github.actor}}/$f?raw=true,\"},"
-              if [[ "$JSON" != *"$JSONline"* ]]
-              then
-                JSON="$JSON$JSONline"
-              fi
-          done
-          # Remove last "," and add closing brackets
-          if [[ $JSON == *, ]]; then
-            JSON="${JSON%?}"
-          fi
-          JSON="$JSON]}"
-          echo $JSON
-          echo "::set-output name=matrix::$( echo "$JSON" )"
-          console.log(${{needs.Jupyter.outputs.results}} )
-          # set output
-          if ${{needs.Jupyter.outputs.results}} == "success"; then
-              body="${{needs.Jupyter.outputs.body}}"
-              body="${body//'%'/'%25'}"
-              body="${body//$'\n'/'%0A'}"
-              echo "::set-output name=body::$( echo "$body")"
-              echo "::set-output name=elapsed::${{needs.Jupyter.outputs.elapsed}}"
-          fi
-          if ${{needs.Python.outputs.results}} == "success"; then
-            body="${{needs.Python.outputs.body}}"
-            body="${body//'%'/'%25'}"
-            body="${body//$'\n'/'%0A'}"
-            echo "::set-output name=body::$( echo "$body")"
-            echo "::set-output name=elapsed::${{needs.Python.outputs.elapsed}}"
-          fi    
-      - name: 📝 Publish First Report
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-%23${{github.event.issue.number}}/executions/)
+#   Retrieving-Results:
+#       if: ${{ always() }}
+#       needs: [Jupyter, Python]
+#       runs-on: ubuntu-latest
+#       outputs:
+#         matrix: ${{ steps.create-matrix.outputs.matrix }}
+#         body: ${{ steps.create-matrix.outputs.body }}
+#         elapsed: ${{steps.create-matrix.outputs.elapsed}}
+#       steps:
+#       - uses: actions/checkout@v2
+#       - name: 📝 Preparing Results
+#         id: create-matrix
+#         run: |
+#           git fetch
+#           # git checkout ${{github.actor}}
+#           git pull origin ${{github.actor}}
+#           JSON="{\"include\":["
+#           for f in .output/issue-#${{github.event.issue.number}}/images/*.*
+#           do 
+#             JSONline="{\"body\": \"https://github.com/${{ github.repository }}/blob/${{github.actor}}/$f?raw=true,\"},"
+#               if [[ "$JSON" != *"$JSONline"* ]]
+#               then
+#                 JSON="$JSON$JSONline"
+#               fi
+#           done
+#           # Remove last "," and add closing brackets
+#           if [[ $JSON == *, ]]; then
+#             JSON="${JSON%?}"
+#           fi
+#           JSON="$JSON]}"
+#           echo $JSON
+#           echo "::set-output name=matrix::$( echo "$JSON" )"
+#           console.log(${{needs.Jupyter.outputs.results}} )
+#           # set output
+#           if ${{needs.Jupyter.outputs.results}} == "success"; then
+#               body="${{needs.Jupyter.outputs.body}}"
+#               body="${body//'%'/'%25'}"
+#               body="${body//$'\n'/'%0A'}"
+#               echo "::set-output name=body::$( echo "$body")"
+#               echo "::set-output name=elapsed::${{needs.Jupyter.outputs.elapsed}}"
+#           fi
+#           if ${{needs.Python.outputs.results}} == "success"; then
+#             body="${{needs.Python.outputs.body}}"
+#             body="${body//'%'/'%25'}"
+#             body="${body//$'\n'/'%0A'}"
+#             echo "::set-output name=body::$( echo "$body")"
+#             echo "::set-output name=elapsed::${{needs.Python.outputs.elapsed}}"
+#           fi    
+#       - name: 📝 Publish First Report
+#         uses: peter-evans/create-or-update-comment@v1
+#         with:
+#           issue-number: ${{ github.event.issue.number }}
+#           body: |
+#             The execution of notebook may be checked [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-%23${{github.event.issue.number}}/executions/)
 
-  Publishing-Results:
-      if: ${{ always()}}
-      needs: Retrieving-Results
-      runs-on: ubuntu-latest
-      outputs:
-        test: ${{steps.set-branch-name.outputs.test}}
-      strategy:
-        matrix: ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
-      steps:
-      - uses: actions/checkout@v2
-      - name: Check if we produced any image
-        id: check-images
-        run: |
-            if [ -z "$(ls -A .output/images)" ]; then
-              echo "Images Empty"
-            else
-              echo "Images Not Empty"
-            fi
-      - name: Check if we produced any log
-        id: check-logs
-        run: |
-            if [ -z "$(ls -A .output/logs)" ]; then
-              echo "Logs Empty"
-            else
-              echo " Logs NotEmpty"
-            fi
-        if: steps.check-images.outcomes == 'Images Not Empty'
-      - name: 📝 Publish Comment
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            ![](${{ matrix.body }})
-        if: steps.check-logs.outcomes == 'Logs Not Empty'
-      - name: 📝 Publish Comment
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            Please review logs [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-%23${{github.event.issue.number}}/logs/)
-      - uses: actions/github-script@v6
-        id: set-branch-name
-        with:
-          script: |
-            const date = new Date();
-            var elapsed = '${{needs.Retrieving-Results.outputs.elapsed}}';
-            var author = '${{github.event.issue.user.login}}';
-            github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + elapsed + ' - Author:' + author
-            });
-            core.setOutput("test", "1234");
-      - name: 🧰 Finalize Labels
-        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
-        with:
-          add-labels: "done"
-          remove-labels: "in Progress"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+#   Publishing-Results:
+#       if: ${{ always()}}
+#       needs: Retrieving-Results
+#       runs-on: ubuntu-latest
+#       outputs:
+#         test: ${{steps.set-branch-name.outputs.test}}
+#       strategy:
+#         matrix: ${{fromJson(needs.Retrieving-Results.outputs.matrix)}}
+#       steps:
+#       - uses: actions/checkout@v2
+#       - name: Check if we produced any image
+#         id: check-images
+#         run: |
+#             if [ -z "$(ls -A .output/images)" ]; then
+#               echo "Images Empty"
+#             else
+#               echo "Images Not Empty"
+#             fi
+#       - name: Check if we produced any log
+#         id: check-logs
+#         run: |
+#             if [ -z "$(ls -A .output/logs)" ]; then
+#               echo "Logs Empty"
+#             else
+#               echo " Logs NotEmpty"
+#             fi
+#         if: steps.check-images.outcomes == 'Images Not Empty'
+#       - name: 📝 Publish Comment
+#         uses: peter-evans/create-or-update-comment@v1
+#         with:
+#           issue-number: ${{ github.event.issue.number }}
+#           body: |
+#             ![](${{ matrix.body }})
+#         if: steps.check-logs.outcomes == 'Logs Not Empty'
+#       - name: 📝 Publish Comment
+#         uses: peter-evans/create-or-update-comment@v1
+#         with:
+#           issue-number: ${{ github.event.issue.number }}
+#           body: |
+#             Please review logs [here](https://github.com/${{ github.repository }}/blob/${{github.actor}}/.output/issue-%23${{github.event.issue.number}}/logs/)
+#       - uses: actions/github-script@v6
+#         id: set-branch-name
+#         with:
+#           script: |
+#             const date = new Date();
+#             var elapsed = '${{needs.Retrieving-Results.outputs.elapsed}}';
+#             var author = '${{github.event.issue.user.login}}';
+#             github.rest.issues.update({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               issue_number: context.issue.number,
+#               title: '🚦 Run Completed on: ' + date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear() + '-' + date.getHours() + '.' + date.getMinutes() + '.' + date.getSeconds() + ' -  Elapsed time:' + elapsed + ' - Author:' + author
+#             });
+#             core.setOutput("test", "1234");
+#       - name: 🧰 Finalize Labels
+#         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+#         with:
+#           add-labels: "done"
+#           remove-labels: "in Progress"
+#           repo-token: ${{ secrets.GITHUB_TOKEN }}
