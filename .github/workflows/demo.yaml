@@ -20,8 +20,6 @@ jobs:
       name: prepare environment
       needs: setup
       runs-on: ubuntu-latest
-      env:
-         GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
       steps:
          - name: prepare
            id: prepare
