@@ -23,20 +23,15 @@ jobs:
         run: |
           gh issue edit ${{github.event.issue.number}} --add-label 'in Progress'
       - uses: actions/checkout@v2
-      - name: retrieve
-        id: infos
-        uses: alefesta/ermes/.github/workflows/issue-setup.yml@main
+      # - name: retrieve
+      #    id: infos
+      #    uses: alefesta/ermes/.github/workflows/issue-setup.yml@main
 
 
    prepare:
-      name: prepare environment
-      needs: setup
-      runs-on: ubuntu-latest
-      steps:
-         - name: prepare
-           id: prepare
-           if: github.actor == 'alefesta'
-           uses: ./.github/workflows/issue-setup.yml
+      name: prepare
+      if: github.actor == 'alefesta'
+      uses: ./.github/workflows/issue-setup.yml
  
 
    evaluate:
