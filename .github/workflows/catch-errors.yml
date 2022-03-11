@@ -19,7 +19,7 @@ jobs:
       steps:
          - uses: actions/checkout@v2
          - name: evaluate
-           if: needs.prepare.result == 'success'
+           if: success()
            run: |
             gh run view ${{github.run_id}} > results.txt
             gh issue comment ${{github.event.issue.number}} -F results.txt
@@ -27,7 +27,7 @@ jobs:
             gh issue edit ${{github.event.issue.number}} --remove-label 'in Progress' 
             gh issue edit ${{github.event.issue.number}} --title "✅ ${{ github.event.issue.title }} - Run Completed "
          - name: catch-error
-           if: needs.prepare.result == 'failure'
+           if: failure()
            run: |
             gh run view ${{github.run_id}} --exit-status > error.txt
             gh issue comment ${{github.event.issue.number}} -F error.txt
