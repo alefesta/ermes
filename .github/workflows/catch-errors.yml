@@ -12,7 +12,6 @@ on:
 jobs:
    catch-errors:
       name: evaluate code to be run
-      needs: [setup,prepare,execute-code]
       runs-on: ubuntu-latest
       env:
          GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW }}
