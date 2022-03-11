@@ -41,13 +41,8 @@ jobs:
          - name: catch-error
            if: needs.prepare.result == 'failure'
            run: |
-            gh run view ${{github.run_id}} --exit-status
-            # gh issue comment ${{github.event.issue.number}} -b '
-            # Error details:
-
-            # $body
-
-            # '
+            gh run view ${{github.run_id}} --exit-status > error.txt
+            gh issue comment ${{github.event.issue.number}} -F error.txt
    
    execute:
       name: execute code
