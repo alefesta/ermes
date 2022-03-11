@@ -43,6 +43,8 @@ jobs:
            run: |
             gh run view ${{github.run_id}} --exit-status > error.txt
             gh issue comment ${{github.event.issue.number}} -F error.txt
+            gh issue edit ${{github.event.issue.number}} --add-label invalid 
+            gh issue edit ${{github.event.issue.number}} --title "invalid run - please check"
    
    execute:
       name: execute code
