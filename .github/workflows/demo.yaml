@@ -42,7 +42,7 @@ jobs:
            if: needs.prepare.result == 'failure'
            run: |
             # body=$(gh run view 1964194657 --exit-status )
-            echo ${{github.event.workflow_run.check_suite_id}}
+            echo ${{github.run_id}}
             # gh issue comment ${{github.event.issue.number}} -b '
             # Error details:
 
