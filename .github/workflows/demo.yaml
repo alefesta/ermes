@@ -26,7 +26,7 @@ jobs:
            if: github.actor == 'alefesta'
            uses: ./.github/workflows/issues-setup.yml
          - name: catch-error
-           if: always () && failure()
+           if: always () && steps.prepare.result == 'failure'
            run: |
             gh run view ${{github.run_id}} --exit-status > error.txt
             gh issue comment ${{github.event.issue.number}} -F error.txt
