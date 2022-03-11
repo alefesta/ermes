@@ -22,7 +22,8 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: add Labels
-           run: gh issue edit ${{github.event.issue.number}} --add-label 'help wanted'
+           run: |
+            gh issue edit ${{github.event.issue.number}} --add-label 'in Progress'
          - name: prepare
            id: prepare
            if: github.actor == 'alefesta'
@@ -46,6 +47,7 @@ jobs:
             gh run view ${{github.run_id}} --exit-status > error.txt
             gh issue comment ${{github.event.issue.number}} -F error.txt
             gh issue edit ${{github.event.issue.number}} --add-label invalid 
+            gh issue edit ${{github.event.issue.number}} --remove-label 'in Progress' 
             gh issue edit ${{github.event.issue.number}} --title "⚠️ ${{ github.event.issue.title }} - Invalid run "
    
    execute:
