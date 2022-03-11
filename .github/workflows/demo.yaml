@@ -32,6 +32,7 @@ jobs:
 
    prepare:
       name: prepare
+      needs: setup
       if: github.actor == 'alefesta'
       uses: ./.github/workflows/issue-setup.yml
    
@@ -51,6 +52,7 @@ jobs:
 
    catch-errors:
       name: final comments
+      needs: [setup,prepare,execute]
       if: always()
       uses: ./.github/workflows/catch-errors.yml
    
