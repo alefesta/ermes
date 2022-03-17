@@ -39,6 +39,7 @@ jobs:
    
    execute:
       name: execute code
+      if: always()
       needs: prepare
       runs-on: ubuntu-latest
       steps:
