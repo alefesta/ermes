@@ -34,7 +34,7 @@ jobs:
       name: prepare
       needs: setup
       if: github.actor == 'alefesta'
-      uses: ./.github/workflows/issue-setup.yml
+      uses: ./.github/workflows/issues-setup.yml
    
    
    execute:
