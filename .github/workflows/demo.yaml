@@ -47,7 +47,7 @@ jobs:
            run:  echo 'done'
          - name: catch-error
            if: needs.evaluate.result == 'failure'
-           uses: ./.github/workflows/issue-setup.yml
+           uses: ./.github/workflows/catch-errors.yml
 
 
    catch-errors:
